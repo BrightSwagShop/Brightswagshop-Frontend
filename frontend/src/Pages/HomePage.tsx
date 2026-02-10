@@ -1,23 +1,27 @@
 import React from "react";
-import { FaCartPlus } from "react-icons/fa";
+//import { FaCartPlus } from "react-icons/fa";
+import tshirt4 from "../assets/t-shirts/t-shirt4.png";
+import { Link } from "react-router-dom";
 
 const cards = [
-  { title: "Featured", desc: "Top picks for you", color: "from-yellow-400 to-amber-500" },
-  { title: "New Drops", desc: "Fresh swag items", color: "from-yellow-300 to-yellow-500" },
-  { title: "Best Sellers", desc: "Most loved products", color: "from-amber-400 to-yellow-500" },
-  { title: "Limited", desc: "While supplies last", color: "from-yellow-400 to-orange-400" },
-  { title: "Bundles", desc: "Save more together", color: "from-yellow-300 to-amber-400" },
-  { title: "Accessories", desc: "Small but essential", color: "from-amber-300 to-yellow-500" },
-  { title: "Office", desc: "Desk + work swag", color: "from-yellow-400 to-amber-600" },
-  { title: "Street", desc: "Wear it outside", color: "from-yellow-300 to-yellow-600" },
-  { title: "Gifts", desc: "Perfect for teams", color: "from-amber-400 to-yellow-600" },
-  { title: "Eco", desc: "Sustainable choices", color: "from-yellow-300 to-amber-500" },
-  { title: "Premium", desc: "Upgrade your swag", color: "from-yellow-400 to-amber-700" },
-  { title: "Clearance", desc: "Last chance deals", color: "from-yellow-300 to-orange-500" },
+  { title: "T-shirts", desc: "Comfortabele T-shirts met jouw branding.", color: "from-yellow-400 to-amber-500",to: "/tshirts",image: tshirt4,slug: "tshirts", },
+{ title: "Hoodies", desc: "Warme hoodies voor dagelijks gebruik.", color: "from-yellow-300 to-yellow-500", slug: "hoodies", },
+{ title: "Mokken", desc: "Bedrukte mokken voor koffie en thee op kantoor.", color: "from-amber-400 to-yellow-500", slug:"mokken" },
+{ title: "Drinkflessen", desc: "Herbruikbare flessen voor werk en onderweg.", color: "from-yellow-400 to-orange-400", slug:"drinkflessen" },
+{ title: "Notebooks", desc: "Praktische notitieboeken voor werk en meetings.", color: "from-yellow-300 to-amber-400" , slug:"notebooks"},
+{ title: "Pennen", desc: "Eenvoudige pennen die iedereen gebruikt.", color: "from-amber-300 to-yellow-500" , slug: "pennen"},
+{ title: "Stickers", desc: "Leuke stickers voor laptops en notitieboeken.", color: "from-yellow-400 to-amber-600", slug:"stickers" },
+{ title: "Tote bags", desc: "Herbruikbare draagtassen voor dagelijks gebruik.", color: "from-yellow-300 to-yellow-600",slug:"tote bags" },
+{ title: "Laptopstickers", desc: "Kwalitatieve stickers voor teamlaptops.", color: "from-amber-400 to-yellow-600", slug:"laptopstickers" },
+{ title: "LaptopSleeves", desc: "Beschermhoezen met een professionele uitstraling.", color: "from-yellow-300 to-amber-500",slug:"laptopsleeves" },
+{ title: "Powerbanks", desc: "Draagbare opladers voor drukke werkdagen.", color: "from-yellow-400 to-amber-700" , slug: "powerbanks"},
+
+
 ];
 
 const HomePage = () => {
   return (
+    
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10">
         {/* Title block aligned with your header vibe */}
@@ -33,6 +37,10 @@ const HomePage = () => {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
+
+            <Link
+               to={`/category/${c.slug}`}
+              >
             <div
               key={c.title}
               className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-6 min-h-200px  shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
@@ -49,14 +57,24 @@ const HomePage = () => {
                   <p className="mt-1 text-sm text-slate-600">{c.desc}</p>
                 </div>
 
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center rounded-xl border border-yellow-200 bg-yellow-50 p-3 text-yellow-700 transition hover:bg-yellow-100 active:scale-95"
-                  aria-label={`Add ${c.title} to cart`}
-                  title="Add to cart"
-                >
-                  <FaCartPlus className="h-5 w-5" />
-                </button>
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  className="h-20 w-12 object-contain opacity-90"
+                />
+
+
+                 
+                {/* 
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center rounded-xl border border-yellow-200 bg-yellow-50 p-3 text-yellow-700 transition hover:bg-yellow-100 active:scale-95"
+                    aria-label={`Add ${c.title} to cart`}
+                    title="Add to cart"
+                  >
+                    <FaCartPlus className="h-5 w-5" />
+                  </button> 
+                */}
               </div>
 
               {/* subtle warm glow */}
@@ -64,10 +82,12 @@ const HomePage = () => {
                 className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-r ${c.color} opacity-20 blur-2xl transition group-hover:opacity-30`}
               />
             </div>
+             </Link>
           ))}
         </div>
       </div>
     </div>
+    
   );
 };
 
