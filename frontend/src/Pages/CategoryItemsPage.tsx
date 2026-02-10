@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import tshirt1 from "../assets/t-shirts/t-shirt1.png";
 import tshirt2 from "../assets/t-shirts/t-shirt2.png";
-import hoodie1 from "../assets/hoodies/hoodie1.png";
+import hoodie1 from "../assets/t-shirts/t-shirt3.png";
 
 type Item = {
   id: string;

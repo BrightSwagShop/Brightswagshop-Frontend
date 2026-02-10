@@ -10,6 +10,8 @@ import AdminDashboard from './Pages/Admin/AdminDashboard.tsx'
 import Products from './Pages/Admin/Products.tsx'
 import Bugs from './Pages/Admin/Bugs.tsx'
 import Settings from './Pages/Admin/Settings.tsx'
+import CategoryItemsPage from './Pages/CategoryItemsPage.tsx'
+import DetailPageItem from './Pages/DetailPageItem.tsx'
 
 
 
@@ -21,6 +23,8 @@ const router = createBrowserRouter([
     element: <RootLayout />, 
     children: [
       { path: "/", element: <App />},
+      { path: "category/:category", element: < CategoryItemsPage/>},
+      { path: "detailpage", element: <DetailPageItem/>},
       
       // Admin page's
       { path: "admin", 
@@ -31,7 +35,6 @@ const router = createBrowserRouter([
           { path: "products", element: <Products />},
           { path: "bugs", element: <Bugs />},
           { path: "settings", element: <Settings />}
-
         ],
       },
     ],
