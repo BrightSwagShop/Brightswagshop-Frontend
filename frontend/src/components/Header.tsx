@@ -1,46 +1,66 @@
-import React from "react";
 import logo from "../assets/logo.jpg";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Dropdown from "./Dropdown";
 
 const Header = () => {
+
+    const isLoggedIn = false; // later from auth of context fixen.
+
+
   return (
     <header className="w-full bg-white border-b border-yellow-400">
-        <div className="max-w-7xl mx-auto px-6 py-4 grid grid-cols-3 items-center">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+
+        {/* Left: Logo + Brand */}
+        <Link to="/" className="flex items-center gap-3">
+          <img src={logo} alt="Brightest logo" className="h-15 w-auto" />
+        </Link>
+
+        {/* Center: Navigation */}
+        <nav className="hidden lg:flex items-center gap-8 text-gray-700 font-medium">
+          <Link to="/" className="flex items-center gap-2 hover:text-yellow-500 transition">
+            Home 
+          </Link>
+
+          <Link to="/cases" className="hover:text-yellow-500 transition">
+            Placeholder
+          </Link>
+
+          <Link to="/about" className="flex items-center gap-2 hover:text-yellow-500 transition">
+            About 
+          </Link>
+
+          <Link to="/contact" className="hover:text-yellow-500 transition">
+            Contact
+          </Link>
+        </nav>
+
+        {/* Right: Actions */}
+        <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
             
-            {/* Left: Logo */}
-            <div className="flex justify-start">
-                <img
-                    src={logo}
-                    alt="Brightest logo"
-                    className="h-20 w-auto"
-                />
-            </div>
-
-            {/* Center: Navigation */}
-            <nav className="hidden md:flex justify-center gap-6 text-gray-600 font-medium">
-            <a className="hover:text-yellow-400 transition hover:cursor-">Home</a>
-            <a className="hover:text-yellow-400 transition">Tests</a>
-            <a className="hover:text-yellow-400 transition">About</a>
-            <a className="hover:text-yellow-400 transition">Contact</a>
-            </nav>
-
-
-            <div className="grid grid-cols-2 items-center">
-            {/* Cart (left side of right column) */}
-            <div className="flex justify-center">
-                <FaShoppingCart className="text-xl text-gray-600 hover:text-yellow-400 cursor-pointer transition" />
-            </div>
-
-            {/* Login (right side) */}
-            <div className="flex justify-end">
-                <button className="bg-yellow-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition">
-                    Login
-                </button>
-            </div>
+            <Link to="/favoriten" className="flex items-center gap-4 hover:text-yellow-500 transition">
+                <FaHeart className="text-lg cursor-pointer" />
+            </Link>
+            
+            <Link to="/winkelwagen" className="flex items-center gap-4 hover:text-yellow-500 transition">
+                <FaShoppingCart className="text-lg cursor-pointer" />
+            </Link>
+            
+            {/* Todo: Als user ingelogd is, profiel naam toevoegen. (Zie bol.com) */}
+            <Dropdown
+            label="Dashboard"
+            items={[
+                { label: "Overview", to: "/dashboard/overview" },
+                { label: "Profile", to: "/dashboard/profile" },
+                { label: "Settings", to: "/dashboard/settings" },
+                { label: "Logout", to: "/logout"}
+            ]}
+            />
+            
         </div>
-    </div>
+      </div>
     </header>
-
   );
 };
 
