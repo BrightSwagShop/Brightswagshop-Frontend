@@ -1,7 +1,15 @@
 import { useParams } from "react-router-dom";
 import tshirt1 from "../assets/t-shirts/t-shirt1.png";
 import tshirt2 from "../assets/t-shirts/t-shirt2.png";
-import hoodie1 from "../assets/t-shirts/t-shirt3.png";
+import tshirt3 from "../assets/t-shirts/t-shirt3.png";
+import tshirt4 from "../assets/t-shirts/t-shirt4.png";
+import tshirt5 from "../assets/t-shirts/t-shirt5.png";
+import tshirt7 from "../assets/t-shirts/t-shirt7.png";
+
+import hoodie1 from "../assets/hoodies/hoodie1.png";
+import hoodie2 from "../assets/hoodies/hoodie2.png";
+import hoodie3 from "../assets/hoodies/hoodie3.png";
+import hoodie4 from "../assets/hoodies/hoodie4.png";
 
 type Item = {
   id: string;
@@ -24,6 +32,31 @@ const mockData: Record<string, Item[]> = {
       description: "Premium stof met strakke afwerking.",
       image: tshirt2,
     },
+    {
+      id: "ts-3",
+      title: "Brightest T-shirt Premium",
+      description: "Premium stof met strakke afwerking.",
+      image: tshirt3,
+    },
+     {
+      id: "ts-4",
+      title: "Brightest T-shirt Premium",
+      description: "Premium stof met strakke afwerking.",
+      image: tshirt4,
+    },
+     {
+      id: "ts-5",
+      title: "Brightest T-shirt Premium",
+      description: "Premium stof met strakke afwerking.",
+      image: tshirt5,
+    },
+     {
+      id: "ts-7",
+      title: "Brightest T-shirt Premium",
+      description: "Premium stof met strakke afwerking.",
+      image: tshirt7,
+    },
+
   ],
   hoodies: [
     {
@@ -32,6 +65,25 @@ const mockData: Record<string, Item[]> = {
       description: "Warme hoodie met comfortabele pasvorm.",
       image: hoodie1,
     },
+    {
+      id: "hd-2",
+      title: "Brightest Hoodie",
+      description: "Warme hoodie met comfortabele pasvorm.",
+      image: hoodie2,
+    },
+    {
+      id: "hd-3",
+      title: "Brightest Hoodie",
+      description: "Warme hoodie met comfortabele pasvorm.",
+      image: hoodie3,
+    },
+    {
+      id: "hd-",
+      title: "Brightest Hoodie",
+      description: "Warme hoodie met comfortabele pasvorm.",
+      image: hoodie4,
+    },
+
   ],
 };
 
