@@ -2,20 +2,23 @@ import React from "react";
 //import { FaCartPlus } from "react-icons/fa";
 import tshirt4 from "../assets/t-shirts/t-shirt4.png";
 import { Link } from "react-router-dom";
+import hoodie1 from "../assets/hoodies/hoodie1.png";
+import mok from "../assets/mokken/mok.png";
+import drinkfles1 from "../assets/drinkflessen/drinkfles1.png";
+import notitieboekje1 from "../assets/notitieboeken/notitieboekje1.png";
 
 const cards = [
-  { title: "T-shirts", desc: "Comfortabele T-shirts met jouw branding.", color: "from-yellow-400 to-amber-500",to: "/tshirts",image: tshirt4,slug: "tshirts", },
-{ title: "Hoodies", desc: "Warme hoodies voor dagelijks gebruik.", color: "from-yellow-300 to-yellow-500", slug: "hoodies", },
-{ title: "Mokken", desc: "Bedrukte mokken voor koffie en thee op kantoor.", color: "from-amber-400 to-yellow-500", slug:"mokken" },
-{ title: "Drinkflessen", desc: "Herbruikbare flessen voor werk en onderweg.", color: "from-yellow-400 to-orange-400", slug:"drinkflessen" },
-{ title: "Notebooks", desc: "Praktische notitieboeken voor werk en meetings.", color: "from-yellow-300 to-amber-400" , slug:"notebooks"},
+{ title: "T-shirts", desc: "Comfortabele T-shirts met jouw branding.", color: "from-yellow-400 to-amber-500",to: "/tshirts",image: tshirt4,slug: "tshirts", },
+{ title: "Hoodies", desc: "Warme hoodies voor dagelijks gebruik.", color: "from-yellow-300 to-yellow-500", slug: "hoodies",image:hoodie1 },
+{ title: "Mokken", desc: "Bedrukte mokken voor koffie en thee op kantoor.", color: "from-amber-400 to-yellow-500", slug:"mokken", image: mok },
+{ title: "Drinkflessen", desc: "Herbruikbare flessen voor werk en onderweg.", color: "from-yellow-400 to-orange-400", slug:"drinkflessen", image:drinkfles1 },
+{ title: "Notebooks", desc: "Praktische notitieboeken voor werk en meetings.", color: "from-yellow-300 to-amber-400" , slug:"notebooks",image: notitieboekje1},
 { title: "Pennen", desc: "Eenvoudige pennen die iedereen gebruikt.", color: "from-amber-300 to-yellow-500" , slug: "pennen"},
 { title: "Stickers", desc: "Leuke stickers voor laptops en notitieboeken.", color: "from-yellow-400 to-amber-600", slug:"stickers" },
 { title: "Tote bags", desc: "Herbruikbare draagtassen voor dagelijks gebruik.", color: "from-yellow-300 to-yellow-600",slug:"tote bags" },
 { title: "Laptopstickers", desc: "Kwalitatieve stickers voor teamlaptops.", color: "from-amber-400 to-yellow-600", slug:"laptopstickers" },
 { title: "LaptopSleeves", desc: "Beschermhoezen met een professionele uitstraling.", color: "from-yellow-300 to-amber-500",slug:"laptopsleeves" },
 { title: "Powerbanks", desc: "Draagbare opladers voor drukke werkdagen.", color: "from-yellow-400 to-amber-700" , slug: "powerbanks"},
-
 
 ];
 
