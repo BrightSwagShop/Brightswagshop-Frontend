@@ -19,19 +19,19 @@ const Header = () => {
 
         {/* Center: Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-gray-700 font-medium">
-          <Link to="/" className="flex items-center gap-2 hover:text-yellow-500 transition">
+          <Link to="/" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
             Home 
           </Link>
 
-          <Link to="/cases" className="hover:text-yellow-500 transition">
+          <Link to="/cases" className="hover:text-yellow-500 transition font-ttnorms font-bold">
             Placeholder
           </Link>
 
-          <Link to="/about" className="flex items-center gap-2 hover:text-yellow-500 transition">
+          <Link to="/about" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
             About 
           </Link>
 
-          <Link to="/contact" className="hover:text-yellow-500 transition">
+          <Link to="/contact" className="hover:text-yellow-500 transition font-ttnorms font-bold">
             Contact
           </Link>
         </nav>

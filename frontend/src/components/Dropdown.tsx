@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -13,13 +13,33 @@ interface DropdownProps {
 }
 
 const Dropdown = ({ label, items }: DropdownProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // In component zetten "refractoring"
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 hover:text-yellow-500 transition"
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
       >
         {label}
         <FaChevronDown
@@ -28,7 +48,7 @@ const Dropdown = ({ label, items }: DropdownProps) => {
       </button>
 
       {open && (
-        <div className="absolute left-0 mt-2 w-44 bg-white border rounded-lg shadow-lg z-50">
+        <div className="absolute left-0 mt-2 w-44 bg-white border rounded-lg shadow-lg z-50 font-ttnorms font-bold">
           {items.map((item) => (
             <Link
               key={item.to}
