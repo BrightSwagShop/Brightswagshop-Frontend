@@ -1,10 +1,9 @@
 import React from "react";
-//import { FaCartPlus } from "react-icons/fa";
 import tshirt4 from "../assets/t-shirts/t-shirt4.png";
 import { Link } from "react-router-dom";
 
 const cards = [
-  { title: "T-shirts", desc: "Comfortabele T-shirts met jouw branding.", color: "from-yellow-400 to-amber-500",to: "/tshirts",image: tshirt4,slug: "tshirts", },
+{ title: "T-shirts", desc: "Comfortabele T-shirts met jouw branding.", color: "from-yellow-400 to-amber-500",to: "/tshirts",image: tshirt4,slug: "tshirts", },
 { title: "Hoodies", desc: "Warme hoodies voor dagelijks gebruik.", color: "from-yellow-300 to-yellow-500", slug: "hoodies", },
 { title: "Mokken", desc: "Bedrukte mokken voor koffie en thee op kantoor.", color: "from-amber-400 to-yellow-500", slug:"mokken" },
 { title: "Drinkflessen", desc: "Herbruikbare flessen voor werk en onderweg.", color: "from-yellow-400 to-orange-400", slug:"drinkflessen" },

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import RootLayout from './layouts/RootLayout.tsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import AdminLayout from './layouts/AdminLayout.tsx'
 import Users from './Pages/Admin/Users.tsx'
 import AdminDashboard from './Pages/Admin/AdminDashboard.tsx'
@@ -30,6 +30,7 @@ const router = createBrowserRouter([
       { path: "admin", 
         element: <AdminLayout/>,
         children: [
+          { index: true, element: <Navigate to="dashboard" replace />}, // /admin -> redirect naar admin/dashboard
           { path: "dashboard", element: <AdminDashboard />},
           { path: "users", element: <Users />},
           { path: "products", element: <Products />},

@@ -1,4 +1,4 @@
-import logo from "../assets/logo.jpg";
+import logo from "../assets/Brightest-logo's/P_BRI_BRIGHTEST-2022_LOGOTYPE-MAIN-POS_RGB-01.png";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";

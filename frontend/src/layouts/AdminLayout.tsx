@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import AdminSidebar from "../components/AdminComponents/AdminSidebar";
 import AdminBreadcrumbs from "../components/AdminComponents/AdminBeadcrumbs";
 
+
 const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -15,6 +16,7 @@ const AdminLayout = () => {
 
       <main className="flex-1 p-8 overflow-y-auto relative">
         <AdminBreadcrumbs />
+        
 
         <Outlet />
       </main>
