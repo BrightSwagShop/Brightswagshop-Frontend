@@ -1,5 +1,4 @@
 import React from "react";
-//import { FaCartPlus } from "react-icons/fa";
 import tshirt4 from "../assets/t-shirts/t-shirt4.png";
 import { Link } from "react-router-dom";
 import hoodie1 from "../assets/hoodies/hoodie1.png";

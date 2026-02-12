@@ -23,7 +23,7 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
 
   return (
     <aside
-      className={`bg-[#141A3A] text-white py-6 h-screen overflow-y-auto transition-all duration-300 ${
+      className={`bg-[#3C3C3B] text-white py-6 h-screen overflow-y-auto transition-all duration-300 ${
         collapsed ? "w-16 px-2" : "w-64 px-4"
       }`}
     >
@@ -34,7 +34,7 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
         }`}
         >
         <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-yellow-400 shrink-0" />
+            <div className="h-9 w-9 rounded-full bg-yellow-400 shrink-0" />
             {!collapsed && <span className="text-lg font-semibold">Admin</span>}
         </div>
 
