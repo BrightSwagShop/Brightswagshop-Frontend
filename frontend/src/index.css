@@ -1,1 +1,10 @@
+@font-face {
+    font-family: TTNorms;
+    src: url("../src/assets/fonts/TTNormsProNormal.ttf");
+}
+
 @import "tailwindcss";
+
+@theme{
+    --font-ttnorms: TTNorms, "sans-serif"
+}

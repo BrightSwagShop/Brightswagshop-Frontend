@@ -7,14 +7,14 @@ const UserInformationCard = () => {
 
   return (
     <div className="relative p-6 bg-gray-100 min-h-screen rounded-2xl">
-      <table className="w-full border-separate border-spacing-y-3">
+      <table className="w-full table-fixed border-separate border-spacing-y-3">
         {/* Header */}
         <thead>
           <tr className="text-sm font-semibold text-gray-500 uppercase">
             <th className="px-6 pb-2 text-left bg-gray-100">Name</th>
             <th className="pb-2 text-left bg-gray-100">Email</th>
             <th className="pb-2 text-left bg-gray-100">Birthdate</th>
-            <th className="px-6 pb-2 text-right bg-gray-100">Status</th>
+            <th className="px-6 pb-2 text-left bg-gray-100">Role</th>
           </tr>
         </thead>
 
@@ -41,9 +41,9 @@ const UserInformationCard = () => {
               21/10/1997
             </td>
 
-            {/* Status */}
-            <td className="px-6 py-4 text-right rounded-r-xl">
-              <span className="px-3 py-1 text-sm bg-amber-500 text-amber-100 rounded-full">
+            {/* Role */}
+            <td className="px-6 py-4 text-left rounded-r-xl">
+              <span className="px-3 py-1 text-sm bg-amber-400 text-amber-100 rounded-full">
                 Admin
               </span>
             </td>

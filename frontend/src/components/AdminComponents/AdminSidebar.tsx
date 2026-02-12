@@ -8,6 +8,7 @@ import {
   FaChevronLeft, 
   FaChevronRight
 } from "react-icons/fa";
+import Dropdown from "../Dropdown";
 
 interface AdminSidebarProps {
   collapsed: boolean;
