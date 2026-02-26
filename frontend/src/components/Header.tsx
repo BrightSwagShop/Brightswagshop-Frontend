@@ -1,7 +1,8 @@
-import logo from "../assets/Brightest-logo's/P_BRI_BRIGHTEST-2022_LOGOTYPE-MAIN-POS_RGB-01.png";
-import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
+import {FiShoppingCart} from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Dropdown from "./Dropdown";
+import logo from "../assets/Brightest-logo's/logo.png";
+ 
 
 const Header = () => {
     // TODO: implement authentication
@@ -14,20 +15,15 @@ const Header = () => {
 
         {/* Left: Logo + Brand */}
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="Brightest logo" className="h-15 w-auto" />
+          <img src={logo} alt="Brightest logo" className="h-13 w-auto" />
         </Link>
 
         {/* Center: Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-gray-700 font-medium">
-          <Link to="/" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
-            Home 
+          <Link to="/login" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
+            Logout
           </Link>
-
-          <Link to="/cases" className="hover:text-yellow-500 transition font-ttnorms font-bold">
-            Placeholder
-          </Link>
-
-          <Link to="/about" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
+          <Link to="/about" className="flex items-center gap-2 hover:text-yellow-500 transition  font-ttnorms font-bold">
             About 
           </Link>
 
@@ -36,29 +32,17 @@ const Header = () => {
           </Link>
         </nav>
 
-        {/* Right: Actions */}
         <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
-            
-            <Link to="/favoriten" className="flex items-center gap-4 hover:text-yellow-500 transition">
-                <FaHeart className="text-lg cursor-pointer" />
-            </Link>
-            
-            <Link to="/winkelwagen" className="flex items-center gap-4 hover:text-yellow-500 transition">
-                <FaShoppingCart className="text-lg cursor-pointer" />
-            </Link>
-            
-            {/* Todo: Als user ingelogd is, profiel naam toevoegen. (Zie bol.com) */}
-            <Dropdown
-            label="Dashboard"
-            items={[
-                { label: "Overview", to: "/dashboard/overview" },
-                { label: "Profile", to: "/dashboard/profile" },
-                { label: "Settings", to: "/dashboard/settings" },
-                { label: "Logout", to: "/logout"}
-            ]}
-            />
-            
+
+                      <Link to="/favoriten" className="flex items-center gap-4 hover:text-yellow-500 transition">
+                            <FaRegHeart className="text-lg cursor-pointer" />
+                        </Link>
+                        
+                        <Link to="/winkelwagen"  className="flex items-center gap-4 text-gray-800 hover:text-yellow-500 transition">
+                            <FiShoppingCart className="text-xl cursor-pointer" />
+                        </Link>
         </div>
+ 
       </div>
     </header>
   );
