@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 
 const Header = () => {
-
-    const isLoggedIn = false; // later from auth of context fixen.
+    // TODO: implement authentication
+    // const isLoggedIn = false; // later from auth of context fixen.
 
 
   return (
