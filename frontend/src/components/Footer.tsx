@@ -1,3 +1,4 @@
+import React from "react";
 import logo from "../assets/Brightest-logo's/logo.png";
 import { FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 
