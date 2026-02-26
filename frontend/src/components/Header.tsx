@@ -1,11 +1,11 @@
-import logo from "../assets/Brightest-logo's/P_BRI_BRIGHTEST-2022_LOGOTYPE-MAIN-POS_RGB-01.png";
+import logo from "../assets/logo.png";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 
 const Header = () => {
 
-    const isLoggedIn = false; // later from auth of context fixen.
+   // const isLoggedIn = false; // later from auth of context fixen.
 
 
   return (
@@ -14,18 +14,16 @@ const Header = () => {
 
         {/* Left: Logo + Brand */}
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="Brightest logo" className="h-15 w-auto" />
+          <img src={logo} alt="Brightest logo" className="h-13 w-auto" />
         </Link>
 
         {/* Center: Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-gray-700 font-medium">
-          <Link to="/" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
-            Home 
+          <Link to="/login" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
+            Logout
           </Link>
 
-          <Link to="/cases" className="hover:text-yellow-500 transition font-ttnorms font-bold">
-            Placeholder
-          </Link>
+          
 
           <Link to="/about" className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold">
             About 
