@@ -5,8 +5,8 @@ import logo from "../assets/Brightest-logo's/logo.png";
  
 
 const Header = () => {
-
-   // const isLoggedIn = false; // later from auth of context fixen.
+    // TODO: implement authentication
+    // const isLoggedIn = false; // later from auth of context fixen.
 
 
   return (

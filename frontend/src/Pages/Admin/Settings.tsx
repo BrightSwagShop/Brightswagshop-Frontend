@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Currency = "EUR" | "USD";
 type SortDefault = "newest" | "price_asc" | "price_desc";
@@ -168,17 +168,17 @@ function Card({
 
 export default function Settings() {
   const [settings, setSettings] = useState<SettingsModel>(() => loadSettings());
-  const [savedTick, setSavedTick] = useState(0);
+  const hasSavedRef = useRef(false);
 
   useEffect(() => {
     saveSettings(settings);
-    setSavedTick((x) => x + 1);
+    hasSavedRef.current = true;
   }, [settings]);
 
   const lastSavedText = useMemo(() => {
-    // klein “saved” signaal zonder timestamps
-    return savedTick > 0 ? "Opgeslagen" : "—";
-  }, [savedTick]);
+    // klein "saved" signaal zonder timestamps
+    return hasSavedRef.current ? "Opgeslagen" : "—";
+  }, [settings]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
