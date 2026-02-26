@@ -12,6 +12,7 @@ import Bugs from './Pages/Admin/Bugs.tsx'
 import Settings from './Pages/Admin/Settings.tsx'
 import CategoryItemsPage from './Pages/CategoryItemsPage.tsx'
 import DetailPageItem from './Pages/DetailPageItem.tsx'
+import Login from './components/Login.tsx'
 
 
 
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       { path: "/", element: <App />},
       { path: "category/:category", element: < CategoryItemsPage/>},
       { path: "detailpage", element: <DetailPageItem/>},
-      
+      {path: "login", element:<Login/>},
       // Admin page's
       { path: "admin", 
         element: <AdminLayout/>,
