@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Currency = "EUR" | "USD";
 type SortDefault = "newest" | "price_asc" | "price_desc";
@@ -168,16 +168,14 @@ function Card({
 
 export default function Settings() {
   const [settings, setSettings] = useState<SettingsModel>(() => loadSettings());
-  const hasSavedRef = useRef(false);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     saveSettings(settings);
-    hasSavedRef.current = true;
-  }, [settings]);
-
-  const lastSavedText = useMemo(() => {
-    // klein "saved" signaal zonder timestamps
-    return hasSavedRef.current ? "Opgeslagen" : "—";
   }, [settings]);
 
   return (
@@ -192,7 +190,7 @@ export default function Settings() {
 
         <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm">
           <p className="font-semibold text-slate-900">Status</p>
-          <p className="text-slate-600">{lastSavedText}</p>
+          <p className="text-slate-600">Auto-opgeslagen</p>
           <button
             type="button"
             onClick={() => setSettings(defaultSettings)}
