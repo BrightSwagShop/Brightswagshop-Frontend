@@ -13,6 +13,7 @@ import Settings from './Pages/Admin/Settings.tsx'
 import CategoryItemsPage from './Pages/CategoryItemsPage.tsx'
 import DetailPageItem from './Pages/DetailPageItem.tsx'
 import Login from './components/Login.tsx'
+import ContactPage from './Pages/ContactPage.tsx'
 
 
 
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "category/:category", element: < CategoryItemsPage/>},
       { path: "detailpage", element: <DetailPageItem/>},
       {path: "login", element:<Login/>},
+      {path:"contact", element:<ContactPage/>},
       // Admin page's
       { path: "admin", 
         element: <AdminLayout/>,
