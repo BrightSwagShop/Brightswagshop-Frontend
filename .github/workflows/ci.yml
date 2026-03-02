@@ -45,8 +45,7 @@ jobs:
       - name: Dependency vulnerability check (npm audit)
         working-directory: ./frontend
         continue-on-error: true
-        run: |
-          npm audit --audit-level=high
+        run: npm audit --audit-level=high
       
       - name: Lint (ESLint)
         working-directory: ./frontend
@@ -64,7 +63,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: Vitest Tests
+          name: Frontend Tests
           path: ./frontend/junit.xml
           reporter: java-junit
 
@@ -79,16 +78,23 @@ jobs:
         working-directory: ./frontend
         run: |
           echo "Listing coverage files..."
-          ls -R ./coverage || echo "No coverage directory found"
+          ls -R ./coverage
 
-      - name: SonarCloud Analysis
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          projectBaseDir: ./frontend
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  SonarCloud analysis WIP
+    #      
+    #  - name: SonarCloud Analysis
+    #    uses: SonarSource/sonarcloud-github-action@v2
+    #    with:
+    #      projectBaseDir: ./frontend
+    #    env:
+    #      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build for production
         working-directory: ./frontend
         run: npm run build
+        
+      - name: Deploy to Render (Development)
+        if: github.ref == 'refs/heads/development' && github.event_name == 'push'
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
