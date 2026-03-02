@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
-
+import { HiArrowUpRight } from "react-icons/hi2";
 import { BsTelephone } from "react-icons/bs";
 import { GoMail } from "react-icons/go";
 import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
@@ -43,7 +43,7 @@ function ContactPage() {
   };
 
   return (
-    <section className="w-full bg-white">
+    <section className="w-full bg-white font-ttnorms">
       <div className="mx-auto max-w-7xl px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* LEFT */}
         <div>
@@ -56,16 +56,29 @@ function ContactPage() {
           </p>
 
           <div className="mt-8 space-y-4">
-            <div className="flex items-center gap-3">
-              <BsTelephone className="text-[#F4C709]" />
-              <span>+32 3 450 88 42</span>
-            </div>
+            <a
+                href="tel:+3234508842"
+                className="flex items-center gap-3 text-gray-800  hover:text-yellow-500"
+            >
+                <BsTelephone className="text-[#F4C709]" />
+                <span className="inline-flex items-center gap-2 border-b-2 border-[#F4C709] pb-1">
+                +32 3 450 88 42
+                <HiArrowUpRight className="text-[#F4C709] text-sm" />
+                </span>
+            </a>
 
-            <div className="flex items-center gap-3">
-              <GoMail className="text-[#F4C709]" />
-              <span>info@brightest.be</span>
+            <a
+                href="mailto:info@brightest.be"
+                className="flex items-center gap-3 text-gray-800  hover:text-yellow-500"
+               
+            >
+                <GoMail className="text-[#F4C709]" />
+                <span className="inline-flex items-center gap-2 border-b-2 border-[#F4C709] pb-1">
+                info@brightest.be
+                <HiArrowUpRight className="text-[#F4C709] text-sm" />
+                </span>
+            </a>
             </div>
-          </div>
 
           <div className="mt-6 flex gap-4">
             <FaLinkedinIn />
