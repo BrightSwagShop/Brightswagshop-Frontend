@@ -16,6 +16,7 @@ import Settings from "../Pages/Admin/Settings";
 import Winkelwagen from "../Pages/WinkelwagenPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
+import About from "../Pages/About";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
       { path: "winkelwagen", element: <Winkelwagen />},
       { path: "checkout", element: <CheckoutPage /> },
       {path:"contact", element:<ContactPage/>},
+      {path:"about", element:<About/>},
       {
         path: "admin",
         element: <AdminLayout />,
