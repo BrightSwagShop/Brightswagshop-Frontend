@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import shirt from "../assets/t-shirts/t-shirt1.png"; // vervang door jouw image
 import { FaRegTrashAlt } from "react-icons/fa";
 
@@ -103,11 +104,11 @@ const WinkelwagenPage = () => {
               <select className="border border-yellow-500 rounded px-2 py-1 text-sm">
                 <option>1</option>
               </select>
-
-              <button className="text-gray-500 text-lg cursor-pointer hover:text-yellow-500 transition-colors duration-200">
-                <FaRegTrashAlt />
-              </button>
-
+        
+                <button className="text-gray-500 text-lg cursor-pointer hover:text-yellow-500 transition-colors duration-200">
+                  <FaRegTrashAlt />
+                </button>
+              
 
               <p className="font-semibold">
                 €19,99
@@ -139,15 +140,17 @@ const WinkelwagenPage = () => {
 
         {/* Buttons */}
         <div className="flex justify-between mt-12">
-
+          <Link to="/">
           <button className="border border-yellow-500 text-yellow-500 px-6 py-2 rounded-md hover:scale-105 transition cursor-pointer">
             Verder winkelen
           </button>
+          </Link>
 
-          <button className="bg-yellow-500 text-white px-10 py-2 rounded-md hover:bg-yellow-400 hover:scale-105 transition cursor-pointer">
-            Afrekenen
-          </button>
-
+          <Link to="/checkout">
+            <button className="bg-yellow-500 text-white px-10 py-2 rounded-md hover:bg-yellow-400 hover:scale-105 transition cursor-pointer">
+              Afrekenen
+            </button>
+          </Link>
         </div>
 
 
