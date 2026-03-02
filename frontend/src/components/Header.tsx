@@ -10,8 +10,7 @@ const Header = () => {
 
 
   return (
-    // <header className="w-full bg-white border-b border-yellow-400">
-    <header className="sticky top-0 w-full bg-white border-b border-yellow-400 z-50">
+    <header className="w-full bg-white border-b border-yellow-400">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
         {/* Left: Logo + Brand */}
