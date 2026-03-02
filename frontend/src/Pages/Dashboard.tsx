@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaHeart, FaShoppingCart } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import Dropdown from '../components/Dropdown'
