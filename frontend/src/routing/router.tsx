@@ -14,6 +14,7 @@ import Users from "../Pages/Admin/Users";
 import Products from "../Pages/Admin/Products";
 import Bugs from "../Pages/Admin/Bugs";
 import Settings from "../Pages/Admin/Settings";
+import Winkelwagen from "../Pages/WinkelwagenPage";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
       { index: true, element: <App /> },
       { path: "category/:category", element: <CategoryItemsPage /> },
       { path: "detailpage", element: <DetailPageItem /> },
-
+      { path: "winkelwagen", element: <Winkelwagen />},
       {
         path: "admin",
         element: <AdminLayout />,
