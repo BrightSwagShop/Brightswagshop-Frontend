@@ -12,5 +12,14 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: ['node_modules/', 'src/test/']
+    },
+    reporters: ['default', 'junit'],
+    outputFile: {
+      junit: './junit.xml'
+    }
   },
 })
