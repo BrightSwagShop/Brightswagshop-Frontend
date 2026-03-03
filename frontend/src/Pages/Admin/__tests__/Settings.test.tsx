@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import Dashboard from './Dashboard';
+import Settings from '../../Settings';
 
-describe('Dashboard', () => {
+describe('Settings Page', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <BrowserRouter>
-        <Dashboard />
+        <Settings />
       </BrowserRouter>
     );
     expect(container).toBeInTheDocument();

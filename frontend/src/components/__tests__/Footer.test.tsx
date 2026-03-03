@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import Footer from "./Footer";
+import Footer from "../../Footer";
 
 const renderFooter = () => {
   const router = createMemoryRouter([{ path: "/", element: <Footer /> }], {

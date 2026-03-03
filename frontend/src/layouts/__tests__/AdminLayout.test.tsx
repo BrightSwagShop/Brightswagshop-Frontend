@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import Bugs from './Bugs';
+import AdminLayout from '../../AdminLayout';
 
-describe('Bugs Page', () => {
-  it('renders without crashing', () => {
+describe('AdminLayout', () => {
+  it('renders admin layout', () => {
     const { container } = render(
       <BrowserRouter>
-        <Bugs />
+        <AdminLayout />
       </BrowserRouter>
     );
     expect(container).toBeInTheDocument();

@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import Products from './Products';
+import Bugs from '../../Bugs';
 
-describe('Products Page', () => {
+describe('Bugs Page', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <BrowserRouter>
-        <Products />
+        <Bugs />
       </BrowserRouter>
     );
     expect(container).toBeInTheDocument();

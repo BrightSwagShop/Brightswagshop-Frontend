@@ -1,15 +1,13 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import AdminSidebar from './AdminSidebar';
+import AdminBeadcrumbs from '../../AdminBeadcrumbs';
 
-describe('AdminSidebar Component', () => {
+describe('AdminBeadcrumbs Component', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <BrowserRouter>
-        <AdminSidebar collapsed={false} onToggle={function (): void {
-                throw new Error('Function not implemented.');
-            } } />
+        <AdminBeadcrumbs />
       </BrowserRouter>
     );
     expect(container).toBeInTheDocument();

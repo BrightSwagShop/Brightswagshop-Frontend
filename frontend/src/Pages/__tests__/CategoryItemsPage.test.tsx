@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import AdminBeadcrumbs from './AdminBeadcrumbs';
+import CategoryItemsPage from '../../CategoryItemsPage';
 
-describe('AdminBeadcrumbs Component', () => {
+describe('CategoryItemsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <BrowserRouter>
-        <AdminBeadcrumbs />
+        <CategoryItemsPage />
       </BrowserRouter>
     );
     expect(container).toBeInTheDocument();

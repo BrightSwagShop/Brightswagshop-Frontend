@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { loadBugFlags, saveBugFlags, isBugOn, setBugOn } from './BugStore';
+import { loadBugFlags, saveBugFlags, isBugOn, setBugOn } from '../../BugStore';
 
 describe('BugStore', () => {
   beforeEach(() => {
