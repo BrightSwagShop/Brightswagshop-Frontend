@@ -1,23 +1,35 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { describe, it, expect, vi } from "vitest";
 import Footer from "./Footer";
 
-const renderFooter = () => {
-  const router = createMemoryRouter([{ path: "/", element: <Footer /> }], {
-    initialEntries: ["/"],
-  });
-  return render(<RouterProvider router={router} />);
-};
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
+
+  type LinkProps = React.ComponentProps<"a"> & {
+    to: string;
+  };
+
+  return {
+    ...actual,
+    Link: ({ to, children, ...props }: LinkProps) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
+    ),
+  };
+});
 
 describe("Footer Component", () => {
   it("renders footer", () => {
-    renderFooter();
+    render(<Footer />);
     expect(screen.getByAltText("Brightest logo")).toBeInTheDocument();
   });
 
   it("displays navigation links", () => {
-    renderFooter();
+    render(<Footer />);
     expect(screen.getByText("Login")).toBeInTheDocument();
     expect(screen.getByText("About")).toBeInTheDocument();
     expect(screen.getByText("Contact")).toBeInTheDocument();
