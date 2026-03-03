@@ -1,15 +1,25 @@
-import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
-import RootLayout from './RootLayout';
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import Footer from "../components/Footer";
 
-describe('RootLayout', () => {
-  it('renders layout with header and footer', () => {
-    const { container } = render(
+describe("Footer Component", () => {
+  const renderFooter = () =>
+    render(
       <MemoryRouter>
-        <RootLayout />
+        <Footer />
       </MemoryRouter>
     );
-    expect(container).toBeInTheDocument();
+
+  it("renders footer", () => {
+    renderFooter();
+    expect(screen.getByAltText("Brightest logo")).toBeInTheDocument();
+  });
+
+  it("displays navigation links", () => {
+    renderFooter();
+    expect(screen.getByText("Login")).toBeInTheDocument();
+    expect(screen.getByText("About")).toBeInTheDocument();
+    expect(screen.getByText("Contact")).toBeInTheDocument();
   });
 });
