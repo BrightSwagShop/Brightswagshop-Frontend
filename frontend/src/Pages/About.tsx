@@ -56,9 +56,9 @@ const About: React.FC = () => {
           </div>
 
           {/* gele boog rechts (deco) */}
-          <div className="hidden md:block absolute right-10 bottom-10">
-           <div className="w-48 h-48 rounded-full border-[28px] border-[#F4C709] border-r-transparent border-b-transparent rotate-[20deg]" />
-          </div>
+         <div className="hidden md:block absolute right-10 -bottom-6">
+        <div className="w-40 h-40 rounded-full border-[32px] border-[#F4C709] border-l-transparent border-t-transparent rotate-[95deg]" />
+        </div>
         </div>
       </section>
 
@@ -69,12 +69,12 @@ const About: React.FC = () => {
             {brands.map((b) => (
               <div
                 key={b.alt}
-                className="w-[300px] h-[150px] bg-white rounded-2xl shadow-lg flex items-center justify-center"
+                className="w-[300px] h-[170px] bg-white rounded-2xl shadow-lg flex items-center justify-center"
               >
                 <img
                   src={b.src}
                   alt={b.alt}
-                  className="max-h-40 max-w-[180px] object-contain"
+                  className="max-h-40 max-w-[180x] object-contain"
                 />
               </div>
             ))}
