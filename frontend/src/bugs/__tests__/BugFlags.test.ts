@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { bugLabels } from '../../BugFlags';
+import { bugLabels } from '../../bugs/BugFlags';
 
 describe('BugFlags', () => {
   it('contains bug labels', () => {

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import Login from '../../Login';
+import Login from '../../components/Login';
 
 describe('Login Component', () => {
   it('renders login form', () => {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import Dropdown from '../../Dropdown';
+import Dropdown from '../../components/Dropdown';
 
 describe('Dropdown Component', () => {
   const mockItems = [
