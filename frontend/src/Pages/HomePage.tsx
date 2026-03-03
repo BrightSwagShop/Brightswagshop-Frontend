@@ -38,15 +38,12 @@ const HomePage = () => {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
+            <Link key={c.slug} to={`/category/${c.slug}`}>
+              <div
+                key={c.title}
+                className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-6 min-h-200px  shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
 
-            <Link
-               to={`/category/${c.slug}`}
               >
-            <div
-              key={c.title}
-              className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-6 min-h-200px  shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
-
-            >
               {/* yellow-ish gradient top bar */}
               <div className={`h-2 w-full rounded-full bg-gradient-to-r ${c.color}`} />
 
