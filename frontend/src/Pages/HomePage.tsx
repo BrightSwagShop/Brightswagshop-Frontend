@@ -38,52 +38,32 @@ const HomePage = () => {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
-
-            <Link
-               to={`/category/${c.slug}`}
+            <Link key={c.slug} to={`/category/${c.slug}`}>
+              <div
+                className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-6 min-h-200px shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
               >
-            <div
-              key={c.title}
-              className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-6 min-h-200px  shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
+                <div className={`h-2 w-full rounded-full bg-gradient-to-r ${c.color}`} />
 
-            >
-              {/* yellow-ish gradient top bar */}
-              <div className={`h-2 w-full rounded-full bg-gradient-to-r ${c.color}`} />
+                <div className="mt-4 flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-lg font-semibold text-slate-900">{c.title}</h2>
+                    <p className="mt-1 text-sm text-slate-600">{c.desc}</p>
+                  </div>
 
-              <div className="mt-4 flex items-start justify-between gap-4">
-                <div>
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    {c.title}
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-600">{c.desc}</p>
+                  {c.image && (
+                    <img
+                      src={c.image}
+                      alt={c.title}
+                      className="h-20 w-12 object-contain opacity-90"
+                    />
+                  )}
                 </div>
 
-                <img
-                  src={c.image}
-                  alt={c.title}
-                  className="h-20 w-12 object-contain opacity-90"
+                <div
+                  className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-r ${c.color} opacity-20 blur-2xl transition group-hover:opacity-30`}
                 />
-
-
-                 
-                {/* 
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center rounded-xl border border-yellow-200 bg-yellow-50 p-3 text-yellow-700 transition hover:bg-yellow-100 active:scale-95"
-                    aria-label={`Add ${c.title} to cart`}
-                    title="Add to cart"
-                  >
-                    <FaCartPlus className="h-5 w-5" />
-                  </button> 
-                */}
               </div>
-
-              {/* subtle warm glow */}
-              <div
-                className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-r ${c.color} opacity-20 blur-2xl transition group-hover:opacity-30`}
-              />
-            </div>
-             </Link>
+            </Link>
           ))}
         </div>
       </div>
