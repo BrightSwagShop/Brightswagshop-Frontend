@@ -81,19 +81,19 @@ function ContactPage() {
             </div>
 
                 <div className="mt-6 flex gap-2 pt-3">
-            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
-                <FaLinkedinIn className="text-[#F4C709] text-base" />
-            </div>
+                    <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
+                        <FaLinkedinIn className="text-[#F4C709] text-base" />
+                    </div>
 
-            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
-                <FaFacebookF className="text-[#F4C709] text-base" />
-            </div>
+                    <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
+                        <FaFacebookF className="text-[#F4C709] text-base" />
+                    </div>
 
-            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
-                <FaInstagram className="text-[#F4C709] text-base" />
+                    <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
+                        <FaInstagram className="text-[#F4C709] text-base" />
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
 
         {/* RIGHT - FORM */}
         <div>
