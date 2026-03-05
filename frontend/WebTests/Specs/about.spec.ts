@@ -1,39 +1,63 @@
 import { test, expect } from '@playwright/test';
+import { AboutPage } from '../Pages/AboutPage';
 
-test.describe('About Page - Happy Path', () => {
-  test('should navigate to about page via navigation', async ({ page }) => {
-    await page.goto('/');
+test.describe('AboutPage - Happy Path', () => {
+  let aboutPage: AboutPage;
 
-    // Try to find About link in header/navigation
-    const aboutLink = page.locator('a:has-text("About"), a:has-text("Over")').first();
+  test.beforeEach(async ({ page }) => {
 
-    if (await aboutLink.isVisible()) {
-      await aboutLink.click();
-      await expect(page).toHaveURL(/.*\/about.*/);
-    } else {
-      // Direct navigation fallback
-      await page.goto('/about');
-      await expect(page).toHaveURL(/.*\/about.*/);
-    }
+    aboutPage = new AboutPage(page);
+    await aboutPage.navigateToAbout();
+
   });
 
-  test('should display about page content', async ({ page }) => {
-    await page.goto('/about');
+  test('should load about page successfully', async () => {  
 
-    // Verify URL
-    await expect(page).toHaveURL(/.*\/about.*/);
+    await expect(aboutPage.page).toHaveURL('http://localhost:5173/about');
+    await expect(aboutPage.getMainHeading()).toBeVisible();
 
-    // Check header & footer still visible
-    await expect(page.locator('header')).toBeVisible();
-    await page.keyboard.press('End');
-    await expect(page.locator('footer')).toBeVisible();
-
-    // Check main content exists
-    const mainContent = page.locator('main');
-    await expect(mainContent).toBeVisible();
-
-    // Optional: check for heading
-    const heading = page.locator('h1');
-    await expect(heading).toBeVisible();
   });
+
+  test('should have correct navbar', async () => {
+
+    const navbarValid = await aboutPage.navbar.verifyAllNavbarElements();
+    expect(navbarValid).toBe(true);
+
+  });
+
+  test('should have correct heading', async () => {
+
+    const heading = await aboutPage.getHeadingText();
+    expect(heading).toBe('BrightestSwagShop');
+
+  });
+
+  test('should have shop button', async () => {
+
+    const shopButton = aboutPage.getShopButton();
+    await expect(shopButton).toBeVisible();
+
+  });
+
+  test('should have contact button', async () => {
+
+    const contactButton = aboutPage.getContactButton();
+    await expect(contactButton).toBeVisible();
+
+  });
+
+  test('should display customers', async () => {
+
+    const hasCustomers = await aboutPage.hasCustomers();
+    expect(hasCustomers).toBe(true);
+
+  });
+
+  test('should display footer', async () => {
+
+    const footerValid = await aboutPage.footer.verifyAllFooterElements();
+    expect(footerValid).toBe(true);
+
+  });
+
 });
