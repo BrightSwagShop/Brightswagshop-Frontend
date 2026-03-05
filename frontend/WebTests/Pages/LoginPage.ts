@@ -11,28 +11,11 @@ export class LoginPage extends BasePage {
     await this.waitForPageLoad();
   }
 
-  getMainHeading() {
-    return this.page.getByRole('heading', { level: 1 });
+  getMainLogo() {
+    return this.page.getByTestId('login-logo');
   }
 
-  getHeadingText(): Promise<string> {
-    return this.getText(this.getMainHeading());
+  getLoginButton(): Locator {
+    return this.page.getByTestId('microsoft-login-button');
   }
-
-  getShopButton(): Locator {
-    return this.page.locator('main a:has-text("Shop")');
-  }
-
-  getContactButton(): Locator {
-    return this.page.locator('main a:has-text("Contact")');
-  }
-
-  getCustomers(): Locator {
-    return this.page.locator('.grid');
-  }
-
-  async hasCustomers(): Promise<boolean> {
-  const count = await this.getCustomers().count();
-  return count > 0;
-}
 }
