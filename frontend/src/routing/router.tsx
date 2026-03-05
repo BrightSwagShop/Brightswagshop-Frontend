@@ -6,7 +6,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import App from "../App";
 import CategoryItemsPage from "../Pages/CategoryItemsPage";
 import DetailPageItem from "../Pages/DetailPageItem";
-import LoginPage from "../Pages/LoginPage";
+ 
 
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import Users from "../Pages/Admin/Users";
@@ -17,6 +17,7 @@ import Winkelwagen from "../Pages/WinkelwagenPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
+import LoginPage from "../Pages/LoginPage";
 
 export const router = createBrowserRouter([
   // Zonder header/footer

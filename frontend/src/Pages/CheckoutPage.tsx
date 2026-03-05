@@ -8,6 +8,7 @@ const CheckoutPage = () => {
         <div className="mx-auto w-full max-w-xl">
           {/* Form */}
           <div className="space-y-6">
+
             {/* Voornaam + Achternaam */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div>
@@ -16,6 +17,7 @@ const CheckoutPage = () => {
                 </label>
                 <input
                   type="text"
+                  data-testid="checkout-firstname-input"
                   className="h-10 w-full rounded-md border border-gray-400 px-3 text-sm outline-none focus:border-[#F4C709]"
                 />
               </div>
@@ -26,6 +28,7 @@ const CheckoutPage = () => {
                 </label>
                 <input
                   type="text"
+                  data-testid="checkout-lastname-input"
                   className="h-10 w-full rounded-md border border-gray-400 px-3 text-sm outline-none focus:border-[#F4C709]"
                 />
               </div>
@@ -38,6 +41,7 @@ const CheckoutPage = () => {
               </label>
               <input
                 type="email"
+                data-testid="checkout-email-input"
                 className="h-10 w-full rounded-md border border-gray-400 px-3 text-sm outline-none focus:border-[#F4C709]"
               />
             </div>
@@ -49,6 +53,7 @@ const CheckoutPage = () => {
               </label>
               <input
                 type="text"
+                data-testid="checkout-address-input"
                 className="h-10 w-full rounded-md border border-gray-400 px-3 text-sm outline-none focus:border-[#F4C709]"
               />
             </div>
@@ -57,10 +62,12 @@ const CheckoutPage = () => {
           {/* Divider */}
           <div className="my-12 h-px w-full bg-gray-300" />
 
-          {/* Buttons row */}
+          {/* Buttons */}
           <div className="flex items-center justify-between">
+
             <Link
               to="/"
+              data-testid="checkout-continue-shopping"
               className="rounded-md border border-[#F4C709] bg-white px-8 py-2 text-xs font-semibold text-[#F4C709] transition-all duration-200 ease-in-out hover:scale-[1.02]"
             >
               Verder winkelen
@@ -68,10 +75,12 @@ const CheckoutPage = () => {
 
             <button
               type="button"
+              data-testid="checkout-pay-button"
               className="rounded-md bg-[#F4C709] px-10 py-2 text-xs font-semibold text-white transition-all duration-200 ease-in-out hover:scale-[1.02] hover:bg-yellow-400 cursor-pointer"
             >
               Afrekenen
             </button>
+
           </div>
         </div>
       </div>
