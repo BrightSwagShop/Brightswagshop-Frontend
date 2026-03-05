@@ -12,7 +12,7 @@ export class AboutPage extends BasePage {
   }
 
   getMainHeading() {
-    return this.page.locator('h1');
+    return this.page.getByRole('heading', { level: 1 });
   }
 
   getHeadingText(): Promise<string> {
@@ -20,11 +20,11 @@ export class AboutPage extends BasePage {
   }
 
   getShopButton(): Locator {
-    return this.page.locator('main a:has-text("Shop")');
+    return this.page.getByRole('link', { name: 'Shop' });
   }
 
   getContactButton(): Locator {
-    return this.page.locator('main a:has-text("Contact")');
+    return this.page.getByTestId('contact-button');
   }
 
   getCustomers(): Locator {

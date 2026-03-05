@@ -16,7 +16,7 @@ export class ContactPage extends BasePage {
   }
 
   getMainHeading() {
-    return this.page.locator('h1');
+    return this.page.getByRole('heading', { level: 1 });
   }
 
   getHeadingText(): Promise<string> {
@@ -24,7 +24,7 @@ export class ContactPage extends BasePage {
   }
 
   getSubmitButton(): Locator {
-    return this.page.locator('main button:has-text("Verstuur")');
+    return this.page.getByRole('button', { name: 'Verstuur' });
   }
 
   // Fill contact form fields by name attribute

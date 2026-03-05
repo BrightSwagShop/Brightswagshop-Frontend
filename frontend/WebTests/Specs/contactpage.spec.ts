@@ -13,7 +13,7 @@ test.describe('Contact Page - Happy Path', () => {
 
   test('should load contact page successfully', async () => {  
 
-    await expect(contactPage.page).toHaveURL('http://localhost:5173/contact');
+    await expect(contactPage.page).toHaveURL(/.*\/contact.*/);
     await expect(contactPage.getMainHeading()).toBeVisible();
 
   });

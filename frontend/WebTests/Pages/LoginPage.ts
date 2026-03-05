@@ -12,7 +12,7 @@ export class LoginPage extends BasePage {
   }
 
   getMainHeading() {
-    return this.page.locator('h1');
+    return this.page.getByRole('heading', { level: 1 });
   }
 
   getHeadingText(): Promise<string> {

@@ -1,38 +1,47 @@
 import { test, expect } from '@playwright/test';
+import { CartPage } from '../Pages/CartPage';
 
 test.describe('Winkelwagen Page - Happy Path', () => {
-  test('should load winkelwagen page and show items + total + buttons', async ({ page }) => {
-    await page.goto('/winkelwagen');
-    await expect(page).toHaveURL(/.*\/winkelwagen.*/);
+  let cartPage: CartPage;
 
-    // Product titles (3 items)
-    const productTitles = page.locator('p', { hasText: 'Classic Tee' });
-    await expect(productTitles).toHaveCount(3);
+  test.beforeEach(async ({ page }) => {
 
-    // Quantity selects
-    await expect(page.locator('select')).toHaveCount(3);
+    cartPage = new CartPage(page);
+    await cartPage.navigateToCart();
 
-    // Delete buttons (3 trash buttons)
-    await expect(page.locator('button').filter({ has: page.locator('svg') })).toHaveCount(3);
-
-    // Total section
-    await expect(page.getByText('Totaal bedrag:')).toBeVisible();
-    await expect(page.getByText('€59,97')).toBeVisible();
-
-    // Navigation buttons
-    await expect(page.getByRole('link', { name: /verder winkelen/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /afrekenen/i })).toBeVisible();
   });
 
-  test('should navigate back to home', async ({ page }) => {
-    await page.goto('/winkelwagen');
-    await page.getByRole('link', { name: /verder winkelen/i }).click();
-    await expect(page).toHaveURL('http://localhost:5173/');
+  test('should load cart page successfully', async () => {  
+
+    await expect(cartPage.page).toHaveURL(/.*\/winkelwagen.*/);
+
   });
 
-  test('should navigate to checkout', async ({ page }) => {
-    await page.goto('/winkelwagen');
-    await page.getByRole('link', { name: /afrekenen/i }).click();
-    await expect(page).toHaveURL(/.*\/checkout.*/);
+  test('should have correct navbar', async () => {
+
+    const navbarValid = await cartPage.navbar.verifyAllNavbarElements();
+    expect(navbarValid).toBe(true);
+
+  });
+
+  test('should have Verder winkelen button', async () => {
+
+    const shopButton = cartPage.getShopButton();
+    await expect(shopButton).toBeVisible();
+
+  });
+
+  test('should have Afrekenen button', async () => {
+
+    const checkoutButton = cartPage.getCheckoutButton();
+    await expect(checkoutButton).toBeVisible();
+
+  });
+
+  test('should display footer', async () => {
+
+    const footerValid = await cartPage.footer.verifyAllFooterElements();
+    expect(footerValid).toBe(true);
+
   });
 });

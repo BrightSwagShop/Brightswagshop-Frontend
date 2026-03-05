@@ -13,7 +13,7 @@ test.describe('AboutPage - Happy Path', () => {
 
   test('should load about page successfully', async () => {  
 
-    await expect(aboutPage.page).toHaveURL('http://localhost:5173/about');
+    await expect(aboutPage.page).toHaveURL(/.*\/about.*/);
     await expect(aboutPage.getMainHeading()).toBeVisible();
 
   });

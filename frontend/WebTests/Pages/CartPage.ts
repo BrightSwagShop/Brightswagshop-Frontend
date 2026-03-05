@@ -1,13 +1,13 @@
 import { BasePage } from './BasePage';
 import { Locator, Page } from '@playwright/test';
 
-export class HomePage extends BasePage {
+export class CartPage extends BasePage {
   constructor(page : Page) {
     super(page);
   }
 
-  async navigateToHome(): Promise<void> {
-    await this.goto('/');
+  async navigateToCart(): Promise<void> {
+    await this.goto('/winkelwagen');
     await this.waitForPageLoad();
   }
 
@@ -19,12 +19,11 @@ export class HomePage extends BasePage {
     return this.getText(this.getMainHeading());
   }
 
-  getProductCategories(): Locator {
-    return this.page.locator('.grid a');
+  getShopButton(): Locator {
+    return this.page.getByRole('button', { name: 'Verder winkelen' });
   }
 
-  async hasProductCategories(): Promise<boolean> {
-  const count = await this.getProductCategories().count();
-  return count > 0;
-}
+  getCheckoutButton(): Locator {
+    return this.page.getByRole('button', { name: 'Afrekenen' });
+  }
 }
