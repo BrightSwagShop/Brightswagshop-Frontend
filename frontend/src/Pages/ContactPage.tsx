@@ -108,16 +108,22 @@ function ContactPage() {
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                     Voornaam <span className="text-gray-500">*</span>
                 </label>
-                <Field name="firstName" className={inputBase} />
-                <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-2" />
+               <Field
+                  name="firstName"
+                  data-testid="contact-firstname-input"
+                  className={inputBase}
+                />
                 </div>
 
                 <div>
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                     Achternaam <span className="text-gray-500">*</span>
                 </label>
-                <Field name="lastName" className={inputBase} />
-                <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-2" />
+                <Field
+                  name="lastName"
+                  data-testid="contact-lastname-input"
+                  className={inputBase}
+                />
                 </div>
             </div>
 
@@ -125,7 +131,12 @@ function ContactPage() {
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                 Email <span className="text-gray-500">*</span>
                 </label>
-                <Field name="email" type="email" className={inputBase} />
+                <Field
+                  name="email"
+                  type="email"
+                  data-testid="contact-email-input"
+                  className={inputBase}
+                />
                 <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-2" />
             </div>
 
@@ -133,7 +144,11 @@ function ContactPage() {
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                 Telefoon
                 </label>
-                <Field name="phone" className={inputBase} />
+                <Field
+                  name="phone"
+                  data-testid="contact-phone-input"
+                  className={inputBase}
+                />
             </div>
 
             <div>
@@ -144,12 +159,14 @@ function ContactPage() {
                 as="textarea"
                 name="message"
                 rows={8}
+                 data-testid="contact-message-input"
                 className={`${inputBase} resize-none`}
                 />
                 <ErrorMessage name="message" component="div" className="text-red-500 text-sm mt-2" />
             </div>
 
             <button
+                 data-testid="contact-submit-button"
                 type="submit"
                 className="bg-[#F4C709] text-black px-6 py-3 rounded-md font-semibold hover:opacity-90 transition"
             >
