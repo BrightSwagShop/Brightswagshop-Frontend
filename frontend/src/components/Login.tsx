@@ -10,9 +10,12 @@ const Login = () => {
 
         {/* Logo */}
         <div>
-          </div>
-            <img src={logo} alt="Brightest logo" className="h-60 w-auto mb-4 -mt-10" />
-          <div>
+          <img
+            src={logo}
+            alt="Brightest logo"
+            data-testid="login-logo"
+            className="h-60 w-auto mb-4 -mt-10"
+          />
         </div>
 
         {/* Card */}
@@ -25,32 +28,38 @@ const Login = () => {
               <input
                 type="text"
                 placeholder="Gebruikersnaam"
+                data-testid="login-username-input"
                 className="w-full border-b border-gray-400 focus:outline-none focus:border-yellow-400 py-2 bg-transparent font-semibold"
               />
 
               <input
                 type="password"
                 placeholder="Wachtwoord"
+                data-testid="login-password-input"
                 className="w-full border-b border-gray-400 focus:outline-none focus:border-yellow-400 py-2 bg-transparent font-semibold"
               />
 
-            <button
-              type="button"
-              className="w-full bg-[#F4C709] font-semibold hover:scale-102 transition-all duration-300 ease-in-out rounded-md py-2 font-medium text-white font-ttnorms cursor-pointer"
-            >                
-              Login
+              <button
+                type="button"
+                data-testid="login-submit-button"
+                className="w-full bg-[#F4C709] font-semibold hover:scale-102 transition-all duration-300 ease-in-out rounded-md py-2 font-medium text-white font-ttnorms cursor-pointer"
+              >
+                Login
               </button>
+
             </form>
 
             <div className="my-6 text-black font-bold">of</div>
 
             <button
               type="button"
+              data-testid="microsoft-login-button"
               className="flex items-center gap-2 border px-4 py-2 rounded-md bg-white cursor-pointer shadow-sm border-1 font-ttnorms hover:scale-105 transition-transform duration-200 ease-in-out"
             >
               <FaMicrosoft />
               Sign in with Microsoft
             </button>
+
           </div>
 
           {/* Bottom section */}

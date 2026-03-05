@@ -41,6 +41,7 @@ const About: React.FC = () => {
             <div className="mt-10 flex items-center gap-4">
               <Link
                 to="/"
+                 data-testid="shop-button"
                 className="inline-flex items-center justify-center h-10 px-8 rounded-md bg-[#F4C709] text-gray-900 font-medium text-sm hover:opacity-90 transition"
               >
                 Shop
@@ -48,6 +49,7 @@ const About: React.FC = () => {
 
               <Link
                 to="/contact"
+                data-testid="contact-button"
                 className="inline-flex items-center justify-center h-10 px-8 rounded-md border border-[#F4C709] text-[#F4C709] font-medium text-sm hover:bg-[#F4C709] hover:text-gray-900 transition"
               >
                 Contact
