@@ -5,19 +5,19 @@ export class Navbar {
 
   // Locators
   getLogoImage(): Locator {
-    return this.page.locator('header a img[alt="Brightest logo"]');
+    return this.page.getByTestId('logo-link');
   }
 
   getAboutLink(): Locator {
-    return this.page.locator('header a:has-text("About")');
+    return this.page.getByTestId('about-link');
   }
 
   getContactLink(): Locator {
-    return this.page.locator('header a:has-text("Contact")');
+    return this.page.getByTestId('contact-link');
   }
 
   getCartIcon(): Locator {
-    return this.page.locator('header a[href="/winkelwagen"]');
+    return this.page.getByTestId('cart-link');
   }
 
   // Methods
