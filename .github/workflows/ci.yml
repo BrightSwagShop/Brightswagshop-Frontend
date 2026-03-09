@@ -124,11 +124,8 @@ jobs:
             exit 0
           fi
           
-          # Read and encode the HTML report
-          REPORT_CONTENT=$(base64 -w 0 ./frontend/playwright-report/index.html)
-          
-          # Create JSON payload file
-          cat > email_payload.json << EOF
+          # Create JSON payload file (without attachment - just link to artifact)
+          cat > email_payload.json << 'EOF'
           {
             "personalizations": [{
               "to": [
@@ -137,30 +134,36 @@ jobs:
               ]
             }],
             "from": {"email": "wout.boonen@brightest.be", "name": "GitHub Actions"},
-            "subject": "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]",
+            "subject": "Playwright Test Report - REPO [BRANCH]",
             "content": [{
               "type": "text/html",
-              "value": "<h2>Playwright Test Report</h2><p><strong>Repository:</strong> ${{ github.repository }}</p><p><strong>Branch:</strong> ${{ github.ref_name }}</p><p><strong>Commit:</strong> ${{ github.sha }}</p><p><strong>Triggered by:</strong> ${{ github.actor }}</p><hr><p>The HTML report is attached to this email.</p><p>You can also view it in the GitHub Actions artifacts: <a href=\\\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\\\">View Run</a></p>"
-            }],
-            "attachments": [{
-              "content": "$REPORT_CONTENT",
-              "filename": "playwright-report.html",
-              "type": "text/html",
-              "disposition": "attachment"
+              "value": "HTML_CONTENT"
             }]
           }
           EOF
           
-          # Send email via SendGrid API
-          curl -X POST https://api.sendgrid.com/v3/mail/send \
+          # Replace placeholders
+          sed -i "s|REPO|${{ github.repository }}|g" email_payload.json
+          sed -i "s|BRANCH|${{ github.ref_name }}|g" email_payload.json
+          sed -i "s|HTML_CONTENT|<h2>Playwright Test Report</h2><p><strong>Repository:</strong> ${{ github.repository }}</p><p><strong>Branch:</strong> ${{ github.ref_name }}</p><p><strong>Commit:</strong> ${{ github.sha }}</p><p><strong>Triggered by:</strong> ${{ github.actor }}</p><p><strong>Workflow:</strong> ${{ github.workflow }}</p><p><strong>Run ID:</strong> ${{ github.run_id }}</p><hr><p><strong>View the full HTML report in GitHub Actions artifacts:</strong></p><p><a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' style='display:inline-block;padding:10px 20px;background-color:#F4C709;color:#3C3C3B;text-decoration:none;border-radius:5px;font-weight:bold;'>Download Playwright Report</a></p><p>Click the link above, scroll to the Artifacts section, and download the <code>playwright-report</code> artifact.</p>|g" email_payload.json
+          
+          # Send email via SendGrid API and capture response
+          HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://api.sendgrid.com/v3/mail/send \
             -H "Authorization: Bearer ${{ secrets.SENDGRID_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d @email_payload.json
+            -d @email_payload.json)
           
-          if [ $? -eq 0 ]; then
-            echo "Email sent successfully!"
+          HTTP_CODE=$(echo "$HTTP_RESPONSE" | tail -n1)
+          RESPONSE_BODY=$(echo "$HTTP_RESPONSE" | head -n-1)
+          
+          echo "HTTP Status Code: $HTTP_CODE"
+          echo "Response: $RESPONSE_BODY"
+          
+          if [ "$HTTP_CODE" -eq 202 ]; then
+            echo "✅ Email sent successfully!"
           else
-            echo "Failed to send email"
+            echo "❌ Failed to send email"
+            echo "Response body: $RESPONSE_BODY"
             exit 1
           fi
         continue-on-error: false
