@@ -119,14 +119,14 @@ jobs:
         if: always()
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
+          server_address: smtp.sendgrid.net
+          server_port: 587
+          secure: false
+          username: apikey
+          password: ${{ secrets.SENDGRID_API_KEY }}
           subject: "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]"
           to: wout.boonen@brightest.be
-          from: GitHub Actions <${{ secrets.MAIL_USERNAME }}>
+          from: noreply@brightest.be
           html_body: |
             <h2>Playwright Test Report</h2>
             <p><strong>Repository:</strong> ${{ github.repository }}</p>
