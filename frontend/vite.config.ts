@@ -12,10 +12,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    exclude: ['**/node_modules/**', '**/WebTests/**', '**/playwright-report/**', '**/test-results/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      exclude: ['node_modules/', 'src/test/']
+      exclude: ['node_modules/', 'src/test/', 'WebTests/', 'playwright-report/', 'test-results/']
     },
     reporters: ['default', 'junit'],
     outputFile: {
