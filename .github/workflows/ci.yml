@@ -131,7 +131,10 @@ jobs:
           cat > email_payload.json << EOF
           {
             "personalizations": [{
-              "to": [{"email": "wout.boonen@brightest.be"}]
+              "to": [
+                {"email": "wout.boonen@brightest.be"},
+                {"email": "boonenwout@gmail.com"}
+              ]
             }],
             "from": {"email": "wout.boonen@brightest.be", "name": "GitHub Actions"},
             "subject": "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]",
