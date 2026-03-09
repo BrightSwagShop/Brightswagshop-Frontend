@@ -126,7 +126,7 @@ jobs:
           password: ${{ secrets.SENDGRID_API_KEY }}
           subject: "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]"
           to: wout.boonen@brightest.be
-          from: noreply@brightest.be
+          from: wout.boonen@brightest.be
           html_body: |
             <h2>Playwright Test Report</h2>
             <p><strong>Repository:</strong> ${{ github.repository }}</p>
