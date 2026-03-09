@@ -127,29 +127,39 @@ jobs:
           # Read and encode the HTML report
           REPORT_CONTENT=$(base64 -w 0 ./frontend/playwright-report/index.html)
           
+          # Create JSON payload file
+          cat > email_payload.json << EOF
+          {
+            "personalizations": [{
+              "to": [{"email": "wout.boonen@brightest.be"}]
+            }],
+            "from": {"email": "wout.boonen@brightest.be", "name": "GitHub Actions"},
+            "subject": "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]",
+            "content": [{
+              "type": "text/html",
+              "value": "<h2>Playwright Test Report</h2><p><strong>Repository:</strong> ${{ github.repository }}</p><p><strong>Branch:</strong> ${{ github.ref_name }}</p><p><strong>Commit:</strong> ${{ github.sha }}</p><p><strong>Triggered by:</strong> ${{ github.actor }}</p><hr><p>The HTML report is attached to this email.</p><p>You can also view it in the GitHub Actions artifacts: <a href=\\\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\\\">View Run</a></p>"
+            }],
+            "attachments": [{
+              "content": "$REPORT_CONTENT",
+              "filename": "playwright-report.html",
+              "type": "text/html",
+              "disposition": "attachment"
+            }]
+          }
+          EOF
+          
           # Send email via SendGrid API
           curl -X POST https://api.sendgrid.com/v3/mail/send \
             -H "Authorization: Bearer ${{ secrets.SENDGRID_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d '{
-              "personalizations": [{
-                "to": [{"email": "wout.boonen@brightest.be"}]
-              }],
-              "from": {"email": "wout.boonen@brightest.be", "name": "GitHub Actions"},
-              "subject": "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]",
-              "content": [{
-                "type": "text/html",
-                "value": "<h2>Playwright Test Report</h2><p><strong>Repository:</strong> ${{ github.repository }}</p><p><strong>Branch:</strong> ${{ github.ref_name }}</p><p><strong>Commit:</strong> ${{ github.sha }}</p><p><strong>Triggered by:</strong> ${{ github.actor }}</p><hr><p>The HTML report is attached to this email.</p><p>You can also view it in the GitHub Actions artifacts: <a href=\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\">View Run</a></p>"
-              }],
-              "attachments": [{
-                "content": "'"$REPORT_CONTENT"'",
-                "filename": "playwright-report.html",
-                "type": "text/html",
-                "disposition": "attachment"
-              }]
-            }'
+            -d @email_payload.json
           
-          echo "Email sent successfully!"
+          if [ $? -eq 0 ]; then
+            echo "Email sent successfully!"
+          else
+            echo "Failed to send email"
+            exit 1
+          fi
         continue-on-error: false
 
       - name: Send Playwright Report via Email (SMTP Fallback)
