@@ -128,10 +128,7 @@ jobs:
           cat > email_payload.json << 'EOF'
           {
             "personalizations": [{
-              "to": [
-                {"email": "wout.boonen@brightest.be"},
-                {"email": "boonenwout@gmail.com"}
-              ]
+              "to": [{"email": "boonenwout@gmail.com"}]
             }],
             "from": {"email": "wout.boonen@brightest.be", "name": "GitHub Actions"},
             "subject": "Playwright Test Report - REPO [BRANCH]",
@@ -160,43 +157,13 @@ jobs:
           echo "Response: $RESPONSE_BODY"
           
           if [ "$HTTP_CODE" -eq 202 ]; then
-            echo "✅ Email sent successfully!"
+            echo "Email sent successfully to boonenwout@gmail.com!"
           else
-            echo "❌ Failed to send email"
+            echo "Failed to send email"
             echo "Response body: $RESPONSE_BODY"
             exit 1
           fi
         continue-on-error: false
-
-      - name: Send Playwright Report via Email (SMTP Fallback)
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.sendgrid.net
-          server_port: 587
-          secure: false
-          username: apikey
-          password: ${{ secrets.SENDGRID_API_KEY }}
-          subject: "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]"
-          to: wout.boonen@brightest.be
-          from: Wout Boonen <wout.boonen@brightest.be>
-          reply_to: wout.boonen@brightest.be
-          html_body: |
-            <h2>Playwright Test Report</h2>
-            <p><strong>Repository:</strong> ${{ github.repository }}</p>
-            <p><strong>Branch:</strong> ${{ github.ref_name }}</p>
-            <p><strong>Commit:</strong> ${{ github.sha }}</p>
-            <p><strong>Triggered by:</strong> ${{ github.actor }}</p>
-            <p><strong>Workflow:</strong> ${{ github.workflow }}</p>
-            <p><strong>Run ID:</strong> ${{ github.run_id }}</p>
-            <hr>
-            <p>The full HTML report is attached to this email.</p>
-            <p>You can also view it in the GitHub Actions artifacts: 
-            <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Run</a></p>
-          attachments: ./frontend/playwright-report/index.html
-          ignore_cert: false
-          convert_markdown: false
-        continue-on-error: true
 
       - name: Build for production
         working-directory: ./frontend
