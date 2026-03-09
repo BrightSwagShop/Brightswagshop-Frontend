@@ -25,7 +25,7 @@ const About: React.FC = () => {
       <section className="w-full bg-white">
         <div className="max-w-7xl mx-auto px-6 py-16 md:py-24 relative">
           <div className="max-w-xl">
-            <h1 className="text-4xl md:text-5xl font-semibold text-gray-800 leading-tight">
+            <h1 className="mb-12 text-4xl md:text-5xl font-semibold text-gray-800 leading-tight">
               Brightest
               <br />
               SwagShop
@@ -42,7 +42,7 @@ const About: React.FC = () => {
               <Link
                 to="/"
                  data-testid="shop-button"
-                className="inline-flex items-center justify-center h-10 px-8 rounded-md bg-[#F4C709] text-gray-900 font-medium text-sm hover:opacity-90 transition"
+                className="inline-flex items-center justify-center h-10 px-8 rounded-md bg-[#F4C709] text-[#3C3C3B] font-medium text-sm hover:opacity-90 transition"
               >
                 Shop
               </Link>

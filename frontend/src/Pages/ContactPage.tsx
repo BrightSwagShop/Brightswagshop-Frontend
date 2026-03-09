@@ -47,7 +47,7 @@ function ContactPage() {
       <div className="mx-auto max-w-7xl px-6 pt-28 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* LEFT */}
         <div>
-          <h1 className="text-4xl font-bold text-gray-800">
+          <h1 className="mb-12 text-4xl font-bold text-gray-800">
             Neem contact met ons op
           </h1>
 
@@ -168,7 +168,7 @@ function ContactPage() {
             <button
                  data-testid="contact-submit-button"
                 type="submit"
-                className="bg-[#F4C709] text-black px-6 py-3 rounded-md font-semibold hover:opacity-90 transition"
+                className="bg-[#F4C709] text-[#3C3C3B] px-6 py-3 rounded-md font-semibold hover:opacity-90 transition"
             >
                 Verstuur
             </button>

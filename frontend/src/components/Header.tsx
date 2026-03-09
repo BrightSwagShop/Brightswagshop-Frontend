@@ -2,11 +2,27 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logo.png";
+import { useState, useEffect } from "react";
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 w-full bg-white border-b border-yellow-400 z-50">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <header className={`sticky top-0 w-full bg-white z-50 transition-all duration-300 ${
+      isScrolled ? "shadow-md" : ""
+    }`}>
+      <div className={`max-w-7xl mx-auto px-16 flex items-center justify-between transition-all duration-300 ${
+        isScrolled ? "h-14" : "h-25"
+      }`}>
 
         {/* Logo */}
         <Link
@@ -17,13 +33,13 @@ const Header = () => {
           <img
             src={logo}
             alt="Brightest logo"
-            className="h-13 w-auto"
+            className="h-18 w-auto"
             data-testid="logo-image"
           />
         </Link>
 
         {/* Navigation */}
-        <nav className="hidden lg:flex items-center gap-8 text-gray-700 font-medium">
+        <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
 
           <Link
             to="/login"

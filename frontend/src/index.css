@@ -8,3 +8,9 @@
 @theme{
     --font-ttnorms: TTNorms, "sans-serif"
 }
+
+h1 {
+    color: #3C3C3B;
+    font-weight: 600;
+    font-size: 60px;
+}

@@ -26,45 +26,46 @@ const HomePage = () => {
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10">
         {/* Title block aligned with your header vibe */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+        <div className="mb-12">
+          <h1 className="mb-15 text-3xl font-semibold tracking-tight text-slate-900">
             BrightSwagShop
           </h1>
-          <p className="mt-2 text-slate-600">
+          <p className="mb-6 text-slate-600">
             Pick a category and add items to your cart.
           </p>
-          <div className="mt-4 h-1 w-24 rounded-full bg-yellow-400" />
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((c) => (
-            <Link key={c.slug} to={`/category/${c.slug}`}>
-              <div
-                className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-6 min-h-200px shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
-              >
-                <div className={`h-2 w-full rounded-full bg-gradient-to-r ${c.color}`} />
-
-                <div className="mt-4 flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg font-semibold text-slate-900">{c.title}</h2>
-                    <p className="mt-1 text-sm text-slate-600">{c.desc}</p>
-                  </div>
-
-                  {c.image && (
-                    <img
-                      src={c.image}
-                      alt={c.title}
-                      className="h-20 w-12 object-contain opacity-90"
-                    />
-                  )}
-                </div>
-
+      {/* Full-width gray background section for grid */}
+      <div className="w-full bg-[#EDEDED] pt-20 pb-10">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {cards.map((c) => (
+              <Link key={c.slug} to={`/category/${c.slug}`}>
                 <div
-                  className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-r ${c.color} opacity-20 blur-2xl transition group-hover:opacity-30`}
-                />
-              </div>
-            </Link>
-          ))}
+                  className="group relative overflow-hidden rounded-xl border border-[#3C3C3B] bg-white p-6 shadow-md transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md"
+                >
+                  <div className="flex gap-6">
+                    {/* Image on the left */}
+                    {c.image && (
+                      <img
+                        src={c.image}
+                        alt={c.title}
+                        className="h-32 w-24 object-contain"
+                      />
+                    )}
+
+                    {/* Content on the right */}
+                    <div className="flex-1">
+                      <h2 className="text-2xl font-semibold text-[#F4C709]">{c.title}</h2>
+                      <div className="my-3 h-px w-20 bg-[#3C3C3B]" />
+                      <p className="text-sm text-slate-900">{c.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
