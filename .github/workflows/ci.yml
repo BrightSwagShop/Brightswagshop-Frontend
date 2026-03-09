@@ -94,6 +94,19 @@ jobs:
         run: npm run e2e
         continue-on-error: true
 
+      - name: Debug Playwright Report
+        if: always()
+        working-directory: ./frontend
+        run: |
+          echo "Checking for Playwright report..."
+          ls -la playwright-report/ || echo "No playwright-report directory found"
+          if [ -f playwright-report/index.html ]; then
+            echo "Playwright report exists!"
+            ls -lh playwright-report/index.html
+          else
+            echo "Warning: playwright-report/index.html not found"
+          fi
+
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
@@ -113,7 +126,7 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: "Playwright Test Report - ${{ github.repository }} [${{ github.ref_name }}]"
           to: wout.boonen@brightest.be
-          from: GitHub Actions
+          from: GitHub Actions <${{ secrets.MAIL_USERNAME }}>
           html_body: |
             <h2>Playwright Test Report</h2>
             <p><strong>Repository:</strong> ${{ github.repository }}</p>
@@ -129,6 +142,7 @@ jobs:
           attachments: ./frontend/playwright-report/index.html
           ignore_cert: false
           convert_markdown: false
+        continue-on-error: false
 
       - name: Build for production
         working-directory: ./frontend
