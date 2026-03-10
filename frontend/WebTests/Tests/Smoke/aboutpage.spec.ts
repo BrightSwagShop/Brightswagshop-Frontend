@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { AboutPage } from '../Pages/AboutPage';
+import { AboutPage } from '../../Pages/AboutPage';
 
-test.describe('AboutPage - Happy Path', () => {
+test.describe('AboutPage - Smoke Tests', () => {
   let aboutPage: AboutPage;
 
   test.beforeEach(async ({ page }) => {

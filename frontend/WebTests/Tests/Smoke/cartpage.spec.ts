@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { CartPage } from '../Pages/CartPage';
+import { CartPage } from '../../Pages/CartPage';
 
-test.describe('Winkelwagen Page - Happy Path', () => {
+test.describe('Winkelwagen Page - Smoke Tests', () => {
   let cartPage: CartPage;
 
   test.beforeEach(async ({ page }) => {
