@@ -147,7 +147,7 @@ const WinkelwagenPage = () => {
           </Link>
 
           <Link to="/checkout">
-            <button className="bg-yellow-500 text-white px-10 py-2 rounded-md hover:bg-yellow-400 hover:scale-105 transition cursor-pointer">
+            <button className="bg-yellow-500 text-[#3C3C3B] px-10 py-2 rounded-md hover:bg-yellow-400 hover:scale-105 transition cursor-pointer">
               Afrekenen
             </button>
           </Link>

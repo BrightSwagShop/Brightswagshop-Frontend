@@ -42,7 +42,7 @@ const Login = () => {
               <button
                 type="button"
                 data-testid="login-submit-button"
-                className="w-full bg-[#F4C709] font-semibold hover:scale-102 transition-all duration-300 ease-in-out rounded-md py-2 font-medium text-white font-ttnorms cursor-pointer"
+                className="w-full bg-[#F4C709] font-semibold hover:scale-102 transition-all duration-300 ease-in-out rounded-md py-2 font-medium text-[#3C3C3B] font-ttnorms cursor-pointer"
               >
                 Login
               </button>

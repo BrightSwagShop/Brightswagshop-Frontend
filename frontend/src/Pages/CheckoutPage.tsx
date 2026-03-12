@@ -76,7 +76,7 @@ const CheckoutPage = () => {
             <button
               type="button"
               data-testid="checkout-pay-button"
-              className="rounded-md bg-[#F4C709] px-10 py-2 text-xs font-semibold text-white transition-all duration-200 ease-in-out hover:scale-[1.02] hover:bg-yellow-400 cursor-pointer"
+              className="rounded-md bg-[#F4C709] px-10 py-2 text-xs font-semibold text-[#3C3C3B] transition-all duration-200 ease-in-out hover:scale-[1.02] hover:bg-yellow-400 cursor-pointer"
             >
               Afrekenen
             </button>
