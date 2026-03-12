@@ -75,15 +75,13 @@ jobs:
           echo "Listing coverage files..."
           ls -R ./coverage || echo "No coverage directory found"
 
-    #  SonarCloud analysis WIP
-    #      
-    #  - name: SonarCloud Analysis
-    #    uses: SonarSource/sonarcloud-github-action@v2
-    #    with:
-    #      projectBaseDir: ./frontend
-    #    env:
-    #      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: ./frontend
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright Browsers
         working-directory: ./frontend
