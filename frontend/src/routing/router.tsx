@@ -33,8 +33,8 @@ export const router = createBrowserRouter([
       { path: "detailpage", element: <DetailPageItem /> },
       { path: "winkelwagen", element: <Winkelwagen />},
       { path: "checkout", element: <CheckoutPage /> },
-      {path:"contact", element:<ContactPage/>},
-      {path:"about", element:<About/>},
+      { path:"contact", element:<ContactPage/>},
+      { path:"about", element:<About/>},
       {
         path: "admin",
         element: <AdminLayout />,
