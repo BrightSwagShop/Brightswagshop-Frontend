@@ -10,7 +10,7 @@ describe('HomePage', () => {
         <HomePage />
       </BrowserRouter>
     );
-    expect(screen.getByText('T-shirts')).toBeInTheDocument();
-    expect(screen.getByText('Hoodies')).toBeInTheDocument();
+    expect(screen.getByText('BrightSwagShop')).toBeInTheDocument();
+    expect(screen.getByText('Hoodie')).toBeInTheDocument();
   });
 });
