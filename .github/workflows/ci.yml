@@ -97,19 +97,6 @@ jobs:
           QASE_TESTOPS_RUN_COMPLETE: true
         run: npm run e2e
 
-      - name: Debug Playwright Report
-        if: always()
-        working-directory: ./frontend
-        run: |
-          echo "Checking for Playwright report..."
-          ls -la playwright-report/ || echo "No playwright-report directory found"
-          if [ -f playwright-report/index.html ]; then
-            echo "Playwright report exists!"
-            ls -lh playwright-report/index.html
-          else
-            echo "Warning: playwright-report/index.html not found"
-          fi
-
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
