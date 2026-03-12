@@ -94,6 +94,18 @@ jobs:
         run: npm run e2e
         continue-on-error: true
 
+      - name: Upload Results to QMetry
+        if: always()
+        working-directory: ./frontend
+        env:
+          QMETRY_JIRA_URL: ${{ secrets.QMETRY_JIRA_URL }}
+          QMETRY_API_KEY: ${{ secrets.QMETRY_API_KEY }}
+          QMETRY_PROJECT_KEY: ${{ secrets.QMETRY_PROJECT_KEY }}
+          QMETRY_ENVIRONMENT: "CI/CD"
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: npm run qmetry:upload
+        continue-on-error: true
+
       - name: Debug Playwright Report
         if: always()
         working-directory: ./frontend
