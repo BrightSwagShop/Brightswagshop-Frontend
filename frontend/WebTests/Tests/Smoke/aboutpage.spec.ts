@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { qase } from 'playwright-qase-reporter';
 import { AboutPage } from '../../Pages/AboutPage';
 
 test.describe('AboutPage - Smoke Tests', () => {
@@ -11,56 +12,49 @@ test.describe('AboutPage - Smoke Tests', () => {
 
   });
 
-  test('should load about page successfully', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE1' }}, async () => {  
+  test(qase(10, '[About Page - Smoke] Load page successfully'), async () => {  
   
     await expect(aboutPage.page).toHaveURL(/.*\/about.*/);
     await expect(aboutPage.getMainHeading()).toBeVisible();
 
   });
 
-  test('should have correct navbar', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE2' }}, async () => {
+  test(qase(11, '[About Page - Smoke] Navbar verification'), async () => {
 
     const navbarValid = await aboutPage.navbar.verifyAllNavbarElements();
     expect(navbarValid).toBe(true);
 
   });
 
-  test('should have correct heading', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE3' }}, async () => {
+  test(qase(12, '[About Page - Smoke] Heading text verification'), async () => {
 
     const heading = await aboutPage.getHeadingText();
     expect(heading).toBe('BrightestSwagShop');
 
   });
 
-  test('should have shop button', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE4' }}, async () => {
+  test(qase(13, '[About Page - Smoke] Shop button visibility'), async () => {
 
     const shopButton = aboutPage.getShopButton();
     await expect(shopButton).toBeVisible();
 
   });
 
-  test('should have contact button', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE5' }}, async () => {
+  test(qase(14, '[About Page - Smoke] Contact button visibility'), async () => {
 
     const contactButton = aboutPage.getContactButton();
     await expect(contactButton).toBeVisible();
 
   });
 
-  test('should display customers', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE6' }}, async () => {
+  test(qase(15, '[About Page - Smoke] Display customers section'), async () => {
 
     const hasCustomers = await aboutPage.hasCustomers();
     expect(hasCustomers).toBe(true);
 
   });
 
-  test('should display footer', 
-    {annotation: { type: 'qmetry', description: 'SWAG-SMOKE7' }}, async () => {
+  test(qase(16, '[About Page - Smoke] Footer verification'), async () => {
 
     const footerValid = await aboutPage.footer.verifyAllFooterElements();
     expect(footerValid).toBe(true);

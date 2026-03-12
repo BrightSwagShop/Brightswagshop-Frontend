@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { qase } from 'playwright-qase-reporter';
 import { CartPage } from '../../Pages/CartPage';
 
 test.describe('Winkelwagen Page - Smoke Tests', () => {
@@ -11,34 +12,34 @@ test.describe('Winkelwagen Page - Smoke Tests', () => {
 
   });
 
-  test('should load cart page successfully', async () => {  
+  test(qase(20, '[Cart Page - Smoke] Load page successfully'), async () => {  
 
     await expect(cartPage.page).toHaveURL(/.*\/winkelwagen.*/);
 
   });
 
-  test('should have correct navbar', async () => {
+  test(qase(21, '[Cart Page - Smoke] Navbar verification'), async () => {
 
     const navbarValid = await cartPage.navbar.verifyAllNavbarElements();
     expect(navbarValid).toBe(true);
 
   });
 
-  test('should have Verder winkelen button', async () => {
+  test(qase(22, '[Cart Page - Smoke] Continue shopping button visibility'), async () => {
 
     const shopButton = cartPage.getShopButton();
     await expect(shopButton).toBeVisible();
 
   });
 
-  test('should have Afrekenen button', async () => {
+  test(qase(23, '[Cart Page - Smoke] Checkout button visibility'), async () => {
 
     const checkoutButton = cartPage.getCheckoutButton();
     await expect(checkoutButton).toBeVisible();
 
   });
 
-  test('should display footer', async () => {
+  test(qase(24, '[Cart Page - Smoke] Footer verification'), async () => {
 
     const footerValid = await cartPage.footer.verifyAllFooterElements();
     expect(footerValid).toBe(true);
