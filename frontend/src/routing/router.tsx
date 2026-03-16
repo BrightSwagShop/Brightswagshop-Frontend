@@ -18,6 +18,8 @@ import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
 import LoginPage from "../Pages/LoginPage";
+import NotFound from "../components/NotFound";
+import Unauthorized from "../components/Unauthorized";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -35,6 +37,8 @@ export const router = createBrowserRouter([
       { path: "checkout", element: <CheckoutPage /> },
       { path:"contact", element:<ContactPage/>},
       { path:"about", element:<About/>},
+      { path: "*", element: <NotFound />},
+      { path: "unauthorized", element: <Unauthorized/> },
       {
         path: "admin",
         element: <AdminLayout />,
