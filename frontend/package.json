@@ -16,6 +16,8 @@
     "e2e:debug": "playwright test --debug"
   },
   "dependencies": {
+    "@azure/msal-browser": "^5.4.0",
+    "@azure/msal-react": "^5.0.6",
     "@tailwindcss/vite": "^4.1.18",
     "formik": "^2.4.9",
     "playwright": "^1.58.2",

@@ -39,13 +39,14 @@ const Login = () => {
                 className="w-full border-b border-gray-400 focus:outline-none focus:border-yellow-400 py-2 bg-transparent font-semibold"
               />
 
-              <button
+              {/* <button
                 type="button"
                 data-testid="login-submit-button"
                 className="w-full bg-[#F4C709] font-semibold hover:scale-102 transition-all duration-300 ease-in-out rounded-md py-2 font-medium text-[#3C3C3B] font-ttnorms cursor-pointer"
               >
                 Login
-              </button>
+              </button> */}
+              <LoginButton/> 
 
             </form>
 

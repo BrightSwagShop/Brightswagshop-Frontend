@@ -18,6 +18,7 @@ import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
 import LoginPage from "../Pages/LoginPage";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -37,7 +38,11 @@ export const router = createBrowserRouter([
       {path:"about", element:<About/>},
       {
         path: "admin",
-        element: <AdminLayout />,
+        element:  (
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  ),
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <AdminDashboard /> },
