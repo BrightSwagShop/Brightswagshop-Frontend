@@ -75,15 +75,13 @@ jobs:
           echo "Listing coverage files..."
           ls -R ./coverage || echo "No coverage directory found"
 
-    #  SonarCloud analysis WIP
-    #      
-    #  - name: SonarCloud Analysis
-    #    uses: SonarSource/sonarcloud-github-action@v2
-    #    with:
-    #      projectBaseDir: ./frontend
-    #    env:
-    #      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: ./frontend
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright Browsers
         working-directory: ./frontend
@@ -91,21 +89,11 @@ jobs:
 
       - name: Run Playwright Tests
         working-directory: ./frontend
+        env:
+          QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
+          QASE_TESTOPS_PROJECT: ${{ secrets.QASE_TESTOPS_PROJECT }}
+          QASE_TESTOPS_RUN_COMPLETE: true
         run: npm run e2e
-        continue-on-error: true
-
-      - name: Debug Playwright Report
-        if: always()
-        working-directory: ./frontend
-        run: |
-          echo "Checking for Playwright report..."
-          ls -la playwright-report/ || echo "No playwright-report directory found"
-          if [ -f playwright-report/index.html ]; then
-            echo "Playwright report exists!"
-            ls -lh playwright-report/index.html
-          else
-            echo "Warning: playwright-report/index.html not found"
-          fi
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

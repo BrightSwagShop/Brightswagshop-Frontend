@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../Pages/HomePage';
+import { qase } from 'playwright-qase-reporter';
+import { HomePage } from '../../Pages/HomePage';
 
-test.describe('Navigation - Using Components', () => {
+test.describe('Navigation - Smoke Tests', () => {
   let homePage: HomePage;
 
   test.beforeEach(async ({ page }) => {
@@ -11,28 +12,28 @@ test.describe('Navigation - Using Components', () => {
 
   // Navbar navigation tests
 
-  test('should navigate to Home via navbar', async ({ page }) => {
+  test(qase(60, '[Navigation - Smoke] Navigate to Home via navbar'), async ({ page }) => {
 
     await homePage.navbar.clickLogoToHome();
     await expect(page).toHaveURL(/\//);
 
   });
 
-  test('should navigate to About page via navbar', async ({ page }) => {
+  test(qase(61, '[Navigation - Smoke] Navigate to About page via navbar'), async ({ page }) => {
 
     await homePage.navbar.clickAbout();
     await expect(page).toHaveURL(/.*\/about.*/);
 
   });
 
-  test('should navigate to Contact page via navbar', async ({ page }) => {
+  test(qase(62, '[Navigation - Smoke] Navigate to Contact page via navbar'), async ({ page }) => {
 
     await homePage.navbar.clickContact();
     await expect(page).toHaveURL(/.*\/contact.*/);
 
   });
 
-  test('should navigate to Cart via navbar', async ({ page }) => {
+  test(qase(63, '[Navigation - Smoke] Navigate to Cart via navbar'), async ({ page }) => {
 
     await homePage.navbar.clickCart();
     await expect(page).toHaveURL(/.*\/winkelwagen.*/);
@@ -41,21 +42,21 @@ test.describe('Navigation - Using Components', () => {
 
   // Footer navigation tests
 
-   test('should navigate to Home via footer', async ({ page }) => {
+   test(qase(64, '[Navigation - Smoke] Navigate to Home via footer'), async ({ page }) => {
 
     await homePage.footer.clickLogoToHome();
     await expect(page).toHaveURL(/\//);
 
   });
 
-  test('should navigate to About page via footer link', async ({ page }) => {
+  test(qase(65, '[Navigation - Smoke] Navigate to About page via footer'), async ({ page }) => {
 
     await homePage.footer.clickAbout();
     await expect(page).toHaveURL(/.*\/about.*/);
 
   });
 
-  test('should navigate to Contact page via footer link', async ({ page }) => {
+  test(qase(66, '[Navigation - Smoke] Navigate to Contact page via footer'), async ({ page }) => {
 
     await homePage.footer.clickContact();
     await expect(page).toHaveURL(/.*\/contact.*/);
