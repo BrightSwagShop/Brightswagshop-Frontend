@@ -2,6 +2,24 @@ import { Page, Locator } from '@playwright/test';
 import { Navbar } from './Components/Navbar';
 import { Footer } from './Components/Footer';
 
+// Type definitions for API mocking
+export interface ProductType {
+  name: string;
+  slug: string;
+}
+
+export interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  productType: string;
+  isActive: boolean;
+  imageUrl: string;
+  kleuren: string[];
+}
+
 export class BasePage {
 readonly navbar: Navbar;
 readonly footer: Footer;
@@ -64,7 +82,7 @@ readonly footer: Footer;
   }
 
   // Generic API mocking helper
-  async mockAPI(endpoint: string, responseData: any = null): Promise<void> {
+  async mockAPI(endpoint: string, responseData: ProductType[] | Product[] | null = null): Promise<void> {
     let mockData = responseData;
     
     // If no data provided, use defaults based on endpoint
@@ -95,13 +113,13 @@ readonly footer: Footer;
   }
 
   // Specific mock for product types
-  async mockProductTypesAPI(productTypes: any[] = []): Promise<void> {
+  async mockProductTypesAPI(productTypes: ProductType[] = []): Promise<void> {
     const mockData = productTypes.length > 0 ? productTypes : getDefaultProductTypes();
     await this.mockAPI('/api/producttypes', mockData);
   }
 
   // Specific mock for products by type
-  async mockProductsByTypeAPI(products: any[] = []): Promise<void> {
+  async mockProductsByTypeAPI(products: Product[] = []): Promise<void> {
     const mockData = products.length > 0 ? products : getDefaultProducts();
     await this.mockAPI('/api/products/type', mockData);
   }
