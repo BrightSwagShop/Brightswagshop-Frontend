@@ -1,25 +1,14 @@
-import { useIsAuthenticated } from "@azure/msal-react";
+import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { Navigate } from "react-router-dom";
-// omdat de project verbatimModuleSyntax gebruikt, moet types apart geïmporteerd worden.
-import type { ReactNode } from "react";
+import { InteractionStatus } from "@azure/msal-browser";
 
-// children wat je tussen je components plaatst
-
-type ProtectedRouteProps = {
-  children: ReactNode;
-};
-// logica 
-// niet ingelogd ga naar /login
-// wel ingelogd -> toon children
-{/* <ProtectedRoute>
-  <AdminLayout />
-</ProtectedRoute> */}
-// <AdminLayout /> is hier de children
-
-
-
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: any) => {
   const isAuthenticated = useIsAuthenticated();
+  const { inProgress } = useMsal();
+
+  if (inProgress !== InteractionStatus.None) {
+    return null;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

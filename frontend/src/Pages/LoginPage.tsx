@@ -1,27 +1,30 @@
-import { useEffect } from "react";
 import { useMsal, useIsAuthenticated } from "@azure/msal-react";
-import { loginRequest } from "../Config/AuthConfig";
+
 import { Navigate } from "react-router-dom";
+import { loginRequest } from "../Config/AuthConfig";
 
 const LoginPage = () => {
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      const timer = setTimeout(() => {
-        instance.loginRedirect(loginRequest);
-      }, 1000); // 1 seconde wachten
-
-      return () => clearTimeout(timer);
-    }
-  }, [instance, isAuthenticated]);
+  const handleLogin = () => {
+    instance.loginRedirect(loginRequest);
+  };
 
   if (isAuthenticated) {
-    return <Navigate to="/admin" replace />;
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return <div>Redirecting to Microsoft...</div>;
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <button
+        onClick={handleLogin}
+        className="px-6 py-3 bg-yellow-500 text-white rounded"
+      >
+        Login with Microsoft
+      </button>
+    </div>
+  );
 };
 
 export default LoginPage;

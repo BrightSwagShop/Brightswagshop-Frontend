@@ -20,6 +20,7 @@ import About from "../Pages/About";
 import LoginPage from "../Pages/LoginPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 
+
 export const router = createBrowserRouter([
   // Zonder header/footer
   { path: "/login", element: <LoginPage /> },
@@ -38,11 +39,11 @@ export const router = createBrowserRouter([
       {path:"about", element:<About/>},
       {
         path: "admin",
-        element:  (
-                    <ProtectedRoute>
-                      <AdminLayout />
-                    </ProtectedRoute>
-                  ),
+            element: (
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            ),
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <AdminDashboard /> },
