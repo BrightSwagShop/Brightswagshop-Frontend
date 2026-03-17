@@ -22,7 +22,7 @@ describe('Header Component', () => {
       </BrowserRouter>
     );
     
-    expect(screen.getByText('LogIn')).toBeInTheDocument();
+    expect(screen.getByText('Login')).toBeInTheDocument();
     expect(screen.getByText('About')).toBeInTheDocument();
     expect(screen.getByText('Contact')).toBeInTheDocument();
   });
