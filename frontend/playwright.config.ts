@@ -9,23 +9,25 @@ export default defineConfig({
   reporter: [
     ['html'],
     ['list'],
-    [
-      'playwright-qase-reporter',
-      {
-        mode: 'testops',
-        debug: false,
-        testops: {
-          api: {
-            token: process.env.QASE_TESTOPS_API_TOKEN,
-          },
-          project: process.env.QASE_TESTOPS_PROJECT,
-          uploadAttachments: true,
-          run: {
-            complete: true,
+    ...(process.env.QASE_TESTOPS_API_TOKEN ? [
+      [
+        'playwright-qase-reporter',
+        {
+          mode: 'testops',
+          debug: false,
+          testops: {
+            api: {
+              token: process.env.QASE_TESTOPS_API_TOKEN,
+            },
+            project: process.env.QASE_TESTOPS_PROJECT,
+            uploadAttachments: true,
+            run: {
+              complete: true,
+            },
           },
         },
-      },
-    ],
+      ],
+    ] : []),
   ],
   use: {
     baseURL: 'http://localhost:5173',

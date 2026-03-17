@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="27" failures="0" errors="0" time="2.1885901">
+    <testsuite name="src/bugs/__tests__/BugFlags.test.ts" timestamp="2026-03-17T12:41:55.380Z" hostname="Laptop_WB" tests="2" failures="0" errors="0" skipped="0" time="0.0043715">
+        <testcase classname="src/bugs/__tests__/BugFlags.test.ts" name="BugFlags &gt; contains bug labels" time="0.0018228">
+        </testcase>
+        <testcase classname="src/bugs/__tests__/BugFlags.test.ts" name="BugFlags &gt; has all expected bug keys" time="0.0005062">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/bugs/__tests__/BugStore.test.ts" timestamp="2026-03-17T12:41:55.383Z" hostname="Laptop_WB" tests="2" failures="0" errors="0" skipped="0" time="0.0057323">
+        <testcase classname="src/bugs/__tests__/BugStore.test.ts" name="BugStore &gt; exports utility functions" time="0.0028867">
+        </testcase>
+        <testcase classname="src/bugs/__tests__/BugStore.test.ts" name="BugStore &gt; loadBugFlags returns default flags when no storage" time="0.000738">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/layouts/__tests__/AdminLayout.test.tsx" timestamp="2026-03-17T12:41:55.385Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.2050345">
+        <testcase classname="src/layouts/__tests__/AdminLayout.test.tsx" name="AdminLayout &gt; renders admin layout" time="0.2015392">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/layouts/__tests__/RootLayout.test.tsx" timestamp="2026-03-17T12:41:55.386Z" hostname="Laptop_WB" tests="2" failures="0" errors="0" skipped="0" time="0.1509961">
+        <testcase classname="src/layouts/__tests__/RootLayout.test.tsx" name="Footer Component &gt; renders footer" time="0.0811324">
+        </testcase>
+        <testcase classname="src/layouts/__tests__/RootLayout.test.tsx" name="Footer Component &gt; displays navigation links" time="0.0662806">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/Dropdown.test.tsx" timestamp="2026-03-17T12:41:55.387Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0588056">
+        <testcase classname="src/components/__tests__/Dropdown.test.tsx" name="Dropdown Component &gt; renders dropdown with label" time="0.0554664">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/Footer.test.tsx" timestamp="2026-03-17T12:41:55.389Z" hostname="Laptop_WB" tests="2" failures="0" errors="0" skipped="0" time="0.1316956">
+        <testcase classname="src/components/__tests__/Footer.test.tsx" name="Footer Component &gt; renders footer" time="0.0768066">
+        </testcase>
+        <testcase classname="src/components/__tests__/Footer.test.tsx" name="Footer Component &gt; displays navigation links" time="0.051516">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/Header.test.tsx" timestamp="2026-03-17T12:41:55.390Z" hostname="Laptop_WB" tests="2" failures="0" errors="0" skipped="0" time="0.0951084">
+        <testcase classname="src/components/__tests__/Header.test.tsx" name="Header Component &gt; renders the header with logo" time="0.0706362">
+        </testcase>
+        <testcase classname="src/components/__tests__/Header.test.tsx" name="Header Component &gt; displays navigation links" time="0.0214286">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/Loading.test.tsx" timestamp="2026-03-17T12:41:55.392Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0645395">
+        <testcase classname="src/components/__tests__/Loading.test.tsx" name="Loading Component &gt; renders loading spinner" time="0.060418">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/Login.test.tsx" timestamp="2026-03-17T12:41:55.392Z" hostname="Laptop_WB" tests="2" failures="0" errors="0" skipped="0" time="0.3875059">
+        <testcase classname="src/components/__tests__/Login.test.tsx" name="Login Component &gt; renders login form" time="0.0307156">
+        </testcase>
+        <testcase classname="src/components/__tests__/Login.test.tsx" name="Login Component &gt; displays login button" time="0.3548506">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/__tests__/CategoryItemsPage.test.tsx" timestamp="2026-03-17T12:41:55.393Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.1787023">
+        <testcase classname="src/Pages/__tests__/CategoryItemsPage.test.tsx" name="CategoryItemsPage &gt; renders without crashing" time="0.1755202">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/__tests__/Dashboard.test.tsx" timestamp="2026-03-17T12:41:55.394Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0730553">
+        <testcase classname="src/Pages/__tests__/Dashboard.test.tsx" name="Dashboard &gt; renders without crashing" time="0.0701577">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/__tests__/DetailPageItem.test.tsx" timestamp="2026-03-17T12:41:55.395Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0404635">
+        <testcase classname="src/Pages/__tests__/DetailPageItem.test.tsx" name="DetailPageItem &gt; renders without crashing" time="0.0373143">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/__tests__/HomePage.test.tsx" timestamp="2026-03-17T12:41:55.395Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0999518">
+        <testcase classname="src/Pages/__tests__/HomePage.test.tsx" name="HomePage &gt; renders product categories" time="0.0967704">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/AdminComponents/__tests__/AdminBeadcrumbs.test.tsx" timestamp="2026-03-17T12:41:55.396Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0453273">
+        <testcase classname="src/components/AdminComponents/__tests__/AdminBeadcrumbs.test.tsx" name="AdminBeadcrumbs Component &gt; renders without crashing" time="0.0425843">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/AdminComponents/__tests__/AdminSidebar.test.tsx" timestamp="2026-03-17T12:41:55.397Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.1356529">
+        <testcase classname="src/components/AdminComponents/__tests__/AdminSidebar.test.tsx" name="AdminSidebar Component &gt; renders without crashing" time="0.1332258">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/AdminComponents/__tests__/UserInformationCard.test.tsx" timestamp="2026-03-17T12:41:55.397Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0546146">
+        <testcase classname="src/components/AdminComponents/__tests__/UserInformationCard.test.tsx" name="UserInformationCard Component &gt; renders without crashing" time="0.0511111">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/Admin/__tests__/AdminDashboard.test.tsx" timestamp="2026-03-17T12:41:55.398Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.1722947">
+        <testcase classname="src/Pages/Admin/__tests__/AdminDashboard.test.tsx" name="AdminDashboard &gt; renders without crashing" time="0.1675745">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/Admin/__tests__/Bugs.test.tsx" timestamp="2026-03-17T12:41:55.399Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0655581">
+        <testcase classname="src/Pages/Admin/__tests__/Bugs.test.tsx" name="Bugs Page &gt; renders without crashing" time="0.0611351">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/Admin/__tests__/Products.test.tsx" timestamp="2026-03-17T12:41:55.399Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0506238">
+        <testcase classname="src/Pages/Admin/__tests__/Products.test.tsx" name="Products Page &gt; renders without crashing" time="0.0473934">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/Admin/__tests__/Settings.test.tsx" timestamp="2026-03-17T12:41:55.401Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.1201321">
+        <testcase classname="src/Pages/Admin/__tests__/Settings.test.tsx" name="Settings Page &gt; renders without crashing" time="0.1165295">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/Admin/__tests__/Users.test.tsx" timestamp="2026-03-17T12:41:55.401Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0484243">
+        <testcase classname="src/Pages/Admin/__tests__/Users.test.tsx" name="Users Page &gt; renders without crashing" time="0.0450229">
+        </testcase>
+    </testsuite>
+</testsuites>
