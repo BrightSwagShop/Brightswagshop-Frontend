@@ -46,7 +46,7 @@ const Header = () => {
             data-testid="login-link"
             className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
           >
-            LogIn
+            Login
           </Link>
 
           <Link
