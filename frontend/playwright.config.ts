@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const qaseToken = process.env.QASE_TESTOPS_API_TOKEN || process.env.QASE_API_TOKEN;
+const qaseProject = process.env.QASE_TESTOPS_PROJECT || process.env.QASE_PROJECT;
+
 export default defineConfig({
   testDir: './WebTests/Tests',
   fullyParallel: true,
@@ -9,7 +12,7 @@ export default defineConfig({
   reporter: [
     ['html'],
     ['list'],
-    ...(process.env.QASE_TESTOPS_API_TOKEN ? [
+    ...(qaseToken && qaseProject ? [
       [
         'playwright-qase-reporter',
         {
@@ -17,9 +20,9 @@ export default defineConfig({
           debug: false,
           testops: {
             api: {
-              token: process.env.QASE_TESTOPS_API_TOKEN,
+              token: qaseToken,
             },
-            project: process.env.QASE_TESTOPS_PROJECT,
+            project: qaseProject,
             uploadAttachments: true,
             run: {
               complete: true,

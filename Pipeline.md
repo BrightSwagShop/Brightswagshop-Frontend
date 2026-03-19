@@ -47,7 +47,7 @@ Pipeline order in `ci.yml`:
 
 9. **Playwright E2E tests**
    - Installs browser: `npx playwright install --with-deps chromium`
-   - Runs tests: `npm run e2e`
+   - Runs tests: `npm run webtests`
    - Uploads HTML report artifact (`playwright-report`)
 
 10. **Email Playwright report summary**
@@ -76,6 +76,10 @@ These must exist in repository settings (`Settings > Secrets and variables > Act
 - `QASE_TESTOPS_PROJECT`
 - `SENDGRID_API_KEY`
 - `RENDER_DEPLOY_HOOK`
+- `ENTRA_ID_TENANT_ID`
+- `ENTRA_ID_CLIENT_ID`
+- `ENTRA_ID_CLIENT_SECRET`
+- `ENTRA_ID_SCOPE` (optional, defaults to `<clientId>/.default`)
 
 If one is missing, the related step fails.
 
@@ -90,7 +94,7 @@ Open the failed GitHub Actions run and check in this order:
 Common failure buckets:
 - Lint/type errors (`npm run lint`, `tsc`)
 - Unit test failures (`npm run test:run`)
-- E2E failures (`npm run e2e`)
+- E2E failures (`npm run webtests`)
 - Secret/config failures (Sonar/Qase/SendGrid/Render)
 
 ## 7) Reproduce the pipeline locally
@@ -103,7 +107,7 @@ npm run lint
 npx tsc --noEmit
 npm run test:run -- --coverage
 npx playwright install --with-deps chromium
-npm run e2e
+npm run webtests
 npm run build
 ```
 

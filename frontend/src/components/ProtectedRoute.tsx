@@ -1,8 +1,13 @@
  import { useIsAuthenticated, useMsal } from "@azure/msal-react";
  import { Navigate } from "react-router-dom";
 import { InteractionStatus } from "@azure/msal-browser";
+import { ReactNode } from "react";
 
-const ProtectedRoute = ({ children }: any) => {
+type ProtectedRouteProps = {
+  children: ReactNode;
+};
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const isAuthenticated = useIsAuthenticated();
   const { inProgress } = useMsal();
 
