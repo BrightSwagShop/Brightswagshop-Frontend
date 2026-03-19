@@ -1,7 +1,7 @@
  import { useIsAuthenticated, useMsal } from "@azure/msal-react";
  import { Navigate } from "react-router-dom";
 import { InteractionStatus } from "@azure/msal-browser";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type ProtectedRouteProps = {
   children: ReactNode;
