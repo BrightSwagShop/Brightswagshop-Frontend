@@ -3,6 +3,9 @@ import { qase } from 'playwright-qase-reporter';
 import { LoginPage } from '../../Pages/LoginPage';
 import { createEntraIdAuthHelper, EntraIdAuthHelper } from '../../Utils/EntraIdAuthHelper';
 
+const shouldAutoCreateQaseCases = process.env.QASE_TESTOPS_AUTO_CREATE === 'true';
+const qaseCase = (id: number, title: string): string => shouldAutoCreateQaseCases ? title : qase(id, title);
+
 function decodeJwtPayload(token: string): Record<string, unknown> {
   const parts = token.split('.');
   if (parts.length !== 3) {
@@ -24,19 +27,19 @@ test.describe('EntraID Login - Smoke Tests', () => {
       await loginPage.navigateToLogin();
     });
 
-    test(qase(104, '[EntraID] Login page loads successfully'), async ({ page }) => {
+    test(qaseCase(104, '[EntraID] Login page loads successfully'), async ({ page }) => {
       expect(page.url()).toContain('/login');
     });
 
-    test(qase(105, '[EntraID] Microsoft login button is visible'), async () => {
+    test(qaseCase(105, '[EntraID] Microsoft login button is visible'), async () => {
       await expect(loginPage.getLoginButton()).toBeVisible();
     });
 
-    test(qase(106, '[EntraID] Microsoft login button is clickable'), async () => {
+    test(qaseCase(106, '[EntraID] Microsoft login button is clickable'), async () => {
       await expect(loginPage.getLoginButton()).toBeEnabled();
     });
 
-    test(qase(107, '[EntraID] Microsoft login button displays correct text'), async () => {
+    test(qaseCase(107, '[EntraID] Microsoft login button displays correct text'), async () => {
       await expect(loginPage.getLoginButton()).toContainText(/sign in with microsoft/i);
     });
   });
@@ -57,7 +60,7 @@ test.describe('EntraID Login - Smoke Tests', () => {
       EntraIdAuthHelper.clearCache();
     });
 
-    test(qase(109, '[EntraID] Token can be acquired with configured credentials'), async () => {
+    test(qaseCase(109, '[EntraID] Token can be acquired with configured credentials'), async () => {
       if (!authHelper) {
         expect(helperInitError?.message).toContain('Missing required environment variables for EntraID authentication');
         return;
@@ -70,7 +73,7 @@ test.describe('EntraID Login - Smoke Tests', () => {
       expect(token.split('.').length).toBe(3);
     });
 
-    test(qase(110, '[EntraID] Token payload contains required JWT claims'), async () => {
+    test(qaseCase(110, '[EntraID] Token payload contains required JWT claims'), async () => {
       if (!authHelper) {
         expect(helperInitError?.message).toContain('Missing required environment variables for EntraID authentication');
         return;
@@ -88,7 +91,7 @@ test.describe('EntraID Login - Smoke Tests', () => {
       expect(exp).toBeGreaterThan(Math.floor(Date.now() / 1000));
     });
 
-    test(qase(111, '[EntraID] Token is cached while still valid'), async () => {
+    test(qaseCase(111, '[EntraID] Token is cached while still valid'), async () => {
       if (!authHelper) {
         expect(helperInitError?.message).toContain('Missing required environment variables for EntraID authentication');
         return;
@@ -100,7 +103,7 @@ test.describe('EntraID Login - Smoke Tests', () => {
       expect(token1).toBe(token2);
     });
 
-    test(qase(112, '[EntraID] Token can be reacquired after cache clear'), async () => {
+    test(qaseCase(112, '[EntraID] Token can be reacquired after cache clear'), async () => {
       if (!authHelper) {
         expect(helperInitError?.message).toContain('Missing required environment variables for EntraID authentication');
         return;
@@ -115,7 +118,7 @@ test.describe('EntraID Login - Smoke Tests', () => {
       expect(token2.split('.').length).toBe(3);
     });
 
-    test(qase(113, '[EntraID] Bearer header format is correct for API usage'), async () => {
+    test(qaseCase(113, '[EntraID] Bearer header format is correct for API usage'), async () => {
       if (!authHelper) {
         expect(helperInitError?.message).toContain('Missing required environment variables for EntraID authentication');
         return;
@@ -130,17 +133,17 @@ test.describe('EntraID Login - Smoke Tests', () => {
   });
 
   test.describe('Protected Admin Routes', () => {
-    test(qase(114, '[EntraID] Admin page redirects to login when not authenticated'), async ({ page }) => {
+    test(qaseCase(114, '[EntraID] Admin page redirects to login when not authenticated'), async ({ page }) => {
       await page.goto('/admin', { waitUntil: 'networkidle' });
       expect(page.url()).toMatch(/login/i);
     });
 
-    test(qase(115, '[EntraID] Admin dashboard redirects to login when not authenticated'), async ({ page }) => {
+    test(qaseCase(115, '[EntraID] Admin dashboard redirects to login when not authenticated'), async ({ page }) => {
       await page.goto('/admin/dashboard', { waitUntil: 'networkidle' });
       expect(page.url()).toMatch(/login/i);
     });
 
-    test(qase(116, '[EntraID] Admin users page redirects to login when not authenticated'), async ({ page }) => {
+    test(qaseCase(116, '[EntraID] Admin users page redirects to login when not authenticated'), async ({ page }) => {
       await page.goto('/admin/users', { waitUntil: 'networkidle' });
       expect(page.url()).toMatch(/login/i);
     });
