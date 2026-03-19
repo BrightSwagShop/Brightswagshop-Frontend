@@ -1,7 +1,10 @@
 import logo from "../assets/Brightest-logo's/logo.png";
 import { FaMicrosoft } from "react-icons/fa";
 
-const Login = () => {
+type LoginProps = {
+  handleLogin: () => void;
+};
+const Login = ({ handleLogin }: LoginProps) => {
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col">
 
@@ -39,22 +42,24 @@ const Login = () => {
                 className="w-full border-b border-gray-400 focus:outline-none focus:border-yellow-400 py-2 bg-transparent font-semibold"
               />
 
-              <button
+              {/* <button
                 type="button"
                 data-testid="login-submit-button"
                 className="w-full bg-[#F4C709] font-semibold hover:scale-102 transition-all duration-300 ease-in-out rounded-md py-2 font-medium text-[#3C3C3B] font-ttnorms cursor-pointer"
               >
                 Login
-              </button>
+              </button> */}
+               
 
             </form>
 
             <div className="my-6 text-black font-bold">of</div>
-
+                {/*  data-testid="microsoft-login-button" */}
             <button
               type="button"
+              onClick={handleLogin}
               data-testid="microsoft-login-button"
-              className="flex items-center gap-2 border px-4 py-2 rounded-md bg-white cursor-pointer shadow-sm border-1 font-ttnorms hover:scale-105 transition-transform duration-200 ease-in-out"
+              className="flex items-center gap-2 border px-4 py-2 rounded-md bg-white cursor-pointer shadow-sm font-ttnorms hover:scale-105 transition-transform duration-200"
             >
               <FaMicrosoft />
               Sign in with Microsoft

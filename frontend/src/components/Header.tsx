@@ -3,9 +3,20 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logo.png";
 import { useState, useEffect } from "react";
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
+
 
 const Header = () => {
+  
   const [isScrolled, setIsScrolled] = useState(false);
+  const { instance } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
+
+  const logout = () => {
+    instance.logoutRedirect({
+      postLogoutRedirectUri: "/",
+    });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,14 +51,32 @@ const Header = () => {
 
         {/* Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
+          {isAuthenticated && (
+            <Link
+              to="/admin/dashboard"
+              data-testid="dashboard-link"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Dashboard
+            </Link>
+          )}
 
-          <Link
-            to="/login"
-            data-testid="login-link"
-            className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
-          >
-            Login
-          </Link>
+          {!isAuthenticated ? (
+            <Link
+              to="/login"
+              data-testid="login-link"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Login
+            </Link>
+          ) : (
+            <button
+              onClick={logout}
+              className="hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Logout
+            </button>
+          )}
 
           <Link
             to="/about"

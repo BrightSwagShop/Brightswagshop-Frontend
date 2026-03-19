@@ -12,10 +12,10 @@ export class LoginPage extends BasePage {
   }
 
   getMainLogo() {
-    return this.page.getByTestId('login-logo');
+    return this.page.locator('img[src*="logo"], img[alt*="Brightest"], img[alt*="logo"]');
   }
 
   getLoginButton(): Locator {
-    return this.page.getByTestId('microsoft-login-button');
+    return this.page.getByRole('button', { name: /login with microsoft|sign in with microsoft/i });
   }
 }

@@ -14,7 +14,7 @@ export class CategoryItemsPage extends BasePage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  getPageTitle(): Locator {
+  getCategoryHeading(): Locator {
     return this.page.locator('h1').first();
   }
 
@@ -32,6 +32,6 @@ export class CategoryItemsPage extends BasePage {
   }
 
   async getCategoryTitle(): Promise<string> {
-    return this.getText(this.getPageTitle());
+    return this.getText(this.getCategoryHeading());
   }
 }
