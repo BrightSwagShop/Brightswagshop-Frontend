@@ -51,6 +51,16 @@ const Header = () => {
 
         {/* Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
+          {isAuthenticated && (
+            <Link
+              to="/admin/dashboard"
+              data-testid="dashboard-link"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Dashboard
+            </Link>
+          )}
+
           {!isAuthenticated ? (
             <Link
               to="/login"
