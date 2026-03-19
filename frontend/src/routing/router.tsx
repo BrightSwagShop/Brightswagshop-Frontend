@@ -19,7 +19,8 @@ import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
 import LoginPage from "../Pages/LoginPage";
 import ProtectedRoute from "../components/ProtectedRoute";
-
+import NotFound from "../components/NotFound";
+import Unauthorized from "../components/Unauthorized";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -35,8 +36,10 @@ export const router = createBrowserRouter([
       { path: "detailpage", element: <DetailPageItem /> },
       { path: "winkelwagen", element: <Winkelwagen />},
       { path: "checkout", element: <CheckoutPage /> },
-      {path:"contact", element:<ContactPage/>},
-      {path:"about", element:<About/>},
+      { path:"contact", element:<ContactPage/>},
+      { path:"about", element:<About/>},
+      { path: "*", element: <NotFound />},
+      { path: "unauthorized", element: <Unauthorized/> },
       {
         path: "admin",
             element: (

@@ -10,13 +10,13 @@ const Header = () => {
   
   const [isScrolled, setIsScrolled] = useState(false);
   const { instance } = useMsal();
-const isAuthenticated = useIsAuthenticated();
+  const isAuthenticated = useIsAuthenticated();
 
-const logout = () => {
-  instance.logoutRedirect({
-    postLogoutRedirectUri: "/",
-  });
-};
+  const logout = () => {
+    instance.logoutRedirect({
+      postLogoutRedirectUri: "/",
+    });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,33 +51,22 @@ const logout = () => {
 
         {/* Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
-
-           {/* <Link
-            to="/login"
-            data-testid="login-link"
-            className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
-          >
-            LogIn
-          </Link>  */}
           {!isAuthenticated ? (
-                <Link
-                  to="/login"
-                  className="hover:text-yellow-500 font-bold"
-                >
-                  Login
-                </Link>
-              ) : (
-                <button
-                  onClick={logout}
-                  className="hover:text-yellow-500 font-bold"
-                >
-                  Logout
-                </button>
-              )}
-
-
-           
-
+            <Link
+              to="/login"
+              data-testid="login-link"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Login
+            </Link>
+          ) : (
+            <button
+              onClick={logout}
+              className="hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Logout
+            </button>
+          )}
 
           <Link
             to="/about"
