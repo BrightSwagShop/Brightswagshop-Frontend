@@ -1,5 +1,5 @@
-import { useIsAuthenticated, useMsal } from "@azure/msal-react";
-import { Navigate } from "react-router-dom";
+ import { useIsAuthenticated, useMsal } from "@azure/msal-react";
+ import { Navigate } from "react-router-dom";
 import { InteractionStatus } from "@azure/msal-browser";
 
 const ProtectedRoute = ({ children }: any) => {
