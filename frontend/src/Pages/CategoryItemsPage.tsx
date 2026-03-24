@@ -44,7 +44,7 @@ const CategoryItemsPage = () => {
 
     return "/placeholder.png";
   };
-// werkt nog niet moet de apit klient Id van Louis krijgen!!!! en in api.ts steken 
+// werkt nog niet moet de api klient Id van Louis krijgen!!!! en in api.ts steken 
   useEffect(() => {
     const loadProducts = async () => {
       try {

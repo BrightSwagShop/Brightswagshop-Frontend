@@ -11,6 +11,9 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+  //voor login standaard gebruiker
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const isLoggedIn = isAuthenticated || user;
 
   const logout = () => {
     instance.logoutRedirect({
@@ -61,7 +64,7 @@ const Header = () => {
             </Link>
           )}
 
-          {!isAuthenticated ? (
+          {/* {!isAuthenticated ? (
             <Link
               to="/login"
               data-testid="login-link"
@@ -72,6 +75,31 @@ const Header = () => {
           ) : (
             <button
               onClick={logout}
+              className="hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Logout
+            </button>
+          )} */}
+
+                    {!isLoggedIn ? (
+            <Link
+              to="/login"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Login
+            </Link>
+          ) : (
+            <button
+              onClick={() => {
+                if (user) {
+                  //  standaard login logout
+                  localStorage.removeItem("user");
+                  window.location.href = "/";
+                } else {
+                  //  Microsoft logout
+                  logout();
+                }
+              }}
               className="hover:text-yellow-500 transition font-ttnorms font-bold"
             >
               Logout
