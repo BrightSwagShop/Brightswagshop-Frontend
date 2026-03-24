@@ -1,6 +1,7 @@
-import axios from "axios";
+//import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { fetchWithAuth } from "../services/api";
 
 type MaatInfo = {
   maat: string;
@@ -43,25 +44,38 @@ const CategoryItemsPage = () => {
 
     return "/placeholder.png";
   };
-
+// werkt nog niet moet de api klient Id van Louis krijgen!!!! en in api.ts steken 
   useEffect(() => {
     const loadProducts = async () => {
       try {
         setLoading(true);
         setError("");
+          const response = await fetchWithAuth(
+        `${import.meta.env.VITE_API_URL}/api/products/type/${category}`
+      );
 
-        const response = await axios.get<Product[]>(
-          `${import.meta.env.VITE_API_URL}/api/products/type/${category}`
-        );
+      const data = await response.json();
+      setItems(data);
+    } catch (err) {
+      console.error(err);
+      setError("Producten konden niet geladen worden.");
+    } finally {
+      setLoading(false);
+    }
 
-        setItems(response.data);
-      } catch (err) {
-        console.error(err);
-        setError("Producten konden niet geladen worden.");
-      } finally {
-        setLoading(false);
-      }
+      //   const response = await axios.get<Product[]>(
+      //     `${import.meta.env.VITE_API_URL}/api/products/type/${category}`
+      //   );
+
+      //   setItems(response.data);
+      // } catch (err) {
+      //   console.error(err);
+      //   setError("Producten konden niet geladen worden.");
+      // } finally {
+      //   setLoading(false);
+      // }
     };
+       
 
     if (category) {
       loadProducts();
