@@ -1,12 +1,42 @@
+
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import shirt from "../assets/t-shirts/t-shirt1.png"; // vervang door jouw image
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const WinkelwagenPage = () => {
-  return (
-    <div className="min-h-screen">
+  const [showCouponInput, setShowCouponInput] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
 
-      <div className="max-w-4xl mx-auto pt-20 pb-20">
+  return (
+    <div className="min-h-screen"> 
+      <div className="max-w-4xl mx-auto pt-20 pb-20 mb-20">
+        <div className="flex justify-between mb-12">
+          {!showCouponInput ? (
+            <button
+              className="border border-yellow-500 text-yellow-500 px-6 py-2 rounded-md hover:scale-105 transition cursor-pointer"
+              onClick={() => setShowCouponInput(true)}
+            >
+              Kortingscode toepassen
+            </button>
+          ) : (
+            <div className="flex gap-2 w-full max-w-md">
+              <input
+                type="text"
+                className="border border-yellow-500 rounded-md px-4 py-2 flex-1"
+                placeholder="Voer kortingscode in"
+                value={couponCode}
+                onChange={e => setCouponCode(e.target.value)}
+              />
+              <button
+                className="bg-yellow-500 text-[#3C3C3B] px-6 py-2 rounded-md hover:bg-yellow-400 transition cursor-pointer"
+                // Add your coupon apply logic here
+              >
+                Bevestigen
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Products */}
         <div className="space-y-8 shado">
