@@ -31,12 +31,12 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`sticky top-0 w-full bg-white z-50 transition-all duration-300 ${
-      isScrolled ? "shadow-md" : ""
-    }`}>
-      <div className={`max-w-7xl mx-auto px-16 flex items-center justify-between transition-all duration-300 ${
-        isScrolled ? "h-14" : "h-25"
+    <header className={`fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all duration-300 ${
+        isScrolled ? "h-16 py-2" : "h-24 py-6"
       }`}>
+      <div
+        className="max-w-6xl mx-auto flex items-center justify-between h-full px-4"
+      >
 
         {/* Logo */}
         <Link
