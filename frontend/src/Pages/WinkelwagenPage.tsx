@@ -1,131 +1,202 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { FaRegTrashAlt } from "react-icons/fa";
-
-type CartItem = {
-  productId: string;
-  productName: string;
-  unitPrice: number;
-  quantity: number;
-};
-
-type ShoppingCart = {
-  id: string;
-  userId: string;
-  sessionId: string;
-  items: CartItem[];
-  updatedAt: string;
-  totalPrice: number;
-};
+import ShoppingCart from "../components/WinkelwagenComponents/ShoppingCart";
+import { createOrderFromCart } from "../API/OrderAPI";
+import { createCheckoutSession } from "../API/PaymentAPI";
+import {
+  getCartByUserId,
+  removeCartItem,
+  updateCartItemQuantity,
+  type ShoppingCartResponse,
+} from "../API/CartAPI";
+import { Link } from "react-router-dom";
 
 const WinkelwagenPage = () => {
-  const [cart, setCart] = useState<ShoppingCart | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const userId = "user-123";
 
-  const userId = "user-123"; // UserId dynamisch toevoegen
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [cart, setCart] = useState<ShoppingCartResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadCart = async () => {
+  useEffect(() => {
+    const loadCart = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const data = await getCartByUserId(userId);
+        setCart(data);
+      } catch {
+        setError("Kon winkelwagen niet ophalen.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadCart();
+  }, [userId]);
+
+  const handleCheckout = async () => {
     try {
-      const response = await axios.get<ShoppingCart>(
-        `${import.meta.env.VITE_API_URL}/api/shoppingcarts/user/${userId}`,
-      );
+      setIsCheckingOut(true);
+      setError(null);
 
-      setCart(response.data);
+      const createdOrder = await createOrderFromCart(userId);
+      const checkoutSession = await createCheckoutSession(createdOrder.id);
+
+      window.location.href = checkoutSession.sessionUrl;
     } catch (err) {
       console.error(err);
-      setError("Winkelwagen kon niet geladen worden.");
+      setError("Afrekenen mislukt.");
     } finally {
-      setLoading(false);
+      setIsCheckingOut(false);
     }
   };
 
-  useEffect(() => {
-    loadCart();
-  }, []);
+  const handleQuantityChange = async (
+    productId: string,
+    selectedColor: string | undefined,
+    quantity: number,
+  ) => {
+    try {
+      setIsUpdating(true);
+      setError(null);
 
-  const calculateTotal = () => {
-    if (!cart) return 0;
+      const updatedCart = await updateCartItemQuantity(userId, {
+        productId,
+        selectedColor,
+        quantity,
+      });
 
-    return cart.items.reduce((total, item) => {
-      return total + item.unitPrice * item.quantity;
-    }, 0);
+      setCart(updatedCart);
+    } catch {
+      setError("Kon aantal niet aanpassen.");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
-  if (loading) {
-    return <div className="pt-20 text-center">Loading...</div>;
+  const handleRemove = async (
+    productId: string,
+    selectedColor: string | undefined,
+  ) => {
+    try {
+      setIsUpdating(true);
+      setError(null);
+
+      const updatedCart = await removeCartItem(userId, {
+        productId,
+        selectedColor,
+        quantity: 1,
+      });
+
+      setCart(updatedCart);
+    } catch {
+      setError("Kon item niet verwijderen.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center px-6">
+        <div className="bg-white shadow-md rounded-2xl px-10 py-8">
+          <p className="text-lg text-[#3C3C3B] font-medium">
+            Winkelwagen laden...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="pt-20 text-center text-red-500">{error}</div>;
+    return (
+      <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center px-6">
+        <div className="bg-white shadow-md rounded-2xl px-10 py-8 max-w-md w-full text-center">
+          <h2 className="text-2xl font-semibold text-[#3C3C3B] mb-3">Oeps</h2>
+          <p className="text-red-500 mb-6">{error}</p>
+          <Link to="/">
+            <button className="bg-yellow-500 text-[#3C3C3B] px-6 py-3 rounded-xl font-medium hover:bg-yellow-400 transition cursor-pointer">
+              Terug naar home
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto pt-20 pb-20">
-        <div className="space-y-8">
-          {cart?.items.map((item) => (
-            <div
-              key={item.productId}
-              className="flex items-center justify-between bg-white border rounded-md shadow-xl p-6"
-            >
-              <div className="flex items-center gap-6">
-                <div className="w-16 h-16 bg-gray-100 rounded" />
+  if (!cart || cart.items.length === 0) {
+    return <p>Geen winkelwagen gevonden.</p>;
+  }
 
-                <div>
-                  <p className="text-yellow-500 font-semibold">
-                    {item.productName}
-                  </p>
-
-                  <p className="text-gray-500 text-xs mt-2">
-                    Product ID: {item.productId}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <select
-                  value={item.quantity}
-                  className="border border-yellow-500 rounded px-2 py-1 text-sm"
-                  disabled
-                >
-                  <option>{item.quantity}</option>
-                </select>
-
-                <button className="text-gray-500 text-lg cursor-pointer hover:text-yellow-500 transition-colors duration-200">
-                  <FaRegTrashAlt />
-                </button>
-
-                <p className="font-semibold">
-                  €{(item.unitPrice * item.quantity).toFixed(2)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex justify-end mt-10">
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Totaal bedrag:</p>
-            <p className="font-semibold text-lg">
-              €{calculateTotal().toFixed(2)}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex justify-between mt-12">
+  if (cart.items.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center px-6">
+        <div className="bg-white shadow-md rounded-2xl px-10 py-8 max-w-md w-full text-center">
+          <h2 className="text-2xl font-semibold text-[#3C3C3B] mb-3">
+            Winkelwagen leeg
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Je hebt nog geen producten toegevoegd.
+          </p>
           <Link to="/">
-            <button className="border border-yellow-500 text-yellow-500 px-6 py-2 rounded-md hover:scale-105 transition cursor-pointer">
+            <button className="bg-yellow-500 text-[#3C3C3B] px-6 py-3 rounded-xl font-medium hover:bg-yellow-400 transition cursor-pointer">
               Verder winkelen
             </button>
           </Link>
+        </div>
+      </div>
+    );
+  }
 
-          <Link to="/checkout">
-            <button className="bg-yellow-500 text-[#3C3C3B] px-10 py-2 rounded-md hover:bg-yellow-400 hover:scale-105 transition cursor-pointer">
-              Afrekenen
+  return (
+    <div className="min-h-screen bg-[#F8F8F8] px-6 py-12">
+      <div className="max-w-5xl mx-auto">
+        <div className="bg-white rounded-3xl shadow-lg p-8 md:p-12">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+            <div>
+              <p className="text-sm uppercase tracking-widest text-yellow-500 font-semibold mb-2">
+                Overzicht
+              </p>
+              <h1 className="text-4xl md:text-5xl font-semibold text-[#3C3C3B]">
+                Winkelwagen
+              </h1>
+            </div>
+
+            <div className="bg-[#F8F8F8] rounded-2xl px-5 py-4 text-left md:text-right">
+              <p className="text-sm text-gray-500">Totaal bedrag</p>
+              <p className="text-2xl font-bold text-[#3C3C3B]">
+                €{cart.totalPrice.toFixed(2)}
+              </p>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-200 pt-8">
+            <ShoppingCart
+              items={cart.items}
+              onQuantityChange={handleQuantityChange}
+              onRemove={handleRemove}
+              isUpdating={isUpdating}
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-between gap-4 mt-10 pt-8 border-t border-gray-200">
+            <Link to="/">
+              <button className="w-full sm:w-auto border-2 border-yellow-500 text-yellow-500 px-6 py-3 rounded-xl font-medium hover:bg-yellow-50 transition cursor-pointer">
+                Verder winkelen
+              </button>
+            </Link>
+
+            <button
+              onClick={handleCheckout}
+              disabled={isCheckingOut || cart.items.length === 0}
+              className="w-full sm:w-auto bg-yellow-500 text-[#3C3C3B] px-8 py-3 rounded-xl font-semibold hover:bg-yellow-400 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isCheckingOut ? "Bezig..." : "Afrekenen"}
             </button>
-          </Link>
+          </div>
         </div>
       </div>
     </div>
