@@ -1,6 +1,7 @@
 //import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { addCartItem } from "../API/CartAPI";
 import { fetchWithAuth } from "../services/api";
 
 type MaatInfo = {
@@ -16,7 +17,7 @@ type KleurInfo = {
 };
 
 type Product = {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -29,9 +30,31 @@ type Product = {
 
 const CategoryItemsPage = () => {
   const { category } = useParams<{ category: string }>();
+  const [addingProductId, setAddingProductId] = useState<string | null>(null);
   const [items, setItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const userId = "user-123";
+
+  const handleAddToCart = async (item: Product) => {
+    try {
+      setAddingProductId(item.id);
+
+      await addCartItem(userId, {
+        productId: item.id,
+        selectedColor: item.kleuren?.[0]?.kleur,
+        quantity: 1,
+      });
+
+      alert(`${item.name} toegevoegd aan je winkelwagen.`);
+    } catch (err) {
+      console.error(err);
+      alert("Toevoegen aan winkelwagen is mislukt.");
+    } finally {
+      setAddingProductId(null);
+    }
+  };
 
   const getProductImage = (product: Product) => {
     if (product.kleuren && product.kleuren.length > 0) {
@@ -63,17 +86,17 @@ const CategoryItemsPage = () => {
       setLoading(false);
     }
 
-      //   const response = await axios.get<Product[]>(
-      //     `${import.meta.env.VITE_API_URL}/api/products/type/${category}`
-      //   );
+        const response = await axios.get<Product[]>(
+          `${import.meta.env.VITE_API_URL}/api/products/type/${category}`,
+        );
 
-      //   setItems(response.data);
-      // } catch (err) {
-      //   console.error(err);
-      //   setError("Producten konden niet geladen worden.");
-      // } finally {
-      //   setLoading(false);
-      // }
+        setItems(response.data);
+      } catch (err) {
+        console.error(err);
+        setError("Producten konden niet geladen worden.");
+      } finally {
+        setLoading(false);
+      }
     };
        
 
@@ -150,7 +173,7 @@ const CategoryItemsPage = () => {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
               <div
-                key={item._id}
+                key={item.id}
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition"
               >
                 <div className="bg-slate-50 p-6 flex justify-center">
@@ -176,10 +199,13 @@ const CategoryItemsPage = () => {
                     </span>
 
                     <button
-                      disabled
-                      className="rounded-lg bg-yellow-400/60 px-4 py-2 text-sm font-semibold text-[#3C3C3B] cursor-not-allowed"
+                      onClick={() => handleAddToCart(item)}
+                      disabled={addingProductId === item.id}
+                      className="rounded-lg bg-yellow-400 px-4 py-2 text-sm font-semibold text-[#3C3C3B] hover:bg-yellow-300 transition disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Add to cart
+                      {addingProductId === item.id
+                        ? "Adding..."
+                        : "Add to cart"}
                     </button>
                   </div>
                 </div>

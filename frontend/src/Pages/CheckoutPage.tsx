@@ -8,7 +8,6 @@ const CheckoutPage = () => {
         <div className="mx-auto w-full max-w-xl">
           {/* Form */}
           <div className="space-y-6">
-
             {/* Voornaam + Achternaam */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div>
@@ -64,7 +63,6 @@ const CheckoutPage = () => {
 
           {/* Buttons */}
           <div className="flex items-center justify-between">
-
             <Link
               to="/"
               data-testid="checkout-continue-shopping"
@@ -78,9 +76,8 @@ const CheckoutPage = () => {
               data-testid="checkout-pay-button"
               className="rounded-md bg-[#F4C709] px-10 py-2 text-xs font-semibold text-[#3C3C3B] transition-all duration-200 ease-in-out hover:scale-[1.02] hover:bg-yellow-400 cursor-pointer"
             >
-              Afrekenen
+              Betalen
             </button>
-
           </div>
         </div>
       </div>
