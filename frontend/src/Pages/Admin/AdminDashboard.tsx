@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaUsers, FaBoxOpen, FaBug, FaCog, FaArrowRight } from "react-icons/fa";
-
+ 
 interface DashboardCard {
   title: string;
   subtitle: string;
@@ -18,6 +18,8 @@ const cards: DashboardCard[] = [
 const adminName = "Admin"; // later uit auth/context
 
 const AdminDashboard = () => {
+
+  
   return (
     <div className="space-y-6">
         <div>

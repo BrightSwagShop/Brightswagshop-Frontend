@@ -4,13 +4,13 @@ import Login from '../../components/Login';
 
 describe('Login Component', () => {
   it('renders login form', () => {
-    render(<Login />);
+    render(<Login handleLogin={() => {}} />);
     expect(screen.getByPlaceholderText('Gebruikersnaam')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Wachtwoord')).toBeInTheDocument();
   });
 
   it('displays login button', () => {
-    render(<Login />);
-    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+    render(<Login handleLogin={() => {}} />);
+    expect(screen.getByRole('button', { name: /sign in with microsoft/i })).toBeInTheDocument();
   });
 });
