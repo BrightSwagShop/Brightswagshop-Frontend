@@ -17,6 +17,7 @@ import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
 import LoginPage from "../Pages/LoginPage";
+import AuthCallbackPage from "../Pages/AuthCallbackPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
@@ -24,10 +25,9 @@ import PaymentSucceed from "../Pages/PaymentSucceed";
 import PaymentCanceled from "../Pages/PaymentCanceled";
 
 export const router = createBrowserRouter([
-  // Zonder header/footer
   { path: "/login", element: <LoginPage /> },
+  { path: "/auth/callback", element: <AuthCallbackPage /> },
 
-  // Met header/footer
   {
     path: "/",
     element: <RootLayout />,
@@ -39,17 +39,16 @@ export const router = createBrowserRouter([
       { path: "checkout", element: <CheckoutPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "about", element: <About /> },
-      { path: "*", element: <NotFound /> },
       { path: "unauthorized", element: <Unauthorized /> },
       { path: "success", element: <PaymentSucceed /> },
       { path: "cancel", element: <PaymentCanceled /> },
       {
         path: "admin",
-            element: (
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            ),
+        element: (
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        ),
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <AdminDashboard /> },
@@ -59,6 +58,7 @@ export const router = createBrowserRouter([
           { path: "settings", element: <Settings /> },
         ],
       },
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);

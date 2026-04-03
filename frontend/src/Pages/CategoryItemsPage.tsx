@@ -1,4 +1,3 @@
-//import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { addCartItem } from "../API/CartAPI";
@@ -67,26 +66,14 @@ const CategoryItemsPage = () => {
 
     return "/placeholder.png";
   };
-// werkt nog niet moet de api klient Id van Louis krijgen!!!! en in api.ts steken 
+
   useEffect(() => {
     const loadProducts = async () => {
       try {
         setLoading(true);
         setError("");
-          const response = await fetchWithAuth(
-        `${import.meta.env.VITE_API_URL}/api/products/type/${category}`
-      );
 
-      const data = await response.json();
-      setItems(data);
-    } catch (err) {
-      console.error(err);
-      setError("Producten konden niet geladen worden.");
-    } finally {
-      setLoading(false);
-    }
-
-        const response = await axios.get<Product[]>(
+        const response = await fetchWithAuth(
           `${import.meta.env.VITE_API_URL}/api/products/type/${category}`,
         );
 
@@ -98,7 +85,6 @@ const CategoryItemsPage = () => {
         setLoading(false);
       }
     };
-       
 
     if (category) {
       loadProducts();
