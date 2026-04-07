@@ -21,16 +21,27 @@ const Login = ({ handleLogin }: LoginProps) => {
           password,
         }),
       });
+      //backend moet doen :
+      //1: user checken
+      //2: JWT token genereren
+      //3: token terugsturen
 
       if (res.status === 200) {
         const data = await res.json();
-        localStorage.setItem("user", JSON.stringify(data));
+        //dit is fout
+        //localStorage.setItem("user", JSON.stringify(data));
+        //dit is juist 
+         localStorage.setItem("user", JSON.stringify(data.user));
+         localStorage.setItem("token", data.token);
+          
         console.log("Logged in:", data);
          navigate("/");
       } else {
         console.log("Login failed");
       }
+      
     };
+   
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col">
 

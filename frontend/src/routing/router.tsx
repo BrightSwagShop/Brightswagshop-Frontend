@@ -21,6 +21,7 @@ import LoginPage from "../Pages/LoginPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
+import Favorites from "../Pages/Favorites";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
       { path:"about", element:<About/>},
       { path: "*", element: <NotFound />},
       { path: "unauthorized", element: <Unauthorized/> },
+      {path:"favoriten", element:<Favorites/>},
       {
         path: "admin",
             element: (
