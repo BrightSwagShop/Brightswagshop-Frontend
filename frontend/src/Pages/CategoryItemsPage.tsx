@@ -1,15 +1,43 @@
-
 import { Link, useParams } from "react-router-dom";
-import ProductsCard from "../components/ProductsCard";
-//import { fetchWithAuth } from "../services/api";
-// import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-// import { useFavorites } from "../services/useFavorites";
-
+import { useEffect, useState } from "react";
+import { getProductsByType } from "../services/productService";
+import type { Product } from "../types/product";
+import ProductCard from "../components/ProductCard";
 
 const CategoryItemsPage = () => {
-const { category } = useParams<{ category: string }>();
-  
+  const { category } = useParams<{ category: string }>();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  useEffect(() => {
+    const loadProducts = async () => {
+      if (!category) return;
+
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const data = await getProductsByType(category);
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
+        setError("Producten konden niet geladen worden.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [category]);
+
+  if (isLoading) {
+    return <div className="p-10">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="p-10 text-red-500">{error}</div>;
+  }
 
   return (
     <section className="w-full min-h-screen">
@@ -49,8 +77,10 @@ const { category } = useParams<{ category: string }>();
       </div>
 
       <div className="w-full bg-[#EDEDED] pt-16 pb-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <ProductsCard/>
+        <div className="mx-auto max-w-6xl px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       </div>
     </section>

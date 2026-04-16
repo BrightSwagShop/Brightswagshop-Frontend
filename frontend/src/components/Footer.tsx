@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logoFooter.png";
 import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
+import { useAuth } from "../hooks/useAuth";
 
 const Footer = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <footer className="w-full bg-white">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-[120px_1fr_180px] items-start gap-x-6">
-
         {/* Logo */}
         <div>
           <Link to="/" data-testid="footer-logo-link">
@@ -21,14 +23,22 @@ const Footer = () => {
 
         {/* Navigation */}
         <div className="flex flex-col gap-3 text-gray-600 font-medium">
-
-          <Link
-            to="/login"
-            data-testid="footer-login-link"
-            className="hover:text-yellow-400 transition"
-          >
-            Login
-          </Link>
+          {!isAuthenticated ? (
+            <Link
+              to="/login"
+              data-testid="footer-login-link"
+              className="hover:text-yellow-400 transition"
+            >
+              Login
+            </Link>
+          ) : (
+            <button
+              onClick={logout}
+              className="text-left hover:text-yellow-400 transition"
+            >
+              Logout
+            </button>
+          )}
 
           <Link
             to="/about"
@@ -45,33 +55,21 @@ const Footer = () => {
           >
             Contact
           </Link>
-
         </div>
 
         {/* Socials */}
         <div className="flex justify-end gap-4">
-
-          <div
-            data-testid="footer-linkedin"
-            className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition"
-          >
+          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
             <FaLinkedinIn className="text-[#F4C709]" />
           </div>
 
-          <div
-            data-testid="footer-facebook"
-            className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition"
-          >
+          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
             <FaFacebookF className="text-[#F4C709]" />
           </div>
 
-          <div
-            data-testid="footer-instagram"
-            className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition"
-          >
+          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
             <FaInstagram className="text-[#F4C709]" />
           </div>
-
         </div>
       </div>
 

@@ -7,23 +7,23 @@ import Loading from "../components/Loading";
 
 const LoginPage = () => {
   const { instance, inProgress } = useMsal();
-  const isAuthenticated = useIsAuthenticated();
+  const isAdminAuthenticated = useIsAuthenticated();
 
-  const handleLogin = () => {
+  const handleAdminLogin = () => {
     instance.loginRedirect(loginRequest);
   };
 
-  // terwijl MSAL bezig is (redirect/login)
+  // loading MSAL
   if (inProgress !== InteractionStatus.None) {
     return <Loading />;
   }
 
-  // al ingelogd
-  if (isAuthenticated) {
+  // admin ingelogd → dashboard
+  if (isAdminAuthenticated) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return <Login handleLogin={handleLogin} />;
+  return <Login handleLogin={handleAdminLogin} />;
 };
 
 export default LoginPage;
