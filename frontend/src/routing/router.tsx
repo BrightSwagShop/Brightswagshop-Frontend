@@ -21,6 +21,7 @@ import AuthCallbackPage from "../Pages/AuthCallbackPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
+import Favorites from "../Pages/FavoritesPage";
 import PaymentSucceed from "../Pages/PaymentSucceed";
 import PaymentCanceled from "../Pages/PaymentCanceled";
 
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
       { path: "contact", element: <ContactPage /> },
       { path: "about", element: <About /> },
       { path: "unauthorized", element: <Unauthorized /> },
+      { path: "favoriten", element: <Favorites /> },
       { path: "success", element: <PaymentSucceed /> },
       { path: "cancel", element: <PaymentCanceled /> },
       {

@@ -4,21 +4,26 @@ import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logo.png";
 import { useState, useEffect } from "react";
 import { useMsal, useIsAuthenticated } from "@azure/msal-react";
-
+import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
-  
   const [isScrolled, setIsScrolled] = useState(false);
   const { instance } = useMsal();
-  const isAuthenticated = useIsAuthenticated();
-  //voor login standaard gebruiker
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  const isLoggedIn = isAuthenticated || user;
+  const isMsalAuthenticated = useIsAuthenticated();
+  const { user, isAuthenticated, logout } = useAuth();
 
-  const logout = () => {
-    instance.logoutRedirect({
-      postLogoutRedirectUri: "/",
-    });
+  const isLoggedIn = isMsalAuthenticated || isAuthenticated;
+
+  const handleLogout = () => {
+    if (isMsalAuthenticated) {
+      instance.logoutRedirect({
+        postLogoutRedirectUri: "/",
+      });
+      return;
+    }
+
+    logout();
+    window.location.href = "/";
   };
 
   useEffect(() => {
@@ -31,14 +36,16 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`sticky top-0 w-full bg-white z-50 transition-all duration-300 ${
-      isScrolled ? "shadow-md" : ""
-    }`}>
-      <div className={`max-w-7xl mx-auto px-16 flex items-center justify-between transition-all duration-300 ${
-        isScrolled ? "h-14" : "h-25"
-      }`}>
-
-        {/* Logo */}
+    <header
+      className={`sticky top-0 w-full bg-white z-50 transition-all duration-300 ${
+        isScrolled ? "shadow-md" : ""
+      }`}
+    >
+      <div
+        className={`max-w-7xl mx-auto px-16 flex items-center justify-between transition-all duration-300 ${
+          isScrolled ? "h-14" : "h-25"
+        }`}
+      >
         <Link
           to="/"
           data-testid="logo-link"
@@ -52,9 +59,15 @@ const Header = () => {
           />
         </Link>
 
-        {/* Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
-          {isAuthenticated && (
+          <Link
+            to="/"
+            className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+          >
+            Home
+          </Link>
+
+          {isMsalAuthenticated && (
             <Link
               to="/admin/dashboard"
               data-testid="dashboard-link"
@@ -62,48 +75,6 @@ const Header = () => {
             >
               Dashboard
             </Link>
-          )}
-
-          {/* {!isAuthenticated ? (
-            <Link
-              to="/login"
-              data-testid="login-link"
-              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
-            >
-              Login
-            </Link>
-          ) : (
-            <button
-              onClick={logout}
-              className="hover:text-yellow-500 transition font-ttnorms font-bold"
-            >
-              Logout
-            </button>
-          )} */}
-
-                    {!isLoggedIn ? (
-            <Link
-              to="/login"
-              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
-            >
-              Login
-            </Link>
-          ) : (
-            <button
-              onClick={() => {
-                if (user) {
-                  //  standaard login logout
-                  localStorage.removeItem("user");
-                  window.location.href = "/";
-                } else {
-                  //  Microsoft logout
-                  logout();
-                }
-              }}
-              className="hover:text-yellow-500 transition font-ttnorms font-bold"
-            >
-              Logout
-            </button>
           )}
 
           <Link
@@ -122,11 +93,26 @@ const Header = () => {
             Contact
           </Link>
 
+          <div className=" flex justify-end">
+            {!isLoggedIn ? (
+              <Link
+                to="/login"
+                className="hover:text-yellow-500 transition font-ttnorms font-bold"
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="hover:text-yellow-500 transition font-ttnorms font-bold"
+              >
+                Logout
+              </button>
+            )}
+          </div>
         </nav>
 
-        {/* Icons */}
         <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
-
           <Link
             to="/favoriten"
             data-testid="favorites-link"
@@ -138,19 +124,25 @@ const Header = () => {
             />
           </Link>
 
-          <Link
-            to="/winkelwagen"
-            data-testid="cart-link"
-            className="flex items-center gap-4 text-gray-800 hover:text-yellow-500 transition"
-          >
-            <FiShoppingCart
-              className="text-xl cursor-pointer"
-              data-testid="cart-icon"
-            />
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              to="/winkelwagen"
+              data-testid="cart-link"
+              className="text-gray-800 hover:text-yellow-500 transition"
+            >
+              <FiShoppingCart
+                className="text-xl cursor-pointer"
+                data-testid="cart-icon"
+              />
+            </Link>
 
+            {user && (
+              <span className="text-sm font-bold text-yellow-500 cursor-default capitalize">
+                {user.username}
+              </span>
+            )}
+          </div>
         </div>
-
       </div>
     </header>
   );

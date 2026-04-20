@@ -6,10 +6,10 @@ import Login from "../components/Login";
 import Loading from "../components/Loading";
 
 const LoginPage = () => {
-  const { instance, accounts, inProgress } = useMsal();
-  const isAuthenticated = useIsAuthenticated();
+const { instance, accounts, inProgress } = useMsal();
+const isAdminAuthenticated = useIsAuthenticated();
 
-  const handleLogin = () => {
+  const handleAdminLogin = () => {
     instance.loginRedirect(loginRequest);
   };
 
@@ -17,19 +17,20 @@ const LoginPage = () => {
     return <Loading />;
   }
 
-  if (isAuthenticated && accounts.length > 0) {
-    const claims = accounts[0].idTokenClaims as Record<string, unknown>;
-    const roles = (claims?.roles as string[]) ?? [];
-    const isAdmin = roles.includes("App.Admin");
+if (isAdminAuthenticated && accounts.length > 0) {
+  const claims = accounts[0].idTokenClaims as Record<string, unknown>;
+  const roles = (claims?.roles as string[]) ?? [];
+  const isAdmin = roles.includes("App.Admin");
 
-    if (isAdmin) {
-      return <Navigate to="/admin/dashboard" replace />;
-    }
-
-    return <Navigate to="/unauthorized" replace />;
+  if (isAdmin) {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return <Login handleLogin={handleLogin} />;
+  return <Navigate to="/unauthorized" replace />;
+
+  }
+
+  return <Login handleLogin={handleAdminLogin} />;
 };
 
 export default LoginPage;
