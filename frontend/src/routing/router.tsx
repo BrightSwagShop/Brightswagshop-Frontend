@@ -20,6 +20,7 @@ import LoginPage from "../Pages/LoginPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
+import Favorites from "../Pages/FavoritesPage";
 import PaymentSucceed from "../Pages/PaymentSucceed";
 import PaymentCanceled from "../Pages/PaymentCanceled";
 
@@ -41,15 +42,16 @@ export const router = createBrowserRouter([
       { path: "about", element: <About /> },
       { path: "*", element: <NotFound /> },
       { path: "unauthorized", element: <Unauthorized /> },
+      { path: "favoriten", element: <Favorites /> },
       { path: "success", element: <PaymentSucceed /> },
       { path: "cancel", element: <PaymentCanceled /> },
       {
         path: "admin",
-            element: (
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            ),
+        element: (
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        ),
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <AdminDashboard /> },

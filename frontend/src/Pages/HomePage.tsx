@@ -9,8 +9,6 @@ import ErrorComponent from "../components/ErrorComponent";
 import tshirt4 from "../assets/t-shirts/t-shirt4.png";
 import hoodie1 from "../assets/hoodies/hoodie1.png";
 import mok from "../assets/mokken/mok.png";
-import drinkfles1 from "../assets/drinkflessen/drinkfles1.png";
-import notitieboekje1 from "../assets/notitieboeken/notitieboekje1.png";
 
 type ProductType = {
   name: string;
@@ -21,8 +19,6 @@ const imageMap: Record<string, string> = {
   tshirt: tshirt4,
   hoodie: hoodie1,
   mok: mok,
-  drinkfles: drinkfles1,
-  notebook: notitieboekje1,
 };
 
 const descMap: Record<string, string> = {
@@ -30,8 +26,6 @@ const descMap: Record<string, string> = {
   hoodie: "Warme hoodies voor dagelijks gebruik.",
   mok: "Bedrukte mokken voor koffie en thee op kantoor.",
   sticker: "Leuke stickers voor laptops en notitieboeken.",
-  drinkfles: "Herbruikbare flessen voor werk en onderweg.",
-  notebook: "Praktische notitieboeken voor werk en meetings.",
 };
 
 const HomePage = () => {
@@ -43,7 +37,7 @@ const HomePage = () => {
     const loadProductTypes = async () => {
       try {
         const response = await axios.get<ProductType[]>(
-          `${import.meta.env.VITE_API_URL}/api/producttypes`
+          `${import.meta.env.VITE_API_URL}/api/producttypes`,
         );
         setProductTypes(response.data);
       } catch (err) {
@@ -88,7 +82,10 @@ const HomePage = () => {
                 "Bekijk alle producten in deze categorie.";
 
               return (
-                <Link key={productType.slug} to={`/category/${productType.slug}`}>
+                <Link
+                  key={productType.slug}
+                  to={`/category/${productType.slug}`}
+                >
                   <div className="group relative overflow-hidden rounded-xl border border-[#3C3C3B] bg-white p-6 shadow-md transition hover:-translate-y-0.5 hover:border-yellow-300 hover:shadow-md">
                     <div className="flex gap-6">
                       {image && (
