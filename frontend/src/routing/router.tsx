@@ -6,7 +6,6 @@ import AdminLayout from "../layouts/AdminLayout";
 import App from "../App";
 import CategoryItemsPage from "../Pages/CategoryItemsPage";
 import DetailPageItem from "../Pages/DetailPageItem";
- 
 
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import Users from "../Pages/Admin/Users";
@@ -22,6 +21,8 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
 import Favorites from "../Pages/FavoritesPage";
+import PaymentSucceed from "../Pages/PaymentSucceed";
+import PaymentCanceled from "../Pages/PaymentCanceled";
 
 export const router = createBrowserRouter([
   // Zonder header/footer
@@ -35,20 +36,22 @@ export const router = createBrowserRouter([
       { index: true, element: <App /> },
       { path: "category/:category", element: <CategoryItemsPage /> },
       { path: "detailpage", element: <DetailPageItem /> },
-      { path: "winkelwagen", element: <Winkelwagen />},
+      { path: "winkelwagen", element: <Winkelwagen /> },
       { path: "checkout", element: <CheckoutPage /> },
-      { path:"contact", element:<ContactPage/>},
-      { path:"about", element:<About/>},
-      { path: "*", element: <NotFound />},
-      { path: "unauthorized", element: <Unauthorized/> },
-      {path:"favoriten", element:<Favorites/>},
+      { path: "contact", element: <ContactPage /> },
+      { path: "about", element: <About /> },
+      { path: "*", element: <NotFound /> },
+      { path: "unauthorized", element: <Unauthorized /> },
+      { path: "favoriten", element: <Favorites /> },
+      { path: "success", element: <PaymentSucceed /> },
+      { path: "cancel", element: <PaymentCanceled /> },
       {
         path: "admin",
-            element: (
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            ),
+        element: (
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        ),
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <AdminDashboard /> },
