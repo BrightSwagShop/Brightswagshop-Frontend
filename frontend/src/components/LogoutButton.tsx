@@ -1,7 +1,15 @@
 import { useMsal } from "@azure/msal-react";
 
-export default function LogoutButton() {
+const LogoutButton = () => {
   const { instance } = useMsal();
 
-  return <button onClick={() => instance.logoutRedirect()}>Logout</button>;
-}
+  const handleLogout = () => {
+    instance.logoutRedirect({
+      postLogoutRedirectUri: "/login",
+    });
+  };
+
+  return <button onClick={handleLogout}>Logout</button>;
+};
+
+export default LogoutButton;

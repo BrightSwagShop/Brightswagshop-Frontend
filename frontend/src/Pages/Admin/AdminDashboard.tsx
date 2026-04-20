@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaUsers, FaBoxOpen, FaBug, FaCog, FaArrowRight } from "react-icons/fa";
- 
+import apiClient from "../../services/axiosInstance";
+
 interface DashboardCard {
   title: string;
   subtitle: string;
@@ -9,34 +10,77 @@ interface DashboardCard {
 }
 
 const cards: DashboardCard[] = [
-  { title: "Users", subtitle: "Manage users", to: "/admin/users", icon: <FaUsers /> },
-  { title: "Products", subtitle: "Manage products", to: "/admin/products", icon: <FaBoxOpen /> },
-  { title: "Bugs", subtitle: "Toggle test bugs", to: "/admin/bugs", icon: <FaBug /> },
-  { title: "Settings", subtitle: "Admin settings", to: "/admin/settings", icon: <FaCog /> },
+  {
+    title: "Users",
+    subtitle: "Manage users",
+    to: "/admin/users",
+    icon: <FaUsers />,
+  },
+  {
+    title: "Products",
+    subtitle: "Manage products",
+    to: "/admin/products",
+    icon: <FaBoxOpen />,
+  },
+  {
+    title: "Bugs",
+    subtitle: "Toggle test bugs",
+    to: "/admin/bugs",
+    icon: <FaBug />,
+  },
+  {
+    title: "Settings",
+    subtitle: "Admin settings",
+    to: "/admin/settings",
+    icon: <FaCog />,
+  },
 ];
 
 const adminName = "Admin"; // later uit auth/context
 
 const AdminDashboard = () => {
+  const handleTest = async () => {
+    try {
+      const response = await apiClient.get("/api/admins/admin-only");
+      console.log(response.data);
+      alert(response.data);
+    } catch (error) {
+      console.error(error);
+      alert("Call failed");
+    }
+  };
 
-  
+  const handleDebugClaims = async () => {
+    try {
+      const response = await apiClient.get("/api/debug/claims");
+      console.log("Claims:", response.data);
+    } catch (err) {
+      console.error("Claims error:", err);
+    }
+  };
+
   return (
     <div className="space-y-6">
-        <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-                Welkom {adminName}
-            </h1>
-            <p className="text-sm text-gray-500">
-                Beheer hier users, producten, bugs en instellingen
-            </p>
-        </div>
-
+      <div>
+        <h1 className="text-2xl font-semibold text-gray-900">
+          Welkom {adminName}
+        </h1>
+        <p className="text-sm text-gray-500">
+          Beheer hier users, producten, bugs en instellingen
+        </p>
+      </div>
 
       <div className="bg-white border rounded-2xl p-6 flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Admin Dashboard</h2>
-          <p className="text-sm text-gray-500">Quick access to admin features</p>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Admin Dashboard
+          </h2>
+          <p className="text-sm text-gray-500">
+            Quick access to admin features
+          </p>
         </div>
+
+        <div></div>
 
         <Link
           to="/"
@@ -62,10 +106,14 @@ const AdminDashboard = () => {
 
             <div className="mt-5">
               <div className="text-sm text-gray-500">{card.subtitle}</div>
-              <div className="text-lg font-semibold text-gray-900">{card.title}</div>
+              <div className="text-lg font-semibold text-gray-900">
+                {card.title}
+              </div>
             </div>
           </Link>
         ))}
+        <button onClick={handleTest}>Test admin endpoint</button>
+        <button onClick={handleDebugClaims}>Debug claims</button>
       </div>
     </div>
   );
