@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiBaseUrl } from "../Config/apiBaseUrl";
 
 export type CartItemRequest = {
   productId: string;
@@ -26,7 +27,7 @@ export type ShoppingCartResponse = {
 
 // baseUrl voor shoppingCarts
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api/shoppingcarts`,
+  baseURL: `${getApiBaseUrl()}/api/shoppingcarts`,
 });
 
 export const getCartByUserId = async (

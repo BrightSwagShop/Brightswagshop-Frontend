@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiBaseUrl } from "../Config/apiBaseUrl";
 
 export type OrderItemResponse = {
   productId: string;
@@ -18,7 +19,7 @@ export type OrderResponse = {
 };
 
 const orderApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api/orders`,
+  baseURL: `${getApiBaseUrl()}/api/orders`,
 });
 
 export const createOrderFromCart = async (
