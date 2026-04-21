@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ShoppingCart from "../components/WinkelwagenComponents/ShoppingCart";
-import { createOrderFromCart } from "../API/OrderAPI";
-import { createCheckoutSession } from "../API/PaymentAPI";
+import { AuthContext } from "../contexts/AuthContext";
+import { createOrderFromCart } from "../api/OrderAPI";
+import { createCheckoutSession } from "../api/PaymentAPI";
 import {
   getCartByUserId,
   removeCartItem,
   updateCartItemQuantity,
   type ShoppingCartResponse,
-} from "../API/CartAPI";
-import { Link } from "react-router-dom";
+} from "../api/CartAPI";
 
 const WinkelwagenPage = () => {
-  const userId = "user-123";
+  const { user, isLoading: isAuthLoading } = useContext(AuthContext);
+  const userId = user?.id;
 
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [cart, setCart] = useState<ShoppingCartResponse | null>(null);
@@ -21,23 +23,43 @@ const WinkelwagenPage = () => {
 
   useEffect(() => {
     const loadCart = async () => {
+      const localToken = localStorage.getItem("token");
+
+      if (isAuthLoading) {
+        return;
+      }
+
+      if (!localToken || !userId) {
+        setError("Alleen lokale accounts hebben voorlopig een winkelwagen.");
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         setError(null);
 
         const data = await getCartByUserId(userId);
         setCart(data);
-      } catch {
+      } catch (error) {
+        console.error(error);
         setError("Kon winkelwagen niet ophalen.");
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadCart();
-  }, [userId]);
+    void loadCart();
+  }, [userId, isAuthLoading]);
 
   const handleCheckout = async () => {
+    const localToken = localStorage.getItem("token");
+
+    if (!localToken || !userId) {
+      setError("Alleen lokale accounts kunnen voorlopig afrekenen.");
+      return;
+    }
+
     try {
       setIsCheckingOut(true);
       setError(null);
@@ -46,8 +68,8 @@ const WinkelwagenPage = () => {
       const checkoutSession = await createCheckoutSession(createdOrder.id);
 
       window.location.href = checkoutSession.sessionUrl;
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       setError("Afrekenen mislukt.");
     } finally {
       setIsCheckingOut(false);
@@ -59,6 +81,8 @@ const WinkelwagenPage = () => {
     selectedColor: string | undefined,
     quantity: number,
   ) => {
+    if (!userId) return;
+
     try {
       setIsUpdating(true);
       setError(null);
@@ -70,7 +94,8 @@ const WinkelwagenPage = () => {
       });
 
       setCart(updatedCart);
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError("Kon aantal niet aanpassen.");
     } finally {
       setIsUpdating(false);
@@ -81,6 +106,8 @@ const WinkelwagenPage = () => {
     productId: string,
     selectedColor: string | undefined,
   ) => {
+    if (!userId) return;
+
     try {
       setIsUpdating(true);
       setError(null);
@@ -92,14 +119,15 @@ const WinkelwagenPage = () => {
       });
 
       setCart(updatedCart);
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError("Kon item niet verwijderen.");
     } finally {
       setIsUpdating(false);
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isAuthLoading) {
     return (
       <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center px-6">
         <div className="bg-white shadow-md rounded-2xl px-10 py-8">
@@ -127,8 +155,21 @@ const WinkelwagenPage = () => {
     );
   }
 
-  if (!cart || cart.items.length === 0) {
-    return <p>Geen winkelwagen gevonden.</p>;
+  if (!cart) {
+    return (
+      <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center px-6">
+        <div className="bg-white shadow-md rounded-2xl px-10 py-8 max-w-md w-full text-center">
+          <h2 className="text-2xl font-semibold text-[#3C3C3B] mb-3">
+            Geen winkelwagen gevonden
+          </h2>
+          <Link to="/">
+            <button className="bg-yellow-500 text-[#3C3C3B] px-6 py-3 rounded-xl font-medium hover:bg-yellow-400 transition cursor-pointer">
+              Verder winkelen
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   if (cart.items.length === 0) {

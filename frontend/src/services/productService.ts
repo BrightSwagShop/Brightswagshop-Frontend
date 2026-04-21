@@ -1,5 +1,5 @@
 import api from "../api/api";
-import type { Product } from "../types/product";
+import type { Product } from "../types/Product";
 
 export async function getProductsByType(slug: string) {
   const response = await api.get<Product[]>(`/api/products/type/${slug}`);
