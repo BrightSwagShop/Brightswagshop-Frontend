@@ -5,7 +5,31 @@ import { CartPage } from '../../Pages/CartPage';
 test.describe('Winkelwagen Page - Smoke Tests', () => {
   let cartPage: CartPage;
 
+  const mockCartResponse = {
+    id: 'cart-1',
+    userId: 'user-123',
+    totalPrice: 29.99,
+    updatedAt: new Date().toISOString(),
+    items: [
+      {
+        productId: 'prod-1',
+        productName: 'Test Product',
+        selectedColor: 'Black',
+        unitPrice: 29.99,
+        quantity: 1,
+        imageUrl: 'https://via.placeholder.com/300',
+      },
+    ],
+  };
+
   test.beforeEach(async ({ page }) => {
+    await page.route('**/api/shoppingcarts/user/user-123', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(mockCartResponse),
+      });
+    });
 
     cartPage = new CartPage(page);
     await cartPage.navigateToCart();
