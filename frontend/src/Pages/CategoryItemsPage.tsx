@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductsByType } from "../services/productService";
-import type { Product } from "../types/product";
+import type { Product } from "../types/Product";
 import ProductCard from "../components/ProductCard";
 
 const CategoryItemsPage = () => {
