@@ -1,8 +1,9 @@
 import axios from "axios";
 import { msalInstance } from "../Config/AuthConfig";
+import { getApiBaseUrl } from "../Config/apiBaseUrl";
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: getApiBaseUrl(),
 });
 
 //  interceptor

@@ -2,6 +2,11 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "engines": {
+    "node": "20.19.x",
+    "npm": "10.x"
+  },
+  "packageManager": "npm@10.8.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -21,7 +26,6 @@
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.6",
     "formik": "^2.4.9",
-    "playwright": "^1.58.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
@@ -48,6 +52,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jsdom": "^28.1.0",
+    "playwright": "^1.58.2",
     "playwright-qase-reporter": "^2.2.3",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",

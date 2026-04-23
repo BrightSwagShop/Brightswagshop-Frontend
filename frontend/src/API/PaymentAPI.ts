@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiBaseUrl } from "../Config/apiBaseUrl";
 
 export type CheckoutSessionResponse = {
   sessionId: string;
@@ -6,7 +7,7 @@ export type CheckoutSessionResponse = {
 };
 
 const paymentApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api/payments`,
+  baseURL: `${getApiBaseUrl()}/api/payments`,
 });
 
 export const createCheckoutSession = async (

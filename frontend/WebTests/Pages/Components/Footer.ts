@@ -29,7 +29,7 @@ export class Footer {
   }
 
   getRightsText(): Locator {
-    return this.page.locator('footer').getByText(' Brightest. All rights reserved.');
+    return this.page.locator('footer').getByText(/Brightest\. All rights reserved\./i);
   }
 
   // Methods

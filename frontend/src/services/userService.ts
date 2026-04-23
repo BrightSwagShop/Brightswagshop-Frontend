@@ -1,4 +1,4 @@
-import api from "../api/api";
+import api from "../API/api";
 
 export type UserResponse = {
   id: string;

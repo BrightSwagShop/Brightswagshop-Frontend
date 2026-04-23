@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
-import api from "../api/api";
+import api from "../API/api";
 import ProductCard from "../components/ProductCard";
 
 type Product = {

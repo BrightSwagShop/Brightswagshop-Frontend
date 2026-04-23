@@ -59,17 +59,38 @@ const Footer = () => {
 
         {/* Socials */}
         <div className="flex justify-end gap-4">
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
+          <a
+            href="https://www.linkedin.com/company/brightest/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+            data-testid="footer-linkedin"
+            className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition"
+          >
             <FaLinkedinIn className="text-[#F4C709]" />
-          </div>
+          </a>
 
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
+          <a
+            href="https://www.facebook.com/brightestbe"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Facebook"
+            data-testid="footer-facebook"
+            className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition"
+          >
             <FaFacebookF className="text-[#F4C709]" />
-          </div>
+          </a>
 
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition">
+          <a
+            href="https://www.instagram.com/brightestbe/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+            data-testid="footer-instagram"
+            className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:scale-105 transition"
+          >
             <FaInstagram className="text-[#F4C709]" />
-          </div>
+          </a>
         </div>
       </div>
 

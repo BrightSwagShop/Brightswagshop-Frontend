@@ -95,8 +95,6 @@ jobs:
           QASE_TESTOPS_RUN_COMPLETE: true
           ENTRA_ID_TENANT_ID: ${{ secrets.ENTRA_ID_TENANT_ID }}
           ENTRA_ID_CLIENT_ID: ${{ secrets.ENTRA_ID_CLIENT_ID }}
-          ENTRA_ID_CLIENT_SECRET: ${{ secrets.ENTRA_ID_CLIENT_SECRET }}
-          ENTRA_ID_SCOPE: ${{ secrets.ENTRA_ID_SCOPE }}
         run: npm run webtests
 
       - name: Upload Playwright Report

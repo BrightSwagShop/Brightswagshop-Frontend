@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getApiBaseUrl } from "../Config/apiBaseUrl";
 
 import Loading from "../components/Loading";
 import ErrorComponent from "../components/ErrorComponent";
@@ -37,7 +38,7 @@ const HomePage = () => {
     const loadProductTypes = async () => {
       try {
         const response = await axios.get<ProductType[]>(
-          `${import.meta.env.VITE_API_URL}/api/producttypes`,
+          `${getApiBaseUrl()}/api/producttypes`,
         );
         setProductTypes(response.data);
       } catch (err) {
