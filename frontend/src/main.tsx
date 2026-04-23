@@ -1,50 +1,24 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import RootLayout from './layouts/RootLayout.tsx'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
-import AdminLayout from './layouts/AdminLayout.tsx'
-import Users from './Pages/Admin/Users.tsx'
-import AdminDashboard from './Pages/Admin/AdminDashboard.tsx'
-import Products from './Pages/Admin/Products.tsx'
-import Bugs from './Pages/Admin/Bugs.tsx'
-import Settings from './Pages/Admin/Settings.tsx'
-import CategoryItemsPage from './Pages/CategoryItemsPage.tsx'
-import DetailPageItem from './Pages/DetailPageItem.tsx'
-import Login from './components/Login.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { MsalProvider } from "@azure/msal-react";
+import { Toaster } from "react-hot-toast";
 
+import "./index.css";
+import { router } from "./routing/router";
+import { msalInstance } from "./Config/AuthConfig";
+import { AuthProvider } from "./providers/AuthProvider";
+import { FavoritesProvider } from "./providers/FavoritesProvider";
 
-
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />, 
-    children: [
-      { path: "/", element: <App />},
-      { path: "category/:category", element: < CategoryItemsPage/>},
-      { path: "detailpage", element: <DetailPageItem/>},
-      {path: "login", element:<Login/>},
-      // Admin page's
-      { path: "admin", 
-        element: <AdminLayout/>,
-        children: [
-          { index: true, element: <Navigate to="dashboard" replace />}, // /admin -> redirect naar admin/dashboard
-          { path: "dashboard", element: <AdminDashboard />},
-          { path: "users", element: <Users />},
-          { path: "products", element: <Products />},
-          { path: "bugs", element: <Bugs />},
-          { path: "settings", element: <Settings />}
-        ],
-      },
-    ],
-  },
-])
-
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <MsalProvider instance={msalInstance}>
+      <AuthProvider>
+        <FavoritesProvider>
+          <RouterProvider router={router} />
+          <Toaster position="top-right" />
+        </FavoritesProvider>
+      </AuthProvider>
+    </MsalProvider>
   </StrictMode>,
-)
+);
