@@ -4,6 +4,11 @@ import { CartPage } from '../../Pages/CartPage';
 
 test.describe('Winkelwagen Page - Smoke Tests', () => {
   let cartPage: CartPage;
+  const mockUserResponse = {
+    id: 'user-123',
+    username: 'playwright-user',
+    favorites: [],
+  };
 
   const mockCartResponse = {
     id: 'cart-1',
@@ -23,6 +28,18 @@ test.describe('Winkelwagen Page - Smoke Tests', () => {
   };
 
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem('token', 'mock-local-token');
+    });
+
+    await page.route('**/api/users/me', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(mockUserResponse),
+      });
+    });
+
     await page.route('**/api/shoppingcarts/user/user-123', async (route) => {
       await route.fulfill({
         status: 200,
