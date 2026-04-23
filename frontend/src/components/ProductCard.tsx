@@ -1,4 +1,5 @@
-import FavoriteButton from "./FavoriteButton";
+import AddToCartButton from "./Buttons/AddToCartButton";
+import FavoriteButton from "./Buttons/FavoriteButton";
 
 type ProductCardProps = {
   product: {
@@ -27,6 +28,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
       )}
 
+      {/* BOVENSTE DEEL */}
       <div className="flex items-start justify-between gap-4 flex-1">
         <div>
           <h2 className="text-xl font-semibold text-[#3C3C3B]">
@@ -40,7 +42,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <p className="mt-4 font-bold text-[#3C3C3B]">€ {product.price}</p>
         </div>
 
+        {/* rechtsboven */}
         <FavoriteButton productId={product.id} />
+      </div>
+
+      {/* ONDERSTE DEEL */}
+      <div className="mt-auto flex justify-end">
+        <AddToCartButton productId={product.id} productName={product.name} />
       </div>
     </div>
   );

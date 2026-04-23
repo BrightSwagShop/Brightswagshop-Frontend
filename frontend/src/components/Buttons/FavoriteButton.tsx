@@ -1,5 +1,5 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { useFavorites } from "../hooks/useFavorites";
+import { useFavorites } from "../../hooks/useFavorites";
 
 type FavoriteButtonProps = {
   productId: string;
