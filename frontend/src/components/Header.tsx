@@ -2,7 +2,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logo.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import { useAuth } from "../hooks/useAuth";
 
@@ -35,17 +35,19 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const innerHeaderStyle: CSSProperties = {
+    contain: "layout size",
+  };
+
   return (
-    <header
-      className={`sticky top-0 w-full bg-white z-50 transition-all duration-300 ${
-        isScrolled ? "shadow-md" : ""
-      }`}
-    >
+    <header className="sticky top-0 z-50 w-full h-25 pointer-events-none">
       <div
-        className={`max-w-7xl mx-auto px-16 flex items-center justify-between transition-all duration-300 ${
-          isScrolled ? "h-14" : "h-25"
+        style={innerHeaderStyle}
+        className={`pointer-events-auto absolute inset-x-0 top-0 bg-white transition-all duration-300 ${
+          isScrolled ? "h-14 shadow-md" : "h-25"
         }`}
       >
+        <div className="max-w-7xl mx-auto px-16 flex items-center justify-between h-full">
         <Link
           to="/"
           data-testid="logo-link"
@@ -59,7 +61,7 @@ const Header = () => {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
+          <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
           <Link
             to="/"
             className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
@@ -93,7 +95,7 @@ const Header = () => {
             Contact
           </Link>
 
-          <div className=" flex justify-end">
+            <div className=" flex justify-end">
             {!isLoggedIn ? (
               <Link
                 to="/login"
@@ -110,9 +112,9 @@ const Header = () => {
               </button>
             )}
           </div>
-        </nav>
+          </nav>
 
-        <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
+          <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
           <Link
             to="/favoriten"
             data-testid="favorites-link"
@@ -141,6 +143,7 @@ const Header = () => {
                 {user.username}
               </span>
             )}
+          </div>
           </div>
         </div>
       </div>
