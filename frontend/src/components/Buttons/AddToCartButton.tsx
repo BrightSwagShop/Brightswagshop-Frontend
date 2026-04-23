@@ -1,6 +1,6 @@
 import { FaShoppingCart, FaCheck } from "react-icons/fa";
 import { useState, useContext } from "react";
-import { addCartItem } from "../../api/CartAPI";
+import { addCartItem } from "../../API/CartAPI";
 import { AuthContext } from "../../contexts/AuthContext";
 
 type AddToCartButtonProps = {

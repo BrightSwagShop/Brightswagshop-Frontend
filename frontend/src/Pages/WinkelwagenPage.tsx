@@ -2,14 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ShoppingCart from "../components/WinkelwagenComponents/ShoppingCart";
 import { AuthContext } from "../contexts/AuthContext";
-import { createOrderFromCart } from "../api/OrderAPI";
-import { createCheckoutSession } from "../api/PaymentAPI";
+import { createOrderFromCart } from "../API/OrderAPI";
+import { createCheckoutSession } from "../API/PaymentAPI";
 import {
   getCartByUserId,
   removeCartItem,
   updateCartItemQuantity,
   type ShoppingCartResponse,
-} from "../api/CartAPI";
+} from "../API/CartAPI";
 
 const WinkelwagenPage = () => {
   const { user, isLoading: isAuthLoading } = useContext(AuthContext);
