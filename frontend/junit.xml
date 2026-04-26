@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.0205286">
-    <testsuite name="src/Pages/__tests__/CategoryItemsPage.test.tsx" timestamp="2026-04-23T14:14:03.429Z" hostname="Laptop_WB" tests="1" failures="0" errors="0" skipped="0" time="0.0205286">
-        <testcase classname="src/Pages/__tests__/CategoryItemsPage.test.tsx" name="CategoryItemsPage &gt; renders without crashing" time="0.0172014">
-        </testcase>
-    </testsuite>
-</testsuites>

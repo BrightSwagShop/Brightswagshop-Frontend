@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
-import { LoginPage } from '../../Pages/LoginPage';
+import { LoginPage } from 'testing-framework/frontend';
 
 test.describe('LoginPage - Smoke Tests', () => {
   let loginPage: LoginPage;

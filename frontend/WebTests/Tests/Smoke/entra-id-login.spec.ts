@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
-import { LoginPage } from '../../Pages/LoginPage';
-import { createEntraIdAuthHelper, EntraIdAuthHelper } from '../../Utils/EntraIdAuthHelper';
+import { LoginPage } from 'testing-framework/frontend';
+import { createEntraIdAuthHelper, EntraIdAuthHelper } from '../../Utils/EntraIdAuthHelper.js';
 
 const shouldAutoCreateQaseCases = process.env.QASE_TESTOPS_AUTO_CREATE === 'true';
 const qaseCase = (id: number, title: string): string => shouldAutoCreateQaseCases ? title : qase(id, title);

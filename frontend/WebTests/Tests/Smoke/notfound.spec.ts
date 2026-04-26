@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
-import { NotFoundPage } from '../../Pages/NotFoundPage';
+import { NotFoundPage } from 'testing-framework/frontend';
 
 const shouldAutoCreateQaseCases = process.env.QASE_TESTOPS_AUTO_CREATE === 'true';
 const qaseCase = (id: number, title: string) => shouldAutoCreateQaseCases ? title : qase(id, title);

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
-import { CartPage } from '../../Pages/CartPage';
+import { CartPage } from 'testing-framework/frontend';
 
 test.describe('Winkelwagen Page - Smoke Tests', () => {
   let cartPage: CartPage;

@@ -29,8 +29,8 @@ export default defineConfig({
             },
           },
         },
-      ],
-    ] : []),
+      ] as [string, any]
+    ] : [])
   ],
   use: {
     baseURL: 'http://localhost:5173',
