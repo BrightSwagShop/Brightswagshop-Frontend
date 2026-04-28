@@ -29,7 +29,7 @@ export default defineConfig({
             },
           },
         },
-      ] as [string, any]
+      ] as [string, Record<string, unknown>]
     ] : [])
   ],
   use: {
