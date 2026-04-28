@@ -24,6 +24,8 @@ import Unauthorized from "../components/Unauthorized";
 import Favorites from "../Pages/FavoritesPage";
 import PaymentSucceed from "../Pages/PaymentSucceed";
 import PaymentCanceled from "../Pages/PaymentCanceled";
+import Bestellingen from "../Pages/Admin/Bestellingen";
+import GebruikersPagina from "../Pages/Admin/GebruikersPagina";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -43,7 +45,7 @@ export const router = createBrowserRouter([
       { path: "unauthorized", element: <Unauthorized /> },
       { path: "favoriten", element: <Favorites /> },
       { path: "success", element: <PaymentSucceed /> },
-      { path: "cancel", element: <PaymentCanceled /> },
+      { path: "cancel", element: <PaymentCanceled /> },],},
       {
         path: "admin",
         element: (
@@ -54,13 +56,14 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <AdminDashboard /> },
-          { path: "users", element: <Users /> },
           { path: "products", element: <Products /> },
+          { path: "users", element: <GebruikersPagina /> },
+           { path: "bestellingen", element: <Bestellingen /> },
           { path: "bugs", element: <Bugs /> },
           { path: "settings", element: <Settings /> },
         ],
       },
       { path: "*", element: <NotFound /> },
-    ],
-  },
+    
+  
 ]);
