@@ -107,7 +107,7 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
         </NavLink>
 
         <NavLink
-          to="/admin/settings"
+          to="/admin/statistieken"
           className={({ isActive }) =>
             `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
               isActive ? linkActive : linkInactive

@@ -8,7 +8,7 @@ import CategoryItemsPage from "../Pages/CategoryItemsPage";
 import DetailPageItem from "../Pages/DetailPageItem";
 
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
-import Users from "../Pages/Admin/Users";
+ 
 import Products from "../Pages/Admin/Products";
 import Bugs from "../Pages/Admin/Bugs";
 import Settings from "../Pages/Admin/Settings";
@@ -26,6 +26,8 @@ import PaymentSucceed from "../Pages/PaymentSucceed";
 import PaymentCanceled from "../Pages/PaymentCanceled";
 import Bestellingen from "../Pages/Admin/Bestellingen";
 import GebruikersPagina from "../Pages/Admin/GebruikersPagina";
+import Statistieken from "../Pages/Admin/statistieken";
+ 
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -61,6 +63,7 @@ export const router = createBrowserRouter([
            { path: "bestellingen", element: <Bestellingen /> },
           { path: "bugs", element: <Bugs /> },
           { path: "settings", element: <Settings /> },
+          { path: "statistieken", element: <Statistieken />}
         ],
       },
       { path: "*", element: <NotFound /> },
