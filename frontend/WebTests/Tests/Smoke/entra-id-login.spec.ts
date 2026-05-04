@@ -10,7 +10,7 @@ function decodeJwtPayload(token: string): Record<string, unknown> {
 
   const payloadBase64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
   const padded = payloadBase64.padEnd(Math.ceil(payloadBase64.length / 4) * 4, '=');
-  const payloadJson = Buffer.from(padded, 'base64').toString('utf8');
+  const payloadJson = atob(padded);
   return JSON.parse(payloadJson) as Record<string, unknown>;
 }
 
