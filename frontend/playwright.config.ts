@@ -9,6 +9,7 @@ export default defineConfig({
   reporter: [
     ['html'],
     ['list'],
+    ['junit', { outputFile: 'test-results/junit.xml' }],
     ['./reporters/browserstack.cjs'],
   ],
   use: {
