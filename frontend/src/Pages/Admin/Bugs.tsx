@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { bugLabels, type BugKey } from "../../bugs/BugFlags";
 import { loadBugFlags, saveBugFlags, type BugFlags } from "../../bugs/BugStore";
+import { toggleStripePaymentFailure } from "../../services/bugService";
 
 export default function Bugs() {
   const [flags, setFlags] = useState<BugFlags>(loadBugFlags());
@@ -9,9 +10,18 @@ export default function Bugs() {
     saveBugFlags(flags);
   }, [flags]);
 
-  const toggle = (key: BugKey) => {
-    setFlags((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+  const toggle = async (key: BugKey) => {
+  const newValue = !flags[key];
+
+  setFlags((prev) => ({
+    ...prev,
+    [key]: newValue,
+  }));
+
+  if (key === "STRIPE_PAYMENT_FAILURE") {
+    await toggleStripePaymentFailure(newValue);
+  }
+};
 
   return (
     <div className="p-6 bg-[#EDEDED] min-h-screen">
