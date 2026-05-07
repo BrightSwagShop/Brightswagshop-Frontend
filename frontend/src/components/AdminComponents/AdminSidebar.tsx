@@ -1,25 +1,29 @@
 import { NavLink } from "react-router-dom";
+
 import {
-  FaTachometerAlt,
-  FaUsers,
-  FaBoxOpen,
+  FaDesktop,
+  FaUser,
+  FaCube,
   FaClipboardList,
-  FaCog,
+  FaChartBar,
   FaChevronLeft, 
-  FaChevronRight
+  FaChevronRight,
+  FaShoppingCart 
 } from "react-icons/fa";
 
 interface AdminSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
 }
+//onToggele knop om sidebar open/dicht te klappen
 
+//isActive bepaalt styling 
 const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
   const linkBase =
     "flex items-center gap-3 rounded-lg transition text-sm font-medium";
   const linkInactive =
     "text-gray-300 hover:bg-white/10 hover:text-white";
-  const linkActive = "bg-white/15 text-white";
+  const linkActive = "bg-[#F4C709] text-[#3C3C3B]";
 
   return (
     <aside
@@ -59,21 +63,11 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
             }`
           }
         >
-          <FaTachometerAlt />
+          <FaDesktop />
           {!collapsed && <span>Dashboard</span>}
         </NavLink>
 
-        <NavLink
-          to="/admin/users"
-          className={({ isActive }) =>
-            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
-              isActive ? linkActive : linkInactive
-            }`
-          }
-        >
-          <FaUsers />
-          {!collapsed && <span>Users</span>}
-        </NavLink>
+        
 
         <NavLink
           to="/admin/products"
@@ -83,8 +77,45 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
             }`
           }
         >
-          <FaBoxOpen />
-          {!collapsed && <span>Products</span>}
+          <FaCube />
+          {!collapsed && <span>Productbeheer</span>}
+        </NavLink>
+
+        <NavLink
+        to="/admin/bestellingen"
+         className={({ isActive }) =>
+            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
+              isActive ? linkActive : linkInactive
+            }`
+          }
+        > <FaShoppingCart />
+        {!collapsed && <span>Bestellingen</span>}
+        </NavLink>
+
+         
+        
+         <NavLink
+          to="/admin/users"
+          className={({ isActive }) =>
+            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
+              isActive ? linkActive : linkInactive
+            }`
+          }
+        >
+          <FaUser />
+          {!collapsed && <span>Gebruikersbeheer</span>}
+        </NavLink>
+
+        <NavLink
+          to="/admin/statistieken"
+          className={({ isActive }) =>
+            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
+              isActive ? linkActive : linkInactive
+            }`
+          }
+        >
+          <FaChartBar  />
+          {!collapsed && <span>Statistieken</span>}
         </NavLink>
 
         <NavLink
@@ -97,18 +128,6 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
         >
           <FaClipboardList />
           {!collapsed && <span>Bugs</span>}
-        </NavLink>
-
-        <NavLink
-          to="/admin/settings"
-          className={({ isActive }) =>
-            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
-              isActive ? linkActive : linkInactive
-            }`
-          }
-        >
-          <FaCog />
-          {!collapsed && <span>Settings</span>}
         </NavLink>
       </nav>
     </aside>

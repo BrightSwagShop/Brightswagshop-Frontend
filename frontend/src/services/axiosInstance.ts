@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
             `api://${import.meta.env.VITE_API_CLIENT_ID}/access_as_user`,
           ],
         });
-        console.log(tokenResponse.accessToken);
+        //console.log(tokenResponse.accessToken);
 
         config.headers.Authorization = `Bearer ${tokenResponse.accessToken}`;
       } catch (error) {

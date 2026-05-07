@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { bugLabels, type BugKey } from "../../bugs/BugFlags";
 import { loadBugFlags, saveBugFlags, type BugFlags } from "../../bugs/BugStore";
+import { toggleStripePaymentFailure } from "../../services/bugService";
 
 export default function Bugs() {
   const [flags, setFlags] = useState<BugFlags>(loadBugFlags());
@@ -9,43 +10,60 @@ export default function Bugs() {
     saveBugFlags(flags);
   }, [flags]);
 
-  const toggle = (key: BugKey) => {
-    setFlags((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+  const toggle = async (key: BugKey) => {
+  const newValue = !flags[key];
+
+  setFlags((prev) => ({
+    ...prev,
+    [key]: newValue,
+  }));
+
+  if (key === "STRIPE_PAYMENT_FAILURE") {
+    await toggleStripePaymentFailure(newValue);
+  }
+};
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-extrabold text-slate-900">Bug Lab</h1>
-      <p className="mt-2 text-slate-600">
-        Zet bugs aan/uit om edge cases te testen. (Wordt bewaard in je browser.)
+    <div className="p-6 bg-[#EDEDED] min-h-screen">
+      <h1 className="text-4xl font-semibold text-[#3C3C3B]">Bugs</h1>
+      <p className="text-[#3C3C3B] mt-1 mb-8">
+        Zet hier de ingebouwde bugs aan of uit.
       </p>
 
-      <div className="mt-8 space-y-3">
+      {/* GRID */}
+      <div className="grid grid-cols-2 gap-6 max-w-3xl">
+
         {(Object.keys(bugLabels) as BugKey[]).map((key) => (
           <div
             key={key}
-            className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4"
+            className="bg-white rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center"
           >
-            <div>
-              <p className="font-semibold text-slate-900">{bugLabels[key]}</p>
-              <p className="text-xs text-slate-500">{key}</p>
-            </div>
+            {/* TITLE */}
+            <p className="text-sm font-medium text-[#3C3C3B] mb-4">
+              {bugLabels[key]}
+            </p>
 
+            {/* TOGGLE */}
             <button
               onClick={() => toggle(key)}
-              className={`h-8 w-14 rounded-full transition px-1 ${
-                flags[key] ? "bg-emerald-500" : "bg-slate-300"
+              className={`w-12 h-6 flex items-center rounded-full p-1 transition ${
+                flags[key] ? "bg-yellow-400" : "bg-gray-300"
               }`}
-              aria-pressed={flags[key]}
             >
               <div
-                className={`h-6 w-6 rounded-full bg-white transition ${
+                className={`bg-white w-4 h-4 rounded-full shadow-md transform transition ${
                   flags[key] ? "translate-x-6" : "translate-x-0"
                 }`}
               />
             </button>
+
+            {/* STATUS */}
+            <p className="text-xs text-gray-500 mt-2">
+              {flags[key] ? "Actief" : "Uit"}
+            </p>
           </div>
         ))}
+
       </div>
     </div>
   );
