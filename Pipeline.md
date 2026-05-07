@@ -62,7 +62,7 @@ Pipeline order in `ci.yml`:
 
 ## 4) External systems connected
 
-- **Qase TestOps** (Playwright reporting)
+- **BrowserStack** (Playwright reporting)
 - **SonarCloud** (code quality)
 - **SendGrid** (email notification)
 - **Render** (deployment)
@@ -72,8 +72,8 @@ Pipeline order in `ci.yml`:
 These must exist in repository settings (`Settings > Secrets and variables > Actions`):
 
 - `SONAR_TOKEN`
-- `QASE_TESTOPS_API_TOKEN`
-- `QASE_TESTOPS_PROJECT`
+- `BROWSERSTACK_USERNAME`
+- `BROWSERSTACK_ACCESS_KEY`
 - `SENDGRID_API_KEY`
 - `RENDER_DEPLOY_HOOK`
 - `ENTRA_ID_TENANT_ID`
@@ -95,7 +95,7 @@ Common failure buckets:
 - Lint/type errors (`npm run lint`, `tsc`)
 - Unit test failures (`npm run test:run`)
 - E2E failures (`npm run webtests`)
-- Secret/config failures (Sonar/Qase/SendGrid/Render)
+- Secret/config failures (Sonar/BrowserStack/SendGrid/Render)
 
 ## 7) Reproduce the pipeline locally
 
@@ -113,7 +113,7 @@ npm run build
 
 If local passes but pipeline fails, check:
 - Missing secrets in GitHub
-- External service outages (Sonar/Qase/SendGrid/Render)
+- External service outages (Sonar/BrowserStack/SendGrid/Render)
 - Branch/PR trigger conditions
 
 ## 8) Important behavior to know
@@ -121,7 +121,7 @@ If local passes but pipeline fails, check:
 - **Push triggers deployment path** because `on: push` has no branch filter.
 - **Audit step does not block merges** (`continue-on-error: true`).
 - **Email step can fail the workflow** even when tests are green.
-- Playwright tests auto-report to Qase using env vars from secrets.
+- Playwright tests auto-report to BrowserStack using env vars from secrets.
 
 ## 9) Useful links in every run
 

@@ -18,7 +18,9 @@
     "test:run": "vitest run",
     "webtests": "playwright test",
     "webtests:ui": "playwright test --ui",
-    "webtests:debug": "playwright test --debug"
+    "webtests:debug": "playwright test --debug",
+    "webtests:browserstack": "playwright test && npm run upload:browserstack",
+    "upload:browserstack": "node scripts/upload-browserstack.js test-results/junit.xml"
   },
   "dependencies": {
     "@azure/msal-browser": "^5.6.3",
@@ -35,17 +37,17 @@
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.13.0",
-    "recharts": "^3.8.1",
     "tailwindcss": "^4.1.18",
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@dot-slash/browserstack-test-management": "^6.1.0",
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.48.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^24.10.1",
+    "@types/node": "^24.12.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/testing-library__react": "^10.0.1",
@@ -58,7 +60,6 @@
     "globals": "^16.5.0",
     "jsdom": "^28.1.0",
     "playwright": "^1.58.2",
-    "playwright-qase-reporter": "^2.2.3",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",
     "vite": "^7.3.1",

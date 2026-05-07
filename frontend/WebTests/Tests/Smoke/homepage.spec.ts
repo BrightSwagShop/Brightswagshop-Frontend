@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { qase } from 'playwright-qase-reporter';
 import { HomePage } from '../../Pages/HomePage';
 
 test.describe('Homepage - Smoke Tests', () => {
@@ -12,35 +11,35 @@ test.describe('Homepage - Smoke Tests', () => {
 
   });
 
-  test(qase(40, '[Home Page - Smoke] Load page successfully'), async () => {  
+  test('[Home Page - Smoke] Load page successfully', async () => {  
 
     await expect(homePage.page).toHaveURL('http://localhost:5173/');
     await expect(homePage.getMainHeading()).toBeVisible();
 
   });
 
-  test(qase(41, '[Home Page - Smoke] Navbar verification'), async () => {
+  test('[Home Page - Smoke] Navbar verification', async () => {
 
     const navbarValid = await homePage.navbar.verifyAllNavbarElements();
     expect(navbarValid).toBe(true);
 
   });
 
-  test(qase(42, '[Home Page - Smoke] Heading text verification'), async () => {
+  test('[Home Page - Smoke] Heading text verification', async () => {
 
     const heading = await homePage.getHeadingText();
     expect(heading).toBe('BrightSwagShop');
 
   });
 
-  test(qase(43, '[Home Page - Smoke] Product categories display'), async () => {
+  test('[Home Page - Smoke] Product categories display', async () => {
 
     const hasCategories = await homePage.hasProductCategories();
     expect(hasCategories).toBe(true);
 
   });
 
-  test(qase(44, '[Home Page - Smoke] Footer verification'), async () => {
+  test('[Home Page - Smoke] Footer verification', async () => {
 
     const footerValid = await homePage.footer.verifyAllFooterElements();
     expect(footerValid).toBe(true);
