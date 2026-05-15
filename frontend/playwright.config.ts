@@ -10,7 +10,6 @@ export default defineConfig({
     ['html'],
     ['list'],
     ['junit', { outputFile: 'test-results/junit.xml' }],
-    ['./reporters/browserstack.cjs'],
   ],
   use: {
     baseURL: 'http://localhost:5173',
