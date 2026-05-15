@@ -61,27 +61,6 @@ jobs:
           path: ./frontend/junit.xml
           reporter: java-junit
 
-      - name: Setup Python for TestRail CLI
-        if: always()
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Upload Frontend Results to TestRail
-        if: always()
-        working-directory: ./frontend
-        run: |
-          pip install trcli
-          trcli -y \
-            -h "${{ secrets.TESTRAIL_BASE_URL }}" \
-            --project "BrightSwagShop" \
-            -u "${{ secrets.TESTRAIL_USERNAME }}" \
-            -p "${{ secrets.TESTRAIL_API_KEY }}" \
-            parse_junit \
-            --title "Playwright Frontend Tests - Build #${{ github.run_number }}" \
-            --run-description "Triggered by: ${{ github.actor }} | Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-            -f "./junit.xml"
-
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -114,6 +93,27 @@ jobs:
           ENTRA_ID_TENANT_ID: ${{ secrets.ENTRA_ID_TENANT_ID }}
           ENTRA_ID_CLIENT_ID: ${{ secrets.ENTRA_ID_CLIENT_ID }}
         run: npm run webtests
+
+      - name: Setup Python for TestRail CLI
+        if: always()
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Upload Playwright Results to TestRail
+        if: always()
+        working-directory: ./frontend
+        run: |
+          pip install trcli
+          trcli -y \
+            -h "${{ secrets.TESTRAIL_BASE_URL }}" \
+            --project "BrightSwagShop" \
+            -u "${{ secrets.TESTRAIL_USERNAME }}" \
+            -p "${{ secrets.TESTRAIL_API_KEY }}" \
+            parse_junit \
+            --title "Playwright Web Tests - Build #${{ github.run_number }}" \
+            --run-description "Triggered by: ${{ github.actor }} | Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -f "./test-results/junit.xml"
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
