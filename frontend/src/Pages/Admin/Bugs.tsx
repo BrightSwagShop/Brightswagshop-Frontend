@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { bugLabels, type BugKey } from "../../bugs/BugFlags";
 import { loadBugFlags, saveBugFlags, type BugFlags } from "../../bugs/BugStore";
-import { toggleStripePaymentFailure } from "../../services/bugService";
+import {
+   
+  toggleWrongCartTotal
+} from "../../services/bugService";
 
 export default function Bugs() {
   const [flags, setFlags] = useState<BugFlags>(loadBugFlags());
@@ -11,17 +14,18 @@ export default function Bugs() {
   }, [flags]);
 
   const toggle = async (key: BugKey) => {
-  const newValue = !flags[key];
+    const newValue = !flags[key];
 
-  setFlags((prev) => ({
-    ...prev,
-    [key]: newValue,
-  }));
+    setFlags((prev) => ({
+      ...prev,
+      [key]: newValue,
+    }));
+ 
 
-  if (key === "STRIPE_PAYMENT_FAILURE") {
-    await toggleStripePaymentFailure(newValue);
-  }
-};
+    if (key === "WRONG_CART_TOTAL") {
+      await toggleWrongCartTotal();
+    }
+  };
 
   return (
     <div className="p-6 bg-[#EDEDED] min-h-screen">
@@ -30,20 +34,16 @@ export default function Bugs() {
         Zet hier de ingebouwde bugs aan of uit.
       </p>
 
-      {/* GRID */}
       <div className="grid grid-cols-2 gap-6 max-w-3xl">
-
         {(Object.keys(bugLabels) as BugKey[]).map((key) => (
           <div
             key={key}
             className="bg-white rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center"
           >
-            {/* TITLE */}
             <p className="text-sm font-medium text-[#3C3C3B] mb-4">
               {bugLabels[key]}
             </p>
 
-            {/* TOGGLE */}
             <button
               onClick={() => toggle(key)}
               className={`w-12 h-6 flex items-center rounded-full p-1 transition ${
@@ -57,13 +57,11 @@ export default function Bugs() {
               />
             </button>
 
-            {/* STATUS */}
             <p className="text-xs text-gray-500 mt-2">
               {flags[key] ? "Actief" : "Uit"}
             </p>
           </div>
         ))}
-
       </div>
     </div>
   );
