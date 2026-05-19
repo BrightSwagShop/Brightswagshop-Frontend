@@ -4,7 +4,8 @@ export type BugKey =
   | "BROKEN_IMAGES"
   | "RANDOM_API_ERROR"
   | "SLOW_LOADING"
-  | "STRIPE_PAYMENT_FAILURE";
+  | "STRIPE_PAYMENT_FAILURE"
+  | "WRONG_CART_TOTAL";
 
 export const bugLabels: Record<BugKey, string> = {
   BROKEN_CATEGORY_SLUG: "Route slug mismatch (category lookup faalt)",
@@ -13,4 +14,5 @@ export const bugLabels: Record<BugKey, string> = {
   RANDOM_API_ERROR: "Random API error (1/3 requests faalt)",
   SLOW_LOADING: "Trage loading (2s delay)",
   STRIPE_PAYMENT_FAILURE: "Stripe payment failure",
+  WRONG_CART_TOTAL:"wrong cart total"
 };
