@@ -12,6 +12,7 @@ import Users from "../Pages/Admin/Users";
 import Products from "../Pages/Admin/Products";
 import Bugs from "../Pages/Admin/Bugs";
 import Settings from "../Pages/Admin/Settings";
+import TestAutomationReport from "../Pages/Admin/TestAutomationReport";
 import Winkelwagen from "../Pages/WinkelwagenPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
           { path: "users", element: <Users /> },
           { path: "products", element: <Products /> },
           { path: "bugs", element: <Bugs /> },
+          { path: "test-automation", element: <TestAutomationReport /> },
           { path: "settings", element: <Settings /> },
         ],
       },

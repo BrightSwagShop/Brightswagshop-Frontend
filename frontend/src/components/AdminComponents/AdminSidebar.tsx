@@ -5,6 +5,7 @@ import {
   FaBoxOpen,
   FaClipboardList,
   FaCog,
+  FaFlask,
   FaChevronLeft, 
   FaChevronRight
 } from "react-icons/fa";
@@ -97,6 +98,18 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
         >
           <FaClipboardList />
           {!collapsed && <span>Bugs</span>}
+        </NavLink>
+
+        <NavLink
+          to="/admin/test-automation"
+          className={({ isActive }) =>
+            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
+              isActive ? linkActive : linkInactive
+            }`
+          }
+        >
+          <FaFlask />
+          {!collapsed && <span>Test reports</span>}
         </NavLink>
 
         <NavLink

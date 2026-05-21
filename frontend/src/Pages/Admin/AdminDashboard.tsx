@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { FaUsers, FaBoxOpen, FaBug, FaCog, FaArrowRight } from "react-icons/fa";
-import apiClient from "../../services/axiosInstance";
 
 interface DashboardCard {
   title: string;
@@ -34,31 +33,17 @@ const cards: DashboardCard[] = [
     to: "/admin/settings",
     icon: <FaCog />,
   },
+  {
+    title: "Test reports",
+    subtitle: "Run API, frontend and E2E tests",
+    to: "/admin/test-automation",
+    icon: <FaArrowRight />,
+  },
 ];
 
 const adminName = "Admin"; // later uit auth/context
 
 const AdminDashboard = () => {
-  const handleTest = async () => {
-    try {
-      const response = await apiClient.get("/api/admins/admin-only");
-      console.log(response.data);
-      alert(response.data);
-    } catch (error) {
-      console.error(error);
-      alert("Call failed");
-    }
-  };
-
-  const handleDebugClaims = async () => {
-    try {
-      const response = await apiClient.get("/api/debug/claims");
-      console.log("Claims:", response.data);
-    } catch (err) {
-      console.error("Claims error:", err);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -112,8 +97,6 @@ const AdminDashboard = () => {
             </div>
           </Link>
         ))}
-        <button onClick={handleTest}>Test admin endpoint</button>
-        <button onClick={handleDebugClaims}>Debug claims</button>
       </div>
     </div>
   );
