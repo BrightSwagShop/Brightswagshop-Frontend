@@ -22,6 +22,23 @@ const orderApi = axios.create({
   baseURL: `${getApiBaseUrl()}/api/orders`,
 });
 
+export const getAllOrders = async (): Promise<OrderResponse[]> => {
+  const response = await orderApi.get<OrderResponse[]>("/");
+  return response.data;
+};
+
+export const getOrderById = async (id: string): Promise<OrderResponse> => {
+  const response = await orderApi.get<OrderResponse>(`/${id}`);
+  return response.data;
+};
+
+export const getOrdersByUserId = async (
+  userId: string,
+): Promise<OrderResponse[]> => {
+  const response = await orderApi.get<OrderResponse[]>(`/user/${userId}`);
+  return response.data;
+};
+
 export const createOrderFromCart = async (
   userId: string,
 ): Promise<OrderResponse> => {
