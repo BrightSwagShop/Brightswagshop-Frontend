@@ -1,5 +1,9 @@
 import { PublicClientApplication } from "@azure/msal-browser";
 
+const DEFAULT_AZURE_TENANT_ID = "6e31f9af-7cc0-4417-84ca-cf98c4ce67f5";
+const DEFAULT_AZURE_CLIENT_ID = "a2f6f5bd-663f-40f2-9cde-95529bd036b2";
+const DEFAULT_API_CLIENT_ID = "7de03491-e033-4b69-9df6-60a8195c4cb9";
+
 const getCurrentOrigin = () => {
   if (typeof window !== "undefined" && window.location?.origin) {
     return window.location.origin;
@@ -26,10 +30,16 @@ const getFrontendBaseUrl = () => {
   return toAbsoluteUrl(import.meta.env.VITE_FRONTEND_URL, "/").replace(/\/$/, "");
 };
 
+const getTenantId = () => import.meta.env.VITE_AZURE_TENANT_ID?.trim() || DEFAULT_AZURE_TENANT_ID;
+
+const getAzureClientId = () => import.meta.env.VITE_AZURE_CLIENT_ID?.trim() || DEFAULT_AZURE_CLIENT_ID;
+
+const getApiClientId = () => import.meta.env.VITE_API_CLIENT_ID?.trim() || DEFAULT_API_CLIENT_ID;
+
 const msalConfig = {
   auth: {
-    clientId: import.meta.env.VITE_AZURE_CLIENT_ID,
-    authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
+    clientId: getAzureClientId(),
+    authority: `https://login.microsoftonline.com/${getTenantId()}`,
     redirectUri: toAbsoluteUrl(import.meta.env.VITE_AZURE_REDIRECT_URI, "/auth/callback"),
     postLogoutRedirectUri: `${getFrontendBaseUrl()}/login`,
   },
@@ -42,5 +52,5 @@ const msalConfig = {
 export const msalInstance = new PublicClientApplication(msalConfig);
 
 export const loginRequest = {
-  scopes: ["openid", "profile", "email", `api://${import.meta.env.VITE_API_CLIENT_ID}/access_as_user`],
+  scopes: ["openid", "profile", "email", `api://${getApiClientId()}/access_as_user`],
 };
