@@ -10,6 +10,8 @@ const defaultFlags: BugFlags = {
   BROKEN_IMAGES: false,
   RANDOM_API_ERROR: false,
   SLOW_LOADING: false,
+  STRIPE_PAYMENT_FAILURE:false,
+  WRONG_CART_TOTAL:false,
 };
 
 export function loadBugFlags(): BugFlags {

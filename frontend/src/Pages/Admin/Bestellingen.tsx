@@ -1,17 +1,31 @@
  
-import { FiInfo,FiEdit,FiTrash2  } from "react-icons/fi";
+import { FiEdit,FiTrash2  } from "react-icons/fi";
 import AdminProductCard from "../../components/AdminProductCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "../../types/Product";
 import Pagination from "../../components/Pagination";
- import { FiFolder,FiMenu } from "react-icons/fi";
-import CreateProductModal from "../../components/CreateProductModal";
-const Products = () => {
+ 
+import { getDiscounts } from "../../services/getDiscounts";
+import type { Discount } from "../../types/Discount";
+import CreatePromotieModal from "../../components/CreatePromotieModal";
+const Bestellingen = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 8;
 const [isOpen, setIsOpen] = useState(false);
+const [discounts, setDiscounts] = useState<Discount[]>([]);
+useEffect(() => {
+  const load = async () => {
+    try {
+      const data = await getDiscounts();
+      setDiscounts(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
+  load();
+}, []);
 const openDeleteModal = (id: string) => {
   void id;
 };
@@ -34,10 +48,10 @@ const openDeleteModal = (id: string) => {
 
       {/* HEADER */}
       <h1 className="text-4xl font-semibold text-[#3C3C3B]  mt-1 mb-6">
-        Producten
+        Bestellingen
       </h1>
       <p className="text-[#3C3C3B] mt-1 mb-6">
-        Productenoverzicht
+       Bestellingenoverzicht
       </p>
 
       {/* FILTER BAR */}
@@ -64,10 +78,9 @@ const openDeleteModal = (id: string) => {
 
           {/* TABLE HEADER */}
           <div className="grid grid-cols-5 px-6 py-3 bg-gray-100 text-sm text-gray-600">
-            <span>Product</span>
-            <span>Categorie</span>
-            <span>Prijs</span>
-            <span>Voorraad</span>
+            <span>BestellingID</span>
+            <span>Aantal Producten</span>
+            <span> Totale prijs</span>
             <span>Acties</span>
           </div>
 
@@ -106,71 +119,53 @@ const openDeleteModal = (id: string) => {
 
         </div>
 
-        {/* RIGHT = CATEGORIES */}
+        {/* RIGHT = Promoties */}
         <div className="space-y-4">
 
-          <div className="bg-white rounded-2xl p-4">
-            <h2 className="font-semibold mb-3">Producttypes</h2>
-           {["T-shirts", "Hoodies", "Mokken"].map((c) => (
-            <div
-              key={c}
-              className="flex justify-between items-center py-2 border-b border-gray-500"
-            >
-              {/* LEFT */}
-              <div className="flex items-center gap-2">
-                <FiFolder />
-                <span>{c}</span>
-              </div>
+         <div className="bg-white rounded-2xl p-4">
+            <h2 className="font-semibold mb-3">Promoties</h2>
 
-              {/* RIGHT */}
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500 bg-gray-200 px-2 rounded">
-                  8
+            {discounts.map((d) => (
+                <div
+                key={d.id}
+                className="flex justify-between items-center py-2 border-b border-gray-300"
+                >
+                {/* LEFT */}
+                <div>
+                    <div className="font-medium">{d.name}</div>
+                    <div className="text-sm text-gray-500">
+                    Code: {d.code}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                    {new Date(d.startsAt).toLocaleDateString()} -{" "}
+                    {d.endsAt ? new Date(d.endsAt).toLocaleDateString() : "-"}
+                    </div>
+                </div>
+
+                {/* RIGHT */}
+                <span className="bg-yellow-400 px-2 rounded text-sm font-semibold">
+                    {d.percentage}%
                 </span>
-                <FiMenu />
-              </div>
+                </div>
+            ))}
             </div>
-          ))}
-          </div>
-
-          <div className="bg-[#f3e9c3] border border-[#F4C709] rounded-2xl p-4 flex gap-4">
-
-            {/* ICON */}
-            <div className="flex items-start">
-              <div className="h-10 w-10 rounded-full border-2 border-[#F4C709] flex items-center justify-center text-[#F4C709]">
-                <FiInfo className="text-xl" />
-              </div>
-            </div>
-
-            {/* TEXT */}
-            <div>
-              <div className="font-semibold text-[#3C3C3B] mb-1">
-                Tip
-              </div>
-              <p className="text-sm text-[#3C3C3B]">
-                Sleep Producttypes om de volgorde te veranderen.
-              </p>
-            </div>
-
-          </div>
-
-           
-
+          
+        
           <button
             onClick={() => setIsOpen(true)}
             className="w-full bg-yellow-400 py-3 rounded-xl font-semibold"
           >
-            Product aanmaken
+            Nieuwe Promotie
           </button>
 
           {isOpen && (
-            <CreateProductModal
-              onClose={() => setIsOpen(false)}
-              onCreated={(newProduct) =>
-                setProducts((prev) => [...prev, newProduct])
-              }
+            <CreatePromotieModal
+                onClose={() => setIsOpen(false)}
+                onCreated={(newDiscount) =>
+                setDiscounts((prev) => [...prev, newDiscount])
+                }
             />
-          )}
+            )}
 
         </div>
 
@@ -179,4 +174,4 @@ const openDeleteModal = (id: string) => {
   );
 };
 
-export default Products;
+export default Bestellingen;
