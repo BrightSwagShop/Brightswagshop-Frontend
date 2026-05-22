@@ -26,6 +26,26 @@ const toAbsoluteUrl = (value: string | undefined, fallbackPath: string) => {
   }
 };
 
+const normalizeRedirectUri = (value: string | undefined) => {
+  const fallbackUrl = new URL("/auth/callback.html", getCurrentOrigin()).toString();
+
+  if (!value || !value.trim()) {
+    return fallbackUrl;
+  }
+
+  try {
+    const url = new URL(value.trim(), getCurrentOrigin());
+
+    if (url.pathname === "/auth/callback") {
+      url.pathname = "/auth/callback.html";
+    }
+
+    return url.toString();
+  } catch {
+    return fallbackUrl;
+  }
+};
+
 const getFrontendBaseUrl = () => {
   return toAbsoluteUrl(import.meta.env.VITE_FRONTEND_URL, "/").replace(/\/$/, "");
 };
@@ -40,7 +60,7 @@ const msalConfig = {
   auth: {
     clientId: getAzureClientId(),
     authority: `https://login.microsoftonline.com/${getTenantId()}`,
-    redirectUri: toAbsoluteUrl(import.meta.env.VITE_AZURE_REDIRECT_URI, "/auth/callback"),
+    redirectUri: normalizeRedirectUri(import.meta.env.VITE_AZURE_REDIRECT_URI),
     postLogoutRedirectUri: `${getFrontendBaseUrl()}/login`,
   },
   cache: {
