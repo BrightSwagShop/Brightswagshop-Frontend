@@ -1,5 +1,5 @@
  
-import { FiInfo,FiEdit,FiTrash2  } from "react-icons/fi";
+import { FiEdit,FiTrash2  } from "react-icons/fi";
 import AdminProductCard from "../../components/AdminProductCard";
 import { useEffect, useState } from "react";
 import type { Product } from "../../types/Product";
@@ -10,14 +10,8 @@ import type { Discount } from "../../types/Discount";
 import CreatePromotieModal from "../../components/CreatePromotieModal";
 const Bestellingen = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 8;
-
-const paginatedProducts = products.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
 const [isOpen, setIsOpen] = useState(false);
 const [discounts, setDiscounts] = useState<Discount[]>([]);
 useEffect(() => {
@@ -33,7 +27,7 @@ useEffect(() => {
   load();
 }, []);
 const openDeleteModal = (id: string) => {
-  setDeleteId(id);
+  void id;
 };
   const handleToggleStock = async (id: string, value: boolean) => {
   await fetch(`/api/products/${id}/stock`, {

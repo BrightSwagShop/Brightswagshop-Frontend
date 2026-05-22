@@ -8,18 +8,12 @@ import Pagination from "../../components/Pagination";
 import CreateProductModal from "../../components/CreateProductModal";
 const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 8;
-
-const paginatedProducts = products.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
 const [isOpen, setIsOpen] = useState(false);
 
 const openDeleteModal = (id: string) => {
-  setDeleteId(id);
+  void id;
 };
   const handleToggleStock = async (id: string, value: boolean) => {
   await fetch(`/api/products/${id}/stock`, {
