@@ -1,7 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { FiInfo, FiFolder, FiMenu, FiTrash2 } from "react-icons/fi";
-import Pagination from "../../components/Pagination";
 import {
+  FiEdit,
+  FiFolder,
+  FiInfo,
+  FiMenu,
+  FiPlus,
+  FiTrash2,
+} from "react-icons/fi";
+import Pagination from "../../components/Pagination";
+import CreateProductModal from "../../components/CreateProductModal";
+import {
+  deleteProduct,
   getAllProducts,
   type AdminProductResponse,
 } from "../../services/productService";
@@ -11,6 +20,9 @@ const itemsPerPage = 8;
 const Products = () => {
   const [products, setProducts] = useState<AdminProductResponse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] =
+    useState<AdminProductResponse | null>(null);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
@@ -109,14 +121,53 @@ const Products = () => {
   const getPreviewImage = (product: AdminProductResponse) =>
     product.kleuren?.[0]?.imageUrl ?? "/placeholder.png";
 
+  const refreshProducts = async () => {
+    const data = await getAllProducts();
+    setProducts(data);
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    const confirmed = window.confirm(
+      "Weet je zeker dat je dit product wilt verwijderen?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteProduct(id);
+      await refreshProducts();
+    } catch (err) {
+      console.error(err);
+      setError("Product kon niet worden verwijderd.");
+    }
+  };
+
+  const handleEditProduct = (product: AdminProductResponse) => {
+    setEditingProduct(product);
+    setIsCreateModalOpen(false);
+  };
+
   return (
     <div className="p-6 bg-[#EDEDED] min-h-screen">
-      <h1 className="text-4xl font-semibold text-[#3C3C3B]  mt-1 mb-6">
-        Producten
-      </h1>
-      <p className="text-[#3C3C3B] mt-1 mb-6">
-        Productenoverzicht uit de database
-      </p>
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="text-4xl font-semibold text-[#3C3C3B] mt-1 mb-3">
+            Producten
+          </h1>
+          <p className="text-[#3C3C3B]">Productenoverzicht uit de database</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsCreateModalOpen(true)}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#3C3C3B] px-4 py-3 text-sm font-semibold text-white transition hover:bg-black"
+        >
+          <FiPlus />
+          Product toevoegen
+        </button>
+      </div>
 
       <div className="flex gap-4 mb-6">
         <input
@@ -172,6 +223,22 @@ const Products = () => {
           <option value="price-desc">Prijs aflopend</option>
         </select>
       </div>
+
+      {(isCreateModalOpen || editingProduct) && (
+        <CreateProductModal
+          mode={editingProduct ? "edit" : "create"}
+          initialProduct={editingProduct}
+          onClose={() => {
+            setIsCreateModalOpen(false);
+            setEditingProduct(null);
+          }}
+          onCreated={async () => {
+            await refreshProducts();
+            setCurrentPage(1);
+            setEditingProduct(null);
+          }}
+        />
+      )}
 
       <div className="grid grid-cols-4 gap-6">
         <div className="col-span-3 bg-white rounded-2xl overflow-hidden">
@@ -232,8 +299,23 @@ const Products = () => {
                 </span>
 
                 <div className="flex gap-3 text-gray-500">
-                  <FiInfo className="cursor-pointer hover:text-black" />
-                  <FiTrash2 className="cursor-pointer hover:text-red-500" />
+                  <button
+                    type="button"
+                    onClick={() => handleEditProduct(product)}
+                    className="cursor-pointer hover:text-black"
+                    aria-label={`Product ${product.name} bewerken`}
+                  >
+                    <FiEdit />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteProduct(product.id)}
+                    className="cursor-pointer hover:text-red-500"
+                    aria-label={`Product ${product.name} verwijderen`}
+                  >
+                    <FiTrash2 />
+                  </button>
                 </div>
               </div>
             ))

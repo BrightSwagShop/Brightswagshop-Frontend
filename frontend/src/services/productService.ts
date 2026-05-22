@@ -23,6 +23,22 @@ export async function getAllProducts() {
   return response.data;
 }
 
+export async function deleteProduct(id: string) {
+  await api.delete(`/api/products/${id}`);
+}
+
+export async function updateProduct(
+  id: string,
+  payload: Record<string, unknown>,
+) {
+  const response = await api.put<AdminProductResponse>(
+    `/api/products/${id}`,
+    payload,
+  );
+
+  return response.data;
+}
+
 export async function getProductsByType(slug: string) {
   const response = await api.get<Product[]>(`/api/products/type/${slug}`);
   return response.data;
