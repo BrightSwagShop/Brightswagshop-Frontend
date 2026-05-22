@@ -1,9 +1,9 @@
 services:
-  - type: web
+  - type: static
     name: brightswagshop-frontend
     root: frontend
     buildCommand: npm ci --production --no-optional && npm run build
-    startCommand: npx serve -s dist -l $PORT
+    staticPublishPath: dist
     envVars:
       - key: NODE_ENV
         value: production
