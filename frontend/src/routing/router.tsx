@@ -17,7 +17,6 @@ import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
 import LoginPage from "../Pages/LoginPage";
-import AuthCallbackPage from "../Pages/AuthCallbackPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
@@ -29,7 +28,6 @@ import GebruikersPagina from "../Pages/Admin/GebruikersPagina";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
-  { path: "/auth/callback", element: <AuthCallbackPage /> },
 
   {
     path: "/",
