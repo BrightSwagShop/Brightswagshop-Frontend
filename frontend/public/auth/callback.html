@@ -6,8 +6,23 @@
     <title>BrightSwagShop</title>
     <script>
       (function () {
-        if (window.location.hash) {
-          window.location.replace('/' + window.location.hash);
+        // Preserve both query string (e.g. ?code=...) and hash fragment
+        // and move them into the fragment so the SPA + MSAL can process it.
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+
+        if (search || hash) {
+          // strip leading ? and # when concatenating
+          var frag = '';
+          if (search.startsWith('?')) frag += search.substring(1);
+          else frag += search;
+          if (hash.startsWith('#')) {
+            if (frag.length > 0) frag += '&';
+            frag += hash.substring(1);
+          }
+
+          // redirect to root with the auth response in the fragment
+          window.location.replace('/#' + frag);
           return;
         }
 
