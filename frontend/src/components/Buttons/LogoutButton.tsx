@@ -5,7 +5,7 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     instance.logoutRedirect({
-      postLogoutRedirectUri: "/login",
+      postLogoutRedirectUri: "/",
     });
   };
 
