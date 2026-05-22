@@ -24,15 +24,14 @@ export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
 
   const toggleFavorite = async (productId: string) => {
     try {
-      let updatedUser;
-
       if (favorites.includes(productId)) {
-        updatedUser = await removeFavorite(productId);
+        const updatedUser = await removeFavorite(productId);
+        setFavorites(updatedUser.favorites ?? []);
       } else {
-        updatedUser = await addFavorite(productId);
+        const updatedUser = await addFavorite(productId);
+        setFavorites(updatedUser.favorites ?? []);
       }
-
-      setFavorites(updatedUser.favorites ?? []);
+      await refreshFavorites();
     } catch (error) {
       console.error("Toggle favorite failed:", error);
     }

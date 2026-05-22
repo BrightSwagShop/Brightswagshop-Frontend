@@ -2,6 +2,7 @@ import api from "../API/api";
 
 export type DebugBugKey =
   | "brokenImages"
+  | "brokenFavorites"
   | "productApiError"
   | "slowLoading"
   | "loginFails"

@@ -1,5 +1,6 @@
 import api from "../API/api";
 import type { Product } from "../types/Product";
+import { getBugStatuses } from "./bugService";
 
 export type AdminProductResponse = {
   id: string;
@@ -18,7 +19,19 @@ export type AdminProductResponse = {
   }[];
 };
 
+const ensureProductApiIsAvailable = async () => {
+  const bugStatuses = await getBugStatuses();
+
+  if (bugStatuses.productApiError) {
+    throw new Error(
+      "Simulated product API error (debug toggle: productApiError)",
+    );
+  }
+};
+
 export async function getAllProducts() {
+  await ensureProductApiIsAvailable();
+
   const response = await api.get<AdminProductResponse[]>("/api/products");
   return response.data;
 }
@@ -40,6 +53,8 @@ export async function updateProduct(
 }
 
 export async function getProductsByType(slug: string) {
+  await ensureProductApiIsAvailable();
+
   const response = await api.get<Product[]>(`/api/products/type/${slug}`);
   return response.data;
 }

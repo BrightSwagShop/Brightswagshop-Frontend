@@ -9,6 +9,7 @@ import Loading from "../../components/Loading";
 
 const bugLabels: Record<DebugBugKey, string> = {
   brokenImages: "Broken images",
+  brokenFavorites: "Broken favorites",
   productApiError: "Product API error",
   slowLoading: "Slow loading",
   loginFails: "Login fails",
