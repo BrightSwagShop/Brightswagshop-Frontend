@@ -69,6 +69,7 @@ jobs:
 
       - name: Upload Frontend Results to TestRail
         if: always()
+        continue-on-error: true
         working-directory: ./frontend
         run: |
           pip install trcli
@@ -125,7 +126,13 @@ jobs:
 
       - name: Send Playwright Report via Email (SendGrid API)
         if: always()
+        continue-on-error: true
         run: |
+          if [ -z "${{ secrets.SENDGRID_API_KEY }}" ]; then
+            echo "SENDGRID_API_KEY not configured, skipping email"
+            exit 0
+          fi
+
           # Check if report exists
           if [ ! -f ./frontend/playwright-report/index.html ]; then
             echo "Playwright report not found, skipping email"
@@ -171,7 +178,6 @@ jobs:
             echo "Response body: $RESPONSE_BODY"
             exit 1
           fi
-        continue-on-error: false
 
       - name: Build for production
         working-directory: ./frontend
