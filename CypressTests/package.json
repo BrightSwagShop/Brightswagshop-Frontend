@@ -1,0 +1,21 @@
+{
+  "name": "brightswagshop-cypress-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "cypress run --headless",
+    "test:open": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^13.17.0",
+    "@badeball/cypress-cucumber-preprocessor": "^22.1.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
+    "esbuild": "^0.25.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": false,
+    "stepDefinitions": "cypress/support/step_definitions/**/*.ts"
+  }
+}
