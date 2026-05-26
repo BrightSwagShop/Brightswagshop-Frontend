@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logoFooter.png";
 import { FaLinkedinIn, FaFacebookF, FaInstagram } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../Config/AuthConfig";
 
 const Footer = () => {
   const { isAuthenticated, logout } = useAuth();
+  const { instance } = useMsal();
 
   return (
     <footer className="w-full bg-white">
@@ -24,13 +27,14 @@ const Footer = () => {
         {/* Navigation */}
         <div className="flex flex-col gap-3 text-gray-600 font-medium">
           {!isAuthenticated ? (
-            <Link
-              to="/login"
+            <button
+              type="button"
+              onClick={() => instance.loginRedirect(loginRequest)}
               data-testid="footer-login-link"
               className="hover:text-yellow-400 transition"
             >
               Login
-            </Link>
+            </button>
           ) : (
             <button
               onClick={logout}

@@ -18,9 +18,7 @@
     "test:run": "vitest run",
     "webtests": "playwright test",
     "webtests:ui": "playwright test --ui",
-    "webtests:debug": "playwright test --debug",
-    "webtests:browserstack": "playwright test && npm run upload:browserstack",
-    "upload:browserstack": "node scripts/upload-browserstack.js test-results/junit.xml"
+    "webtests:debug": "playwright test --debug"
   },
   "dependencies": {
     "@azure/msal-browser": "^5.6.3",
@@ -41,7 +39,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
-    "@dot-slash/browserstack-test-management": "^6.1.0",
+    
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.48.2",
     "@testing-library/jest-dom": "^6.9.1",
@@ -54,6 +52,7 @@
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.18",
+    
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

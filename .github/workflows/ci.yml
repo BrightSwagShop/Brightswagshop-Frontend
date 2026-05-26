@@ -61,6 +61,27 @@ jobs:
           path: ./frontend/junit.xml
           reporter: java-junit
 
+      - name: Setup Python for TestRail CLI
+        if: always()
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Upload Frontend Results to TestRail
+        if: always()
+        working-directory: ./frontend
+        run: |
+          pip install trcli
+          trcli -y \
+            -h "${{ secrets.TESTRAIL_BASE_URL }}" \
+            --project "BrightSwagShop" \
+            -u "${{ secrets.TESTRAIL_USERNAME }}" \
+            -p "${{ secrets.TESTRAIL_API_KEY }}" \
+            parse_junit \
+            --title "Playwright Frontend Tests - Build #${{ github.run_number }}" \
+            --run-description "Triggered by: ${{ github.actor }} | Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -f "./junit.xml"
+
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -90,24 +111,9 @@ jobs:
       - name: Run Playwright Tests
         working-directory: ./frontend
         env:
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          BROWSERSTACK_PROJECT_NAME: BrightSwagShop - JIRA
-          BROWSERSTACK_BUILD_NAME: 'Build #${{ github.run_number }}'
           ENTRA_ID_TENANT_ID: ${{ secrets.ENTRA_ID_TENANT_ID }}
           ENTRA_ID_CLIENT_ID: ${{ secrets.ENTRA_ID_CLIENT_ID }}
         run: npm run webtests
-
-      - name: Upload Playwright Results to BrowserStack
-        if: always()
-        working-directory: ./frontend
-        env:
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          BROWSERSTACK_PROJECT_NAME: BrightSwagShop - JIRA
-          BROWSERSTACK_BUILD_NAME: 'Build #${{ github.run_number }}'
-        continue-on-error: true
-        run: npm run upload:browserstack
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
