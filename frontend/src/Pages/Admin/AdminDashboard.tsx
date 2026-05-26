@@ -135,7 +135,7 @@ const AdminDashboard = () => {
 
             <Link
               to="/admin/dashboard"
-              className=" inline-flex items-center bg-white gap-2 border-1 border-[#090804] text-black px-4 py-2 rounded-xl font-semibold hover:bg-yellow-500 transition"
+              className=" inline-flex items-center bg-white gap-2 border border-[#090804] text-black px-4 py-2 rounded-xl font-semibold hover:bg-yellow-500 transition"
             >
                <FaSync className="text-black" />
             Opnieuw proberen

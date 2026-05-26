@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getProductsByType } from "../services/productService";
 import type { Product } from "../types/Product";
 import ProductCard from "../components/ProductCard";
+import ErrorComponent from "../components/ErrorComponent";
 
 const CategoryItemsPage = () => {
   const { category } = useParams<{ category: string }>();
@@ -36,7 +37,14 @@ const CategoryItemsPage = () => {
   }
 
   if (error) {
-    return <div className="p-10 text-red-500">{error}</div>;
+    return (
+      <div className="p-10">
+        <ErrorComponent
+          title="Producten konden niet geladen worden"
+          description={error}
+        />
+      </div>
+    );
   }
 
   return (
@@ -77,11 +85,20 @@ const CategoryItemsPage = () => {
       </div>
 
       <div className="w-full bg-[#EDEDED] pt-16 pb-16">
-        <div className="mx-auto max-w-6xl px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {products.length === 0 ? (
+          <div className="mx-auto max-w-6xl px-4">
+            <ErrorComponent
+              title="Geen producten gevonden"
+              description="Er zijn op dit moment geen producten beschikbaar in deze categorie."
+            />
+          </div>
+        ) : (
+          <div className="mx-auto max-w-6xl px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

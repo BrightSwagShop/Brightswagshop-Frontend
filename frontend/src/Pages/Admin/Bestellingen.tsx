@@ -1,174 +1,238 @@
- 
-import { FiEdit,FiTrash2  } from "react-icons/fi";
-import AdminProductCard from "../../components/AdminProductCard";
-import { useEffect, useState } from "react";
-import type { Product } from "../../types/Product";
+import { useEffect, useMemo, useState } from "react";
 import Pagination from "../../components/Pagination";
- 
-import { getDiscounts } from "../../services/getDiscounts";
-import type { Discount } from "../../types/Discount";
-import CreatePromotieModal from "../../components/CreatePromotieModal";
-const Bestellingen = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+import { getAllOrders, type OrderResponse } from "../../API/OrderAPI";
+
 const itemsPerPage = 8;
-const [isOpen, setIsOpen] = useState(false);
-const [discounts, setDiscounts] = useState<Discount[]>([]);
-useEffect(() => {
-  const load = async () => {
-    try {
-      const data = await getDiscounts();
-      setDiscounts(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
-  load();
-}, []);
-const openDeleteModal = (id: string) => {
-  void id;
-};
-  const handleToggleStock = async (id: string, value: boolean) => {
-  await fetch(`/api/products/${id}/stock`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isActive: value }),
-  });
+const paymentOptions = [
+  "all",
+  "pending",
+  "paid",
+  "failed",
+  "refunded",
+] as const;
 
-  setProducts((prev) =>
-    prev.map((p) =>
-      p.id === id ? { ...p, isActive: value } : p
-    )
+const Bestellingen = () => {
+  const [orders, setOrders] = useState<OrderResponse[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [paymentFilter, setPaymentFilter] =
+    useState<(typeof paymentOptions)[number]>("all");
+  const [sortBy, setSortBy] = useState("newest");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await getAllOrders();
+        setOrders(data);
+      } catch (err) {
+        console.error(err);
+        setError("Bestellingen konden niet worden geladen.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
+  const filteredOrders = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    const result = orders.filter((order) => {
+      const matchesSearch =
+        normalizedSearch.length === 0 ||
+        order.id.toLowerCase().includes(normalizedSearch) ||
+        order.userId.toLowerCase().includes(normalizedSearch) ||
+        order.paymentStatus.toLowerCase().includes(normalizedSearch);
+
+      const matchesPayment =
+        paymentFilter === "all" ||
+        order.paymentStatus.toLowerCase() === paymentFilter;
+
+      return matchesSearch && matchesPayment;
+    });
+
+    result.sort((a, b) => {
+      if (sortBy === "oldest") {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      }
+
+      if (sortBy === "highest") {
+        return b.totalPrice - a.totalPrice;
+      }
+
+      if (sortBy === "lowest") {
+        return a.totalPrice - b.totalPrice;
+      }
+
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    return result;
+  }, [orders, paymentFilter, search, sortBy]);
+
+  const totalItems = filteredOrders.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, paymentFilter, sortBy]);
+
+  const paginatedOrders = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   );
-};
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("nl-BE", {
+      style: "currency",
+      currency: "EUR",
+    }).format(value);
+
+  const formatDate = (value: string) =>
+    new Intl.DateTimeFormat("nl-BE", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(value));
 
   return (
     <div className="p-6 bg-[#EDEDED] min-h-screen">
-
-      {/* HEADER */}
       <h1 className="text-4xl font-semibold text-[#3C3C3B]  mt-1 mb-6">
         Bestellingen
       </h1>
       <p className="text-[#3C3C3B] mt-1 mb-6">
-       Bestellingenoverzicht
+        Overzicht van alle bestellingen uit de database
       </p>
 
-      {/* FILTER BAR */}
       <div className="flex gap-4 mb-6">
         <input
-          placeholder="Zoek producten..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Zoek op order, user, status..."
           className="px-4 py-3 rounded-xl bg-white   w-64"
         />
 
-        <select className="px-4 py-3 rounded-xl bg-white  ">
-          <option>Alle categorieën</option>
+        <select
+          value={paymentFilter}
+          onChange={(e) =>
+            setPaymentFilter(e.target.value as (typeof paymentOptions)[number])
+          }
+          className="px-4 py-3 rounded-xl bg-white  "
+        >
+          {paymentOptions.map((option) => (
+            <option key={option} value={option}>
+              {option === "all"
+                ? "Alle payment statuses"
+                : option.charAt(0).toUpperCase() + option.slice(1)}
+            </option>
+          ))}
         </select>
 
-        <select className="px-4 py-3 rounded-xl bg-white  ">
-          <option>Sorteren op</option>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-3 rounded-xl bg-white  "
+        >
+          <option value="newest">Nieuwste eerst</option>
+          <option value="oldest">Oudste eerst</option>
+          <option value="highest">Hoogste totaal</option>
+          <option value="lowest">Laagste totaal</option>
         </select>
       </div>
 
-      {/* MAIN LAYOUT */}
       <div className="grid grid-cols-4 gap-6">
-
-        {/* LEFT = TABLE */}
         <div className="col-span-3 bg-white rounded-2xl overflow-hidden">
-
-          {/* TABLE HEADER */}
-          <div className="grid grid-cols-5 px-6 py-3 bg-gray-100 text-sm text-gray-600">
+          <div className="grid grid-cols-6 px-6 py-3 bg-gray-100 text-sm text-gray-600 font-medium">
             <span>BestellingID</span>
-            <span>Aantal Producten</span>
-            <span> Totale prijs</span>
-            <span>Acties</span>
+            <span>Gebruiker</span>
+            <span>Aantal items</span>
+            <span>Totale prijs</span>
+            <span>Status</span>
+            <span>Betaling</span>
           </div>
 
-          {/* ROWS */}
-          {products.map((p) => (
-            <div
-               
-              className="grid grid-cols-5 items-center px-6 py-4 "
-            >
-              {/* PRODUCT */}
-              <AdminProductCard
-              key={p.id}
-              product={p}
-              onDelete={openDeleteModal}
-              onToggleStock={handleToggleStock}
-              />
-
-              {/* ACTIONS */}
-              <div className="flex gap-3 text-gray-500">
-                <FiEdit className="cursor-pointer hover:text-black" />
-                <FiTrash2 className="cursor-pointer hover:text-red-500" />
-              </div>
+          {isLoading ? (
+            <div className="px-6 py-8 text-sm text-gray-500">
+              Bestellingen laden...
             </div>
-          ))}
+          ) : error ? (
+            <div className="px-6 py-8 text-sm text-red-500">{error}</div>
+          ) : paginatedOrders.length === 0 ? (
+            <div className="px-6 py-8 text-sm text-gray-500">
+              Geen bestellingen gevonden voor deze filters.
+            </div>
+          ) : (
+            paginatedOrders.map((order) => (
+              <div
+                key={order.id}
+                className="grid grid-cols-6 items-center px-6 py-4 border-t border-gray-100 text-sm"
+              >
+                <div>
+                  <div className="font-medium text-[#3C3C3B]">{order.id}</div>
+                  <div className="text-xs text-gray-500">
+                    {formatDate(order.createdAt)}
+                  </div>
+                </div>
 
-          {/* FOOTER */}
+                <span className="text-gray-700">{order.userId}</span>
+
+                <span className="text-gray-700">{order.items.length}</span>
+
+                <span className="text-gray-700 font-medium">
+                  {formatCurrency(order.totalPrice)}
+                </span>
+
+                <span className="inline-flex w-fit rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                  {order.status}
+                </span>
+
+                <span className="inline-flex w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                  {order.paymentStatus}
+                </span>
+              </div>
+            ))
+          )}
+
           <div className="flex justify-between items-center px-6 py-4 text-sm text-gray-500 border-t">
+            <div>Totaal {totalItems} bestellingen</div>
             <Pagination
               currentPage={currentPage}
-              totalPages={Math.ceil(products.length / itemsPerPage)}
-              totalItems={products.length}
+              totalPages={totalPages}
+              totalItems={totalItems}
               itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
             />
           </div>
-
         </div>
 
-        {/* RIGHT = Promoties */}
         <div className="space-y-4">
-
-         <div className="bg-white rounded-2xl p-4">
-            <h2 className="font-semibold mb-3">Promoties</h2>
-
-            {discounts.map((d) => (
-                <div
-                key={d.id}
-                className="flex justify-between items-center py-2 border-b border-gray-300"
-                >
-                {/* LEFT */}
-                <div>
-                    <div className="font-medium">{d.name}</div>
-                    <div className="text-sm text-gray-500">
-                    Code: {d.code}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                    {new Date(d.startsAt).toLocaleDateString()} -{" "}
-                    {d.endsAt ? new Date(d.endsAt).toLocaleDateString() : "-"}
-                    </div>
-                </div>
-
-                {/* RIGHT */}
-                <span className="bg-yellow-400 px-2 rounded text-sm font-semibold">
-                    {d.percentage}%
+          <div className="bg-white rounded-2xl p-4">
+            <h2 className="font-semibold mb-3">Snelle statistiek</h2>
+            <div className="space-y-2 text-sm text-gray-600">
+              <div className="flex justify-between">
+                <span>Totaal geladen</span>
+                <span className="font-medium">{orders.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Gefilterd</span>
+                <span className="font-medium">{totalItems}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Pagina</span>
+                <span className="font-medium">
+                  {currentPage} / {totalPages}
                 </span>
-                </div>
-            ))}
+              </div>
             </div>
-          
-        
-          <button
-            onClick={() => setIsOpen(true)}
-            className="w-full bg-yellow-400 py-3 rounded-xl font-semibold"
-          >
-            Nieuwe Promotie
-          </button>
-
-          {isOpen && (
-            <CreatePromotieModal
-                onClose={() => setIsOpen(false)}
-                onCreated={(newDiscount) =>
-                setDiscounts((prev) => [...prev, newDiscount])
-                }
-            />
-            )}
-
+          </div>
         </div>
-
       </div>
     </div>
   );

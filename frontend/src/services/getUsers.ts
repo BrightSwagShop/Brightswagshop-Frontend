@@ -1,16 +1,12 @@
-// services/getUsers.ts
-
 import { fetchWithAuth } from "./adminApi";
-
 
 export type User = {
   id: string;
-  name: string;
-  email: string;
-  role: string;
+  username: string;
+  favorites: string[];
 };
 
-export const getUsers = async () => {
-  const res = await fetchWithAuth("/users");
-  return res.data as User[]; // manual cast because your fetch is untyped
+export const getUsers = async (): Promise<User[]> => {
+  const res = await fetchWithAuth("/api/users/all");
+  return res.data as User[];
 };
