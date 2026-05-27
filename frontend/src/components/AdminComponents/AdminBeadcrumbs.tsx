@@ -5,6 +5,7 @@ const breadcrumbMap: Record<string, string> = {
   users: "Users",
   products: "Products",
   bugs: "Bugs",
+  "test-automation": "Test reports",
   settings: "Settings",
 };
 

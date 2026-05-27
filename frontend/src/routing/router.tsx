@@ -12,6 +12,7 @@ import AdminDashboard from "../Pages/Admin/AdminDashboard";
 import Products from "../Pages/Admin/Products";
 import Bugs from "../Pages/Admin/Bugs";
 import Settings from "../Pages/Admin/Settings";
+import TestAutomationReport from "../Pages/Admin/TestAutomationReport";
 import Winkelwagen from "../Pages/WinkelwagenPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
@@ -41,6 +42,24 @@ export const router = createBrowserRouter([
       { path: "favoriten", element: <Favorites /> },
       { path: "success", element: <PaymentSucceed /> },
       { path: "cancel", element: <PaymentCanceled /> },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          { index: true, element: <Navigate to="dashboard" replace /> },
+          { path: "dashboard", element: <AdminDashboard /> },
+          { path: "users", element: <Users /> },
+          { path: "products", element: <Products /> },
+          { path: "bugs", element: <Bugs /> },
+          { path: "test-automation", element: <TestAutomationReport /> },
+          { path: "settings", element: <Settings /> },
+        ],
+      },
+      { path: "*", element: <NotFound /> },
     ],
   },
   {
@@ -57,6 +76,7 @@ export const router = createBrowserRouter([
       { path: "users", element: <GebruikersPagina /> },
       { path: "bestellingen", element: <Bestellingen /> },
       { path: "bugs", element: <Bugs /> },
+      { path: "test-automation", element: <TestAutomationReport /> },
       { path: "settings", element: <Settings /> },
     ],
   },

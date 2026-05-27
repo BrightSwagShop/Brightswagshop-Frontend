@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaUser, FaBoxOpen, FaBug, FaArrowRight } from "react-icons/fa";
+import { FaUsers, FaBoxOpen, FaBug, FaCog, FaArrowRight } from "react-icons/fa";
 //import apiClient from "../../services/axiosInstance";
 import { FaSync } from "react-icons/fa";
 import { FaExclamationTriangle } from "react-icons/fa";
@@ -79,6 +79,18 @@ const cards: SnelleActiesCard[] = [
     to: "/admin/bugs",
     icon: <FaBug />,
   },
+  {
+    title: "Settings",
+    subtitle: "Admin settings",
+    to: "/admin/settings",
+    icon: <FaCog />,
+  },
+  {
+    title: "Test reports",
+    subtitle: "Run API, frontend and E2E tests",
+    to: "/admin/test-automation",
+    icon: <FaArrowRight />,
+  },
 ];
 
 const adminName = "Admin"; // later uit auth/context
@@ -131,6 +143,14 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+            <div className="mt-5">
+              <div className="text-sm text-gray-500">{card.subtitle}</div>
+              <div className="text-lg font-semibold text-gray-900">
+                {card.title}
+              </div>
+            </div>
+          </Link>
+        ))}
             <div></div>
 
             <Link

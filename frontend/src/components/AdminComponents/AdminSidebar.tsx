@@ -5,9 +5,11 @@ import {
   FaUser,
   FaCube,
   FaClipboardList,
-  FaChevronLeft,
+  FaCog,
+  FaFlask,
+  FaChevronLeft, 
   FaChevronRight,
-  FaShoppingCart,
+  FaShoppingCart
 } from "react-icons/fa";
 
 interface AdminSidebarProps {
@@ -99,6 +101,18 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
         >
           <FaUser />
           {!collapsed && <span>Gebruikersbeheer</span>}
+        </NavLink>
+
+        <NavLink
+          to="/admin/test-automation"
+          className={({ isActive }) =>
+            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
+              isActive ? linkActive : linkInactive
+            }`
+          }
+        >
+          <FaFlask />
+          {!collapsed && <span>Test reports</span>}
         </NavLink>
 
         <NavLink
