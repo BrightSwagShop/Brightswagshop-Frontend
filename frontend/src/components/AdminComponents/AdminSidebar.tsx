@@ -5,7 +5,6 @@ import {
   FaUser,
   FaCube,
   FaClipboardList,
-  FaCog,
   FaFlask,
   FaChevronLeft, 
   FaChevronRight,

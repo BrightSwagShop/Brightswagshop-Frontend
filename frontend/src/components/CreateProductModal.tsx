@@ -138,6 +138,7 @@ const createInitialForm = (
 
   const productType = inferProductType(initialProduct.productType);
   const usesSizes = isClothingProductType(productType);
+  const existingColors = initialProduct.kleuren ?? [];
 
   return {
     $type: productType,
@@ -148,8 +149,8 @@ const createInitialForm = (
     productType,
     isActive: initialProduct.isActive,
     kleuren:
-      initialProduct.kleuren?.length > 0
-        ? initialProduct.kleuren.map((color) =>
+      existingColors.length > 0
+        ? existingColors.map((color) =>
             usesSizes
               ? {
                   kleur: color.kleur ?? "",

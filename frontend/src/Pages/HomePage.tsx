@@ -57,7 +57,7 @@ const HomePage = () => {
   }
 
   if (error) {
-    return <ErrorComponent />;
+    return <ErrorComponent description={error} />;
   }
 
   return (
