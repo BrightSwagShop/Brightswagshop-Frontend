@@ -4,7 +4,7 @@ export const fetchWithAuth = async (url: string) => {
   return apiClient.get(url);
 };
 
-export type TestAutomationSuite = "Api" | "Frontend" | "E2e";
+export type TestAutomationSuite = "Api" | "Frontend";
 
 export type TestAutomationRunStatus =
   | "Queued"

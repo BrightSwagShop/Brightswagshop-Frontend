@@ -14,7 +14,6 @@ import {
 const suites: Array<{ key: TestAutomationSuite; label: string; description: string }> = [
   { key: "Api", label: "Run API tests", description: "Cucumber playwright test suite for the backend API's" },
   { key: "Frontend", label: "Run Frontend tests", description: "Playwright UI tests for the frontend" },
-  { key: "E2e", label: "Run E2E tests", description: "Full end-to-end flow with frontend and backend" },
 ];
 
 const statusCopy: Record<TestAutomationRunStatus, string> = {
@@ -46,7 +45,6 @@ export default function TestAutomationReport() {
   const [runs, setRuns] = useState<Record<TestAutomationSuite, TestAutomationRun | null>>({
     Api: null,
     Frontend: null,
-    E2e: null,
   });
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
   const [reportPreviewRunId, setReportPreviewRunId] = useState<string | null>(null);
@@ -57,7 +55,7 @@ export default function TestAutomationReport() {
   const activeRun = activeSuite ? runs[activeSuite] : null;
   const selectedRun = selectedRunId
     ? Object.values(runs).find((run) => run?.id === selectedRunId) ?? null
-    : activeRun ?? runs.E2e ?? runs.Frontend ?? runs.Api;
+    : activeRun ?? runs.Frontend ?? runs.Api;
   const reportUrl = useMemo(() => {
     if (!selectedRun || reportPreviewRunId !== selectedRun.id) {
       return null;
@@ -72,7 +70,6 @@ export default function TestAutomationReport() {
     setRuns({
       Api: latestRuns.find((run) => run.suite === "Api") ?? null,
       Frontend: latestRuns.find((run) => run.suite === "Frontend") ?? null,
-      E2e: latestRuns.find((run) => run.suite === "E2e") ?? null,
     });
   };
 
