@@ -8,6 +8,7 @@ import CategoryItemsPage from "../Pages/CategoryItemsPage";
 import DetailPageItem from "../Pages/DetailPageItem";
 
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
+import AuthCallbackPage from "../Pages/AuthCallbackPage";
 
 import Products from "../Pages/Admin/Products";
 import Bugs from "../Pages/Admin/Bugs";
@@ -38,27 +39,12 @@ export const router = createBrowserRouter([
       { path: "checkout", element: <CheckoutPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "about", element: <About /> },
+      { path: "auth/callback", element: <AuthCallbackPage /> },
       { path: "unauthorized", element: <Unauthorized /> },
       { path: "favoriten", element: <Favorites /> },
       { path: "success", element: <PaymentSucceed /> },
       { path: "cancel", element: <PaymentCanceled /> },
-      {
-        path: "admin",
-        element: (
-          <ProtectedRoute>
-            <AdminLayout />
-          </ProtectedRoute>
-        ),
-        children: [
-          { index: true, element: <Navigate to="dashboard" replace /> },
-          { path: "dashboard", element: <AdminDashboard /> },
-          { path: "users", element: <Users /> },
-          { path: "products", element: <Products /> },
-          { path: "bugs", element: <Bugs /> },
-          { path: "test-automation", element: <TestAutomationReport /> },
-          { path: "settings", element: <Settings /> },
-        ],
-      },
+
       { path: "*", element: <NotFound /> },
     ],
   },

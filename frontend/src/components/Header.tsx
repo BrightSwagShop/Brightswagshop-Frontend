@@ -49,103 +49,113 @@ const Header = () => {
         }`}
       >
         <div className="max-w-7xl mx-auto px-16 flex items-center justify-between h-full">
-        <Link
-          to="/"
-          data-testid="logo-link"
-          className="flex items-center gap-3"
-        >
-          <img
-            src={logo}
-            alt="Brightest logo"
-            className="h-18 w-auto"
-            data-testid="logo-image"
-          />
-        </Link>
-
-          <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
           <Link
             to="/"
-            className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            data-testid="logo-link"
+            className="flex items-center gap-3"
           >
-            Home
-          </Link>
-
-          {isMsalAuthenticated && (
-            <Link
-              to="/admin/dashboard"
-              data-testid="dashboard-link"
-              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
-            >
-              Dashboard
-            </Link>
-          )}
-
-          <Link
-            to="/about"
-            data-testid="about-link"
-            className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
-          >
-            About
-          </Link>
-
-          <Link
-            to="/contact"
-            data-testid="contact-link"
-            className="hover:text-yellow-500 transition font-ttnorms font-bold"
-          >
-            Contact
-          </Link>
-
-            <div className=" flex justify-end">
-            {!isLoggedIn ? (
-              <button
-                type="button"
-                onClick={() => instance.loginRedirect(loginRequest)}
-                className="hover:text-yellow-500 transition font-ttnorms font-bold"
-              >
-                Login
-              </button>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="hover:text-yellow-500 transition font-ttnorms font-bold"
-              >
-                Logout
-              </button>
-            )}
-          </div>
-          </nav>
-
-          <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
-          <Link
-            to="/favoriten"
-            data-testid="favorites-link"
-            className="flex items-center gap-4 hover:text-yellow-500 transition"
-          >
-            <FaRegHeart
-              className="text-lg cursor-pointer"
-              data-testid="favorites-icon"
+            <img
+              src={logo}
+              alt="Brightest logo"
+              className="h-18 w-auto"
+              data-testid="logo-image"
             />
           </Link>
 
-          <div className="flex items-center gap-3">
+          <nav className="hidden lg:flex items-center gap-8 text-[#3C3C3B] font-medium">
             <Link
-              to="/winkelwagen"
-              data-testid="cart-link"
-              className="text-gray-800 hover:text-yellow-500 transition"
+              to="/"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
             >
-              <FiShoppingCart
-                className="text-xl cursor-pointer"
-                data-testid="cart-icon"
+              Home
+            </Link>
+
+            {isMsalAuthenticated && (
+              <Link
+                to="/admin/dashboard"
+                data-testid="dashboard-link"
+                className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+              >
+                Dashboard
+              </Link>
+            )}
+
+            <Link
+              to="/about"
+              data-testid="about-link"
+              className="flex items-center gap-2 hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              About
+            </Link>
+
+            <Link
+              to="/contact"
+              data-testid="contact-link"
+              className="hover:text-yellow-500 transition font-ttnorms font-bold"
+            >
+              Contact
+            </Link>
+
+            <div className=" flex justify-end">
+              {!isLoggedIn ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      sessionStorage.setItem(
+                        "preLoginPath",
+                        window.location.pathname || "/",
+                      );
+                    } catch {
+                      // ignore
+                    }
+                    instance.loginRedirect(loginRequest);
+                  }}
+                  className="hover:text-yellow-500 transition font-ttnorms font-bold"
+                >
+                  Login
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="hover:text-yellow-500 transition font-ttnorms font-bold"
+                >
+                  Logout
+                </button>
+              )}
+            </div>
+          </nav>
+
+          <div className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
+            <Link
+              to="/favoriten"
+              data-testid="favorites-link"
+              className="flex items-center gap-4 hover:text-yellow-500 transition"
+            >
+              <FaRegHeart
+                className="text-lg cursor-pointer"
+                data-testid="favorites-icon"
               />
             </Link>
 
-            {user && (
-              <span className="text-sm font-bold text-yellow-500 cursor-default capitalize">
-                {user.username}
-              </span>
-            )}
-          </div>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/winkelwagen"
+                data-testid="cart-link"
+                className="text-gray-800 hover:text-yellow-500 transition"
+              >
+                <FiShoppingCart
+                  className="text-xl cursor-pointer"
+                  data-testid="cart-icon"
+                />
+              </Link>
+
+              {user && (
+                <span className="text-sm font-bold text-yellow-500 cursor-default capitalize">
+                  {user.username}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

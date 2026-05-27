@@ -27,34 +27,35 @@ const toAbsoluteUrl = (value: string | undefined, fallbackPath: string) => {
 };
 
 const normalizeRedirectUri = (value: string | undefined) => {
-  const fallbackUrl = new URL("/auth/callback.html", getCurrentOrigin()).toString();
+  const fallbackUrl = new URL("/auth/callback", getCurrentOrigin()).toString();
 
   if (!value || !value.trim()) {
     return fallbackUrl;
   }
 
   try {
-    const url = new URL(value.trim(), getCurrentOrigin());
-
-    if (url.pathname === "/auth/callback") {
-      url.pathname = "/auth/callback.html";
-    }
-
-    return url.toString();
+    // Respect the exact value provided in env (absolute or relative). Do not rewrite to .html.
+    return new URL(value.trim(), getCurrentOrigin()).toString();
   } catch {
     return fallbackUrl;
   }
 };
 
 const getFrontendBaseUrl = () => {
-  return toAbsoluteUrl(import.meta.env.VITE_FRONTEND_URL, "/").replace(/\/$/, "");
+  return toAbsoluteUrl(import.meta.env.VITE_FRONTEND_URL, "/").replace(
+    /\/$/,
+    "",
+  );
 };
 
-const getTenantId = () => import.meta.env.VITE_AZURE_TENANT_ID?.trim() || DEFAULT_AZURE_TENANT_ID;
+const getTenantId = () =>
+  import.meta.env.VITE_AZURE_TENANT_ID?.trim() || DEFAULT_AZURE_TENANT_ID;
 
-const getAzureClientId = () => import.meta.env.VITE_AZURE_CLIENT_ID?.trim() || DEFAULT_AZURE_CLIENT_ID;
+const getAzureClientId = () =>
+  import.meta.env.VITE_AZURE_CLIENT_ID?.trim() || DEFAULT_AZURE_CLIENT_ID;
 
-const getApiClientId = () => import.meta.env.VITE_API_CLIENT_ID?.trim() || DEFAULT_API_CLIENT_ID;
+const getApiClientId = () =>
+  import.meta.env.VITE_API_CLIENT_ID?.trim() || DEFAULT_API_CLIENT_ID;
 
 const msalConfig = {
   auth: {
@@ -72,5 +73,10 @@ const msalConfig = {
 export const msalInstance = new PublicClientApplication(msalConfig);
 
 export const loginRequest = {
-  scopes: ["openid", "profile", "email", `api://${getApiClientId()}/access_as_user`],
+  scopes: [
+    "openid",
+    "profile",
+    "email",
+    `api://${getApiClientId()}/access_as_user`,
+  ],
 };

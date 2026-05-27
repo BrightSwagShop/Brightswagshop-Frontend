@@ -1,43 +1,27 @@
-import { useEffect } from 'react'
-import { InteractionStatus } from '@azure/msal-browser'
-import { useIsAuthenticated, useMsal } from '@azure/msal-react'
-import { useNavigate } from 'react-router-dom'
-import './App.css'
-import HomePage from './Pages/HomePage'
- 
+import { useEffect } from "react";
+// InteractionStatus removed; no automatic redirects from App
+import { useIsAuthenticated, useMsal } from "@azure/msal-react";
+import { useNavigate } from "react-router-dom";
+import "./App.css";
+import HomePage from "./Pages/HomePage";
 
 const App = () => {
-  const isAuthenticated = useIsAuthenticated()
-  const { accounts, inProgress } = useMsal()
-  const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated();
+  const { accounts, inProgress } = useMsal();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (inProgress !== InteractionStatus.None) {
-      return
-    }
+    // Previously this effect auto-redirected authenticated users to admin routes.
+    // That caused unwanted navigation back to `/admin/dashboard` when visiting `/`.
+    // Post-login navigation is now handled by `AuthCallbackPage` using
+    // `sessionStorage.preLoginPath` saved by the Header. Keep App passive.
+  }, [accounts, inProgress, isAuthenticated, navigate]);
 
-    if (!isAuthenticated || accounts.length === 0) {
-      return
-    }
-
-    const claims = accounts[0].idTokenClaims as Record<string, unknown>
-    const roles = (claims?.roles as string[]) ?? []
-
-    if (roles.includes('App.Admin')) {
-      navigate('/admin/dashboard', { replace: true })
-      return
-    }
-
-    navigate('/unauthorized', { replace: true })
-  }, [accounts, inProgress, isAuthenticated, navigate])
-
-    
   return (
     <div className="min-h-screen bg-gray-100">
-        
-      <HomePage/>
+      <HomePage />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
