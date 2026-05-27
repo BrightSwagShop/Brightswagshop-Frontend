@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../Config/AuthConfig";
 
 const Unauthorized = () => {
+  const { instance } = useMsal();
+
   return (
     <div className="flex flex-col bg-gray-100">
 
@@ -22,12 +26,13 @@ const Unauthorized = () => {
             Verder shoppen
           </Link>
 
-          <Link
-            to="/login"
+          <button
+            type="button"
+            onClick={() => instance.loginRedirect(loginRequest)}
             className="border border-yellow-400 px-6 py-3 rounded-lg text-sm font-medium hover:bg-yellow-50 transition"
           >
             Inloggen
-          </Link>
+          </button>
         </div>
 
       </div>

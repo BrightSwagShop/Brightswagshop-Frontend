@@ -5,6 +5,7 @@ import logo from "../assets/Brightest-logo's/logo.png";
 import { useState, useEffect, type CSSProperties } from "react";
 import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import { useAuth } from "../hooks/useAuth";
+import { loginRequest } from "../Config/AuthConfig";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -97,12 +98,13 @@ const Header = () => {
 
             <div className=" flex justify-end">
             {!isLoggedIn ? (
-              <Link
-                to="/login"
+              <button
+                type="button"
+                onClick={() => instance.loginRedirect(loginRequest)}
                 className="hover:text-yellow-500 transition font-ttnorms font-bold"
               >
                 Login
-              </Link>
+              </button>
             ) : (
               <button
                 onClick={handleLogout}

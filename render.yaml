@@ -1,9 +1,22 @@
 services:
-  - type: web
+  - type: static
     name: brightswagshop-frontend
     root: frontend
-    buildCommand: npm ci && npm run build
-    startCommand: npm run preview -- --host 0.0.0.0 --port $PORT
+    buildCommand: npm ci --production --no-optional && npm run build
+    staticPublishPath: dist
     envVars:
       - key: NODE_ENV
         value: production
+    routes:
+      - type: rewrite
+        source: "/auth/callback"
+        destination: "/index.html"
+      - type: rewrite
+        source: "/login"
+        destination: "/index.html"
+      - type: rewrite
+        source: "/login/"
+        destination: "/index.html"
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"

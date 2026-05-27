@@ -1,26 +1,29 @@
 import { NavLink } from "react-router-dom";
+
 import {
-  FaTachometerAlt,
-  FaUsers,
-  FaBoxOpen,
+  FaDesktop,
+  FaUser,
+  FaCube,
   FaClipboardList,
   FaCog,
   FaFlask,
   FaChevronLeft, 
-  FaChevronRight
+  FaChevronRight,
+  FaShoppingCart
 } from "react-icons/fa";
 
 interface AdminSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
 }
+//onToggele knop om sidebar open/dicht te klappen
 
+//isActive bepaalt styling
 const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
   const linkBase =
     "flex items-center gap-3 rounded-lg transition text-sm font-medium";
-  const linkInactive =
-    "text-gray-300 hover:bg-white/10 hover:text-white";
-  const linkActive = "bg-white/15 text-white";
+  const linkInactive = "text-gray-300 hover:bg-white/10 hover:text-white";
+  const linkActive = "bg-[#F4C709] text-[#3C3C3B]";
 
   return (
     <aside
@@ -29,25 +32,24 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
       }`}
     >
       {/* Top */}
-        <div
+      <div
         className={`flex items-center mb-8 ${
-            collapsed ? "justify-center" : "justify-between px-2"
+          collapsed ? "justify-center" : "justify-between px-2"
         }`}
-        >
+      >
         <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-yellow-400 shrink-0" />
-            {!collapsed && <span className="text-lg font-semibold">Admin</span>}
+          <div className="h-9 w-9 rounded-full bg-yellow-400 shrink-0" />
+          {!collapsed && <span className="text-lg font-semibold">Admin</span>}
         </div>
 
         <button
-            type="button"
-            onClick={onToggle}
-            className="text-gray-300 hover:text-yellow-500 transition"
+          type="button"
+          onClick={onToggle}
+          className="text-gray-300 hover:text-yellow-500 transition"
         >
-            {collapsed ? <FaChevronRight /> : <FaChevronLeft />}
+          {collapsed ? <FaChevronRight /> : <FaChevronLeft />}
         </button>
-        </div>
-
+      </div>
 
       {/* Links */}
       <nav className="space-y-2">
@@ -60,20 +62,8 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
             }`
           }
         >
-          <FaTachometerAlt />
+          <FaDesktop />
           {!collapsed && <span>Dashboard</span>}
-        </NavLink>
-
-        <NavLink
-          to="/admin/users"
-          className={({ isActive }) =>
-            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
-              isActive ? linkActive : linkInactive
-            }`
-          }
-        >
-          <FaUsers />
-          {!collapsed && <span>Users</span>}
         </NavLink>
 
         <NavLink
@@ -84,20 +74,33 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
             }`
           }
         >
-          <FaBoxOpen />
-          {!collapsed && <span>Products</span>}
+          <FaCube />
+          {!collapsed && <span>Productbeheer</span>}
         </NavLink>
 
         <NavLink
-          to="/admin/bugs"
+          to="/admin/bestellingen"
           className={({ isActive }) =>
             `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
               isActive ? linkActive : linkInactive
             }`
           }
         >
-          <FaClipboardList />
-          {!collapsed && <span>Bugs</span>}
+          {" "}
+          <FaShoppingCart />
+          {!collapsed && <span>Bestellingen</span>}
+        </NavLink>
+
+        <NavLink
+          to="/admin/users"
+          className={({ isActive }) =>
+            `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
+              isActive ? linkActive : linkInactive
+            }`
+          }
+        >
+          <FaUser />
+          {!collapsed && <span>Gebruikersbeheer</span>}
         </NavLink>
 
         <NavLink
@@ -113,15 +116,15 @@ const AdminSidebar = ({ collapsed, onToggle }: AdminSidebarProps) => {
         </NavLink>
 
         <NavLink
-          to="/admin/settings"
+          to="/admin/bugs"
           className={({ isActive }) =>
             `${linkBase} ${collapsed ? "justify-center px-0 py-3" : "px-4 py-2"} ${
               isActive ? linkActive : linkInactive
             }`
           }
         >
-          <FaCog />
-          {!collapsed && <span>Settings</span>}
+          <FaClipboardList />
+          {!collapsed && <span>Bugs</span>}
         </NavLink>
       </nav>
     </aside>

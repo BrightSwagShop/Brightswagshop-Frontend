@@ -1,106 +1,382 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  FiEdit,
+  FiFolder,
+  FiInfo,
+  FiMenu,
+  FiPlus,
+  FiTrash2,
+} from "react-icons/fi";
+import Pagination from "../../components/Pagination";
+import CreateProductModal from "../../components/CreateProductModal";
+import {
+  deleteProduct,
+  getAllProducts,
+  type AdminProductResponse,
+} from "../../services/productService";
 
-const categories = ["T-Shirts", "Hoodies", "Mokken", "Drinkflessen", "Notebooks"];
-
-type ProductItem = {
-  id: string;
-  name: string;
-  price: number;
-};
-
-const productsByCategory: Record<string, ProductItem[]> = {
-  "T-Shirts": [
-    { id: "t1", name: "Basic Tee", price: 19.99 },
-    { id: "t2", name: "Oversized Tee", price: 24.99 },
-    { id: "t3", name: "Logo Tee", price: 22.5 },
-  ],
-  Hoodies: [
-    { id: "h1", name: "Classic Hoodie", price: 49.99 },
-    { id: "h2", name: "Zip Hoodie", price: 54.99 },
-  ],
-  Mokken: [
-    { id: "m1", name: "Coffee Mug", price: 12.99 },
-    { id: "m2", name: "Big Mug", price: 14.99 },
-  ],
-  Drinkflessen: [
-    { id: "d1", name: "Steel Bottle", price: 18.99 },
-    { id: "d2", name: "Sport Bottle", price: 15.49 },
-  ],
-  Notebooks: [
-    { id: "n1", name: "A5 Notebook", price: 9.99 },
-    { id: "n2", name: "Hardcover Notebook", price: 12.99 },
-  ],
-};
+const itemsPerPage = 8;
 
 const Products = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
+  const [products, setProducts] = useState<AdminProductResponse[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] =
+    useState<AdminProductResponse | null>(null);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [stockFilter, setStockFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const productList = useMemo(
-    () => productsByCategory[selectedCategory] ?? [],
-    [selectedCategory]
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await getAllProducts();
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
+        setError("Producten konden niet worden geladen.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
+  const categoryOptions = useMemo(
+    () =>
+      Array.from(new Set(products.map((product) => product.category))).filter(
+        Boolean,
+      ),
+    [products],
   );
 
+  const typeOptions = useMemo(
+    () =>
+      Array.from(
+        new Set(products.map((product) => product.productType)),
+      ).filter(Boolean),
+    [products],
+  );
+
+  const filteredProducts = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    const result = products.filter((product) => {
+      const matchesSearch =
+        query.length === 0 ||
+        product.name.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query) ||
+        product.productType.toLowerCase().includes(query);
+
+      const matchesCategory =
+        categoryFilter === "all" || product.category === categoryFilter;
+
+      const matchesType =
+        typeFilter === "all" || product.productType === typeFilter;
+
+      const matchesStock =
+        stockFilter === "all" ||
+        (stockFilter === "active" && product.isActive) ||
+        (stockFilter === "inactive" && !product.isActive);
+
+      return matchesSearch && matchesCategory && matchesType && matchesStock;
+    });
+
+    result.sort((a, b) => {
+      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") return b.price - a.price;
+      if (sortBy === "name") return a.name.localeCompare(b.name);
+      return a.name.localeCompare(b.name);
+    });
+
+    return result;
+  }, [products, search, categoryFilter, typeFilter, stockFilter, sortBy]);
+
+  const totalItems = filteredProducts.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, categoryFilter, typeFilter, stockFilter, sortBy]);
+
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("nl-BE", {
+      style: "currency",
+      currency: "EUR",
+    }).format(value);
+
+  const getPreviewImage = (product: AdminProductResponse) =>
+    product.kleuren?.[0]?.imageUrl ?? "/placeholder.png";
+
+  const refreshProducts = async () => {
+    const data = await getAllProducts();
+    setProducts(data);
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    const confirmed = window.confirm(
+      "Weet je zeker dat je dit product wilt verwijderen?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteProduct(id);
+      await refreshProducts();
+    } catch (err) {
+      console.error(err);
+      setError("Product kon niet worden verwijderd.");
+    }
+  };
+
+  const handleEditProduct = (product: AdminProductResponse) => {
+    setEditingProduct(product);
+    setIsCreateModalOpen(false);
+  };
+
   return (
-    <div className="grid grid-cols-1 gap-8 p-6 lg:grid-cols-4">
-      {/* LEFT - Categories */}
-      <div className="lg:col-span-1">
-        <h1 className="font-ttnorms text-3xl font-bold mb-4">Categories</h1>
-
-        <div className="space-y-2">
-          {categories.map((categoryName) => {
-            const isSelected = selectedCategory === categoryName;
-
-            return (
-              <button
-                key={categoryName}
-                onClick={() => setSelectedCategory(categoryName)}
-                className={`w-full text-left rounded-xl px-4 py-3 transition-all duration-200 font-ttnorms font-semibold
-                  ${
-                    isSelected
-                      ? "bg-slate-900 text-white shadow-md"
-                      : "bg-white text-slate-700 hover:bg-slate-100 hover:shadow-sm"
-                  }`}
-              >
-                {categoryName}
-              </button>
-            );
-          })}
+    <div className="p-6 bg-[#EDEDED] min-h-screen">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="text-4xl font-semibold text-[#3C3C3B] mt-1 mb-3">
+            Producten
+          </h1>
+          <p className="text-[#3C3C3B]">Productenoverzicht uit de database</p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsCreateModalOpen(true)}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#3C3C3B] px-4 py-3 text-sm font-semibold text-white transition hover:bg-black"
+        >
+          <FiPlus />
+          Product toevoegen
+        </button>
       </div>
 
-      {/* RIGHT - Items */}
-      <div className="lg:col-span-3">
-        <div className="flex items-end justify-between mb-6">
-          <h2 className="font-ttnorms text-2xl font-bold">{selectedCategory}</h2>
-          <span className="text-sm text-slate-500">{productList.length} items</span>
-        </div>
+      <div className="flex gap-4 mb-6">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Zoek producten..."
+          className="px-4 py-3 rounded-xl bg-white   w-64"
+        />
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          {productList.map((productItem) => (
-            <div
-              key={productItem.id}
-              className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md"
-            >
-              {/* mock image */}
-              <div className="h-32 w-full rounded-xl bg-slate-100 mb-4" />
-
-              <div className="font-ttnorms font-semibold text-slate-900">
-                {productItem.name}
-              </div>
-              <div className="text-sm text-slate-500">€ {productItem.price.toFixed(2)}</div>
-
-              <button className="mt-4 w-full rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
-                View
-              </button>
-            </div>
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+          className="px-4 py-3 rounded-xl bg-white  "
+        >
+          <option value="all">Alle categorieën</option>
+          {categoryOptions.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
           ))}
+        </select>
+
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="px-4 py-3 rounded-xl bg-white  "
+        >
+          <option value="all">Alle types</option>
+          {typeOptions.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={stockFilter}
+          onChange={(e) => setStockFilter(e.target.value)}
+          className="px-4 py-3 rounded-xl bg-white  "
+        >
+          <option value="all">Alle voorraadstatussen</option>
+          <option value="active">Actief</option>
+          <option value="inactive">Niet actief</option>
+        </select>
+
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-3 rounded-xl bg-white  "
+        >
+          <option value="name">Sorteren op naam</option>
+          <option value="price-asc">Prijs oplopend</option>
+          <option value="price-desc">Prijs aflopend</option>
+        </select>
+      </div>
+
+      {(isCreateModalOpen || editingProduct) && (
+        <CreateProductModal
+          mode={editingProduct ? "edit" : "create"}
+          initialProduct={editingProduct}
+          onClose={() => {
+            setIsCreateModalOpen(false);
+            setEditingProduct(null);
+          }}
+          onCreated={async () => {
+            await refreshProducts();
+            setCurrentPage(1);
+            setEditingProduct(null);
+          }}
+        />
+      )}
+
+      <div className="grid grid-cols-4 gap-6">
+        <div className="col-span-3 bg-white rounded-2xl overflow-hidden">
+          <div className="grid grid-cols-5 px-6 py-3 bg-gray-100 text-sm text-gray-600 font-medium">
+            <span>Product</span>
+            <span>Categorie</span>
+            <span>Prijs</span>
+            <span>Status</span>
+            <span>Acties</span>
+          </div>
+
+          {isLoading ? (
+            <div className="px-6 py-8 text-sm text-gray-500">
+              Producten laden...
+            </div>
+          ) : error ? (
+            <div className="px-6 py-8 text-sm text-red-500">{error}</div>
+          ) : paginatedProducts.length === 0 ? (
+            <div className="px-6 py-8 text-sm text-gray-500">
+              Geen producten gevonden voor deze filters.
+            </div>
+          ) : (
+            paginatedProducts.map((product) => (
+              <div
+                key={product.id}
+                className="grid grid-cols-5 items-center px-6 py-4 border-t text-sm"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <img
+                    src={getPreviewImage(product)}
+                    alt={product.name}
+                    className="w-12 h-12 rounded-md object-cover bg-gray-100"
+                  />
+                  <div className="min-w-0">
+                    <div className="font-medium text-[#3C3C3B] truncate">
+                      {product.name}
+                    </div>
+                    <div className="text-xs text-gray-500 truncate">
+                      {product.productType}
+                    </div>
+                  </div>
+                </div>
+
+                <span className="text-gray-700">{product.category}</span>
+                <span className="text-gray-700 font-medium">
+                  {formatCurrency(product.price)}
+                </span>
+                <span>
+                  <span
+                    className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                      product.isActive
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {product.isActive ? "Actief" : "Niet actief"}
+                  </span>
+                </span>
+
+                <div className="flex gap-3 text-gray-500">
+                  <button
+                    type="button"
+                    onClick={() => handleEditProduct(product)}
+                    className="cursor-pointer hover:text-black"
+                    aria-label={`Product ${product.name} bewerken`}
+                  >
+                    <FiEdit />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteProduct(product.id)}
+                    className="cursor-pointer hover:text-red-500"
+                    aria-label={`Product ${product.name} verwijderen`}
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+
+          <div className="flex justify-between items-center px-6 py-4 text-sm text-gray-500 border-t">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </div>
 
-        {productList.length === 0 && (
-          <div className="rounded-xl bg-white p-6 text-slate-600 shadow-sm">
-            No items in this category.
+        <div className="space-y-4">
+          <div className="bg-white rounded-2xl p-4">
+            <h2 className="font-semibold mb-3">Producttypes</h2>
+            {typeOptions.map((type) => {
+              const count = products.filter(
+                (product) => product.productType === type,
+              ).length;
+
+              return (
+                <div
+                  key={type}
+                  className="flex justify-between items-center py-2 border-b border-gray-500"
+                >
+                  <div className="flex items-center gap-2">
+                    <FiFolder />
+                    <span>{type}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 bg-gray-200 px-2 rounded">
+                      {count}
+                    </span>
+                    <FiMenu />
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        )}
+
+          <div className="bg-[#f3e9c3] border border-[#F4C709] rounded-2xl p-4 flex gap-4">
+            <div className="flex items-start">
+              <div className="h-10 w-10 rounded-full border-2 border-[#F4C709] flex items-center justify-center text-[#F4C709]">
+                <FiInfo className="text-xl" />
+              </div>
+            </div>
+
+            <div>
+              <div className="font-semibold text-[#3C3C3B] mb-1">Tip</div>
+              <p className="text-sm text-[#3C3C3B]">
+                Gebruik de filters om snel een productcategorie, type of
+                voorraadstatus terug te vinden.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

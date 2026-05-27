@@ -15,8 +15,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   console.log("ProtectedRoute - claims:", accounts[0]?.idTokenClaims);
 
   if (!isAuthenticated || accounts.length === 0) {
-    console.log("❌ Not authenticated → redirect to /login");
-    return <Navigate to="/login" replace />;
+    console.log("❌ Not authenticated → redirect to /");
+    return <Navigate to="/" replace />;
   }
 
   const claims = accounts[0].idTokenClaims as Record<string, unknown>;

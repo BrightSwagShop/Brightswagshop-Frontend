@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BrightSwagShop</title>
+    <script>
+      (function () {
+        // Preserve both query string (e.g. ?code=...) and hash fragment
+        // and move them into the fragment so the SPA + MSAL can process it.
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+
+        if (search || hash) {
+          // strip leading ? and # when concatenating
+          var frag = '';
+          if (search.startsWith('?')) frag += search.substring(1);
+          else frag += search;
+          if (hash.startsWith('#')) {
+            if (frag.length > 0) frag += '&';
+            frag += hash.substring(1);
+          }
+
+          // redirect to root with the auth response in the fragment
+          window.location.replace('/#' + frag);
+          return;
+        }
+
+        window.location.replace('/');
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
