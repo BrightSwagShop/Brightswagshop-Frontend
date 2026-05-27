@@ -72,6 +72,8 @@ const msalConfig = {
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
+export const msalReady = msalInstance.initialize();
+
 export const loginRequest = {
   scopes: [
     "openid",

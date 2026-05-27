@@ -1,5 +1,5 @@
 import axios from "axios";
-import { msalInstance } from "../Config/AuthConfig";
+import { msalInstance, msalReady } from "../Config/AuthConfig";
 import { getApiBaseUrl } from "../Config/apiBaseUrl";
 
 const api = axios.create({
@@ -10,6 +10,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
+  await msalReady;
+
   const jwtToken = localStorage.getItem("token");
 
   if (jwtToken) {
@@ -23,9 +25,7 @@ api.interceptors.request.use(async (config) => {
     try {
       const tokenResponse = await msalInstance.acquireTokenSilent({
         account: accounts[0],
-        scopes: [
-          `api://${import.meta.env.VITE_API_CLIENT_ID}/access_as_user`,
-        ],
+        scopes: [`api://${import.meta.env.VITE_API_CLIENT_ID}/access_as_user`],
       });
 
       config.headers.Authorization = `Bearer ${tokenResponse.accessToken}`;
