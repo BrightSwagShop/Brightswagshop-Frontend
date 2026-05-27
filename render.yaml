@@ -1,12 +1,9 @@
 services:
   - type: static
     name: brightswagshop-frontend
-    root: frontend
-    buildCommand: npm ci --production --no-optional && npm run build
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
     staticPublishPath: dist
-    envVars:
-      - key: NODE_ENV
-        value: production
     routes:
       - type: rewrite
         source: "/auth/callback"
