@@ -18,6 +18,7 @@ import Winkelwagen from "../Pages/WinkelwagenPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ContactPage from "../Pages/ContactPage";
 import About from "../Pages/About";
+import LoginPage from "../Pages/LoginPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../components/NotFound";
 import Unauthorized from "../components/Unauthorized";
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       { path: "checkout", element: <CheckoutPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "about", element: <About /> },
+      { path: "login", element: <LoginPage /> },
       { path: "auth/callback", element: <AuthCallbackPage /> },
       { path: "unauthorized", element: <Unauthorized /> },
       { path: "favoriten", element: <Favorites /> },

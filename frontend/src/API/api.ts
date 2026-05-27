@@ -10,14 +10,22 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  await msalReady;
-
+  // If a local JWT is present, use it immediately (normal username/password flow).
   const jwtToken = localStorage.getItem("token");
 
   if (jwtToken) {
     config.headers.Authorization = `Bearer ${jwtToken}`;
     return config;
   }
+
+  // Public auth endpoints (login/register) should not wait for MSAL or try to acquire tokens.
+  const url = config.url || "";
+  if (url.includes("/api/users/login") || url.includes("/api/users/register")) {
+    return config;
+  }
+
+  // For other requests, wait for MSAL to initialize then try to acquire a token silently.
+  await msalReady;
 
   const accounts = msalInstance.getAllAccounts();
 
