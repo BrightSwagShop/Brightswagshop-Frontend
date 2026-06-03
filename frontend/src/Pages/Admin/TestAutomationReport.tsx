@@ -3,7 +3,6 @@ import { FaFlask, FaSpinner, FaExternalLinkAlt } from "react-icons/fa";
 
 import { getApiBaseUrl } from "../../Config/apiBaseUrl";
 import {
-  getLatestTestRuns,
   getTestRun,
   startTestRun,
   type TestAutomationRun,
@@ -48,14 +47,13 @@ export default function TestAutomationReport() {
   });
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
   const [reportPreviewRunId, setReportPreviewRunId] = useState<string | null>(null);
-  const [activeSuite, setActiveSuite] = useState<TestAutomationSuite | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingSuite, setLoadingSuite] = useState<TestAutomationSuite | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const activeRun = activeSuite ? runs[activeSuite] : null;
   const selectedRun = selectedRunId
-    ? Object.values(runs).find((run) => run?.id === selectedRunId) ?? null
-    : activeRun ?? runs.Frontend ?? runs.Api;
+    ? (Object.values(runs).find((run) => run?.id === selectedRunId) ?? null)
+    : (runs.Api ?? runs.Frontend);
+
   const reportUrl = useMemo(() => {
     if (!selectedRun || reportPreviewRunId !== selectedRun.id) {
       return null;
@@ -64,42 +62,6 @@ export default function TestAutomationReport() {
     const cacheBuster = selectedRun.completedAt ?? selectedRun.startedAt;
     return `${getApiBaseUrl()}${selectedRun.reportPath}?v=${cacheBuster}`;
   }, [reportPreviewRunId, selectedRun]);
-
-  const refreshRuns = async () => {
-    const latestRuns = await getLatestTestRuns();
-    setRuns({
-      Api: latestRuns.find((run) => run.suite === "Api") ?? null,
-      Frontend: latestRuns.find((run) => run.suite === "Frontend") ?? null,
-    });
-  };
-
-  useEffect(() => {
-    void refreshRuns().catch((refreshError) => {
-      console.error(refreshError);
-      setError("Could not load the latest test runs.");
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!activeRun || activeRun.status !== "Running") {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      void getTestRun(activeRun.id)
-        .then((updatedRun) => {
-          setRuns((currentRuns) => ({
-            ...currentRuns,
-            [updatedRun.suite]: updatedRun,
-          }));
-        })
-        .catch((pollError) => {
-          console.error(pollError);
-        });
-    }, 2000);
-
-    return () => window.clearInterval(intervalId);
-  }, [activeRun]);
 
   useEffect(() => {
     if (!selectedRun || selectedRun.status === "Queued" || selectedRun.status === "Running") {
@@ -116,8 +78,12 @@ export default function TestAutomationReport() {
 
   const handleStart = async (suite: TestAutomationSuite) => {
     setError(null);
-    setIsLoading(true);
-    setActiveSuite(suite);
+    setLoadingSuite(suite);
+
+    // Wipe previous run for this suite so the UI starts fresh
+    setRuns((currentRuns) => ({ ...currentRuns, [suite]: null }));
+    setSelectedRunId(null);
+    setReportPreviewRunId(null);
 
     try {
       const run = await startTestRun(suite);
@@ -140,7 +106,7 @@ export default function TestAutomationReport() {
       console.error(startError);
       setError(`Could not start ${suite} tests.`);
     } finally {
-      setIsLoading(false);
+      setLoadingSuite(null);
     }
   };
 
@@ -149,7 +115,10 @@ export default function TestAutomationReport() {
       <div className="grid gap-4 xl:grid-cols-3">
         {suites.map((suite) => {
           const run = runs[suite.key];
-          const isActive = activeSuite === suite.key;
+          const isBusy =
+            loadingSuite === suite.key ||
+            run?.status === "Running" ||
+            run?.status === "Queued";
 
           return (
             <div
@@ -161,21 +130,21 @@ export default function TestAutomationReport() {
                   <h2 className="text-xl font-bold text-slate-900">{suite.label}</h2>
                   <p className="mt-1 text-sm text-slate-600">{suite.description}</p>
                 </div>
-                {run ? <StatusPill status={run.status} /> : <StatusPill status="Queued" />}
+                {run ? <StatusPill status={run.status} /> : null}
               </div>
 
               <div className="mt-5 flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => void handleStart(suite.key)}
-                  disabled={isLoading}
+                  disabled={isBusy}
                   className="inline-flex items-center gap-2 rounded-2xl bg-yellow-400 px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {isActive && isLoading ? <FaSpinner className="animate-spin" /> : <FaFlask />}
+                  {isBusy ? <FaSpinner className="animate-spin" /> : <FaFlask />}
                   Start suite
                 </button>
 
-                {run?.reportPath ? (
+                {run?.reportPath && (run.status === "Succeeded" || run.status === "Failed") ? (
                   <a
                     href={`${getApiBaseUrl()}${run.reportPath}`}
                     target="_blank"
@@ -231,7 +200,7 @@ export default function TestAutomationReport() {
               </pre>
             ) : (
               <div className="flex min-h-40 items-center justify-center text-slate-400">
-                {selectedRun ? "Waiting for output..." : "No run selected yet."}
+                {selectedRun ? "Waiting for output..." : "Start a suite to see live output here."}
               </div>
             )}
           </div>

@@ -10,7 +10,7 @@ test.describe('Error Pages - Smoke Tests', () => {
 
   test('[Error Page - Smoke] Load 404 page successfully', async () => {
     await notFoundPage.navigateToNonExistentPage();
-    await expect(notFoundPage.page).toHaveURL(/http:\/\/localhost:5173\/nonexistent-page-12345/);
+    await expect(notFoundPage.page).toHaveURL(/\/nonexistent-page-12345/);
   });
 
   test('[Error Page - Smoke] Display "Pagina niet gevonden" heading', async () => {
@@ -33,7 +33,7 @@ test.describe('Error Pages - Smoke Tests', () => {
     await notFoundPage.navigateToNonExistentPage();
     
     await notFoundPage.clickContinueShopping();
-    await expect(notFoundPage.page).toHaveURL('http://localhost:5173/');
+    await expect(notFoundPage.page).toHaveURL(/\/$/);
   });
 
   test('[Error Page - Smoke] Display error description text', async () => {

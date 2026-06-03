@@ -13,7 +13,7 @@ test.describe('Homepage - Smoke Tests', () => {
 
   test('[Home Page - Smoke] Load page successfully', async () => {  
 
-    await expect(homePage.page).toHaveURL('http://localhost:5173/');
+    await expect(homePage.page).toHaveURL(/\/$/);
     await expect(homePage.getMainHeading()).toBeVisible();
 
   });
