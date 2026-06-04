@@ -5,6 +5,7 @@ const breadcrumbMap: Record<string, string> = {
   users: "Users",
   products: "Products",
   bugs: "Bugs",
+  "test-automation": "Test reports",
   settings: "Settings",
 };
 
@@ -19,7 +20,11 @@ const AdminBreadcrumbs = () => {
   return (
     <div className="mb-2">
       <nav className="flex items-center gap-2 text-sm text-gray-400">
-        <Link to="/" className="hover:text-yellow-500 transition">
+        <Link
+          to="/"
+          reloadDocument
+          className="hover:text-yellow-500 transition"
+        >
           Home
         </Link>
 

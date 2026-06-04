@@ -22,10 +22,30 @@ const AuthCallbackPage = () => {
 
     const isAdmin = roles.includes("App.Admin");
 
-    if (isAdmin) {
-      navigate("/admin/dashboard", { replace: true });
+    // Respect where the user started the login flow. Header saves the path in sessionStorage.
+    const preLogin = (() => {
+      try {
+        return sessionStorage.getItem("preLoginPath") || "/";
+      } catch {
+        return "/";
+      }
+    })();
+
+    try {
+      sessionStorage.removeItem("preLoginPath");
+    } catch {
+      void 0; // ignore errors when clearing sessionStorage
+    }
+
+    if (preLogin.startsWith("/admin")) {
+      if (isAdmin) {
+        navigate(preLogin, { replace: true });
+      } else {
+        navigate("/unauthorized", { replace: true });
+      }
     } else {
-      navigate("/unauthorized", { replace: true });
+      // For non-admin or general logins, go back to the originating page (or home).
+      navigate(preLogin || "/", { replace: true });
     }
   }, [isAuthenticated, accounts, navigate]);
 

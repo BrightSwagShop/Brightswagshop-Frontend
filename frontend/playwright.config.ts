@@ -1,7 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const qaseToken = process.env.QASE_TESTOPS_API_TOKEN || process.env.QASE_API_TOKEN;
-const qaseProject = process.env.QASE_TESTOPS_PROJECT || process.env.QASE_PROJECT;
+const configuredBaseUrl = (process.env.PLAYWRIGHT_BASE_URL || '').trim();
+const baseURL = configuredBaseUrl.length > 0 ? configuredBaseUrl : 'http://localhost:5173';
+const webServer = configuredBaseUrl.length === 0
+  ? {
+      command: 'npm run dev -- --host 0.0.0.0 --port 5173',
+      url: 'http://localhost:5173',
+      reuseExistingServer: !process.env.CI,
+    }
+  : undefined;
 
 export default defineConfig({
   testDir: './WebTests/Tests',
@@ -12,28 +19,10 @@ export default defineConfig({
   reporter: [
     ['html'],
     ['list'],
-    ...(qaseToken && qaseProject ? [
-      [
-        'playwright-qase-reporter',
-        {
-          mode: 'testops',
-          debug: false,
-          testops: {
-            api: {
-              token: qaseToken,
-            },
-            project: qaseProject,
-            uploadAttachments: true,
-            run: {
-              complete: true,
-            },
-          },
-        },
-      ],
-    ] : []),
+    ['junit', { outputFile: 'test-results/junit.xml' }],
   ],
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -41,9 +30,5 @@ export default defineConfig({
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer,
 });

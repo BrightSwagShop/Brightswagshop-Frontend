@@ -1,49 +1,92 @@
 import { useEffect, useState } from "react";
-import { bugLabels, type BugKey } from "../../bugs/BugFlags";
-import { loadBugFlags, saveBugFlags, type BugFlags } from "../../bugs/BugStore";
+import {
+  getBugStatuses,
+  toggleBug,
+  type DebugBugKey,
+  type DebugBugStatus,
+} from "../../services/bugService";
+import Loading from "../../components/Loading";
+
+const bugLabels: Record<DebugBugKey, string> = {
+  brokenImages: "Broken images",
+  brokenFavorites: "Broken favorites",
+  productApiError: "Product API error",
+  slowLoading: "Slow loading",
+  loginFails: "Login fails",
+  DisableAddToCart: "Disable add to cart",
+  WrongCartTotal: "Wrong cart total",
+};
 
 export default function Bugs() {
-  const [flags, setFlags] = useState<BugFlags>(loadBugFlags());
+  const [flags, setFlags] = useState<DebugBugStatus | null>(null);
 
   useEffect(() => {
-    saveBugFlags(flags);
-  }, [flags]);
+    const load = async () => {
+      const data = await getBugStatuses();
+      setFlags(data);
+    };
 
-  const toggle = (key: BugKey) => {
-    setFlags((prev) => ({ ...prev, [key]: !prev[key] }));
+    load();
+  }, []);
+
+  const handleToggle = async (feature: DebugBugKey) => {
+    const result = await toggleBug(feature);
+
+    setFlags((current) =>
+      current
+        ? {
+            ...current,
+            [feature]: result.enabled,
+          }
+        : current,
+    );
   };
 
+  if (!flags) {
+    return (
+      <div className="p-6 bg-[#EDEDED] min-h-screen">
+        <h1 className="text-4xl font-semibold text-[#3C3C3B]">Bugs</h1>
+        <p className="text-[#3C3C3B] mt-1 mb-8">
+          Zet hier de ingebouwde bugs aan of uit.
+        </p>
+        <Loading />
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-extrabold text-slate-900">Bug Lab</h1>
-      <p className="mt-2 text-slate-600">
-        Zet bugs aan/uit om edge cases te testen. (Wordt bewaard in je browser.)
+    <div className="p-6 bg-[#EDEDED] min-h-screen">
+      <h1 className="text-4xl font-semibold text-[#3C3C3B]">Bugs</h1>
+      <p className="text-[#3C3C3B] mt-1 mb-8">
+        Zet hier de ingebouwde bugs aan of uit.
       </p>
 
-      <div className="mt-8 space-y-3">
-        {(Object.keys(bugLabels) as BugKey[]).map((key) => (
+      <div className="grid grid-cols-2 gap-6 max-w-3xl">
+        {(Object.keys(bugLabels) as DebugBugKey[]).map((feature) => (
           <div
-            key={key}
-            className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4"
+            key={feature}
+            className="bg-white rounded-xl p-4 shadow-sm flex flex-col items-center justify-center text-center"
           >
-            <div>
-              <p className="font-semibold text-slate-900">{bugLabels[key]}</p>
-              <p className="text-xs text-slate-500">{key}</p>
-            </div>
+            <p className="text-sm font-medium text-[#3C3C3B] mb-4">
+              {bugLabels[feature]}
+            </p>
 
             <button
-              onClick={() => toggle(key)}
-              className={`h-8 w-14 rounded-full transition px-1 ${
-                flags[key] ? "bg-emerald-500" : "bg-slate-300"
+              onClick={() => handleToggle(feature)}
+              className={`w-12 h-6 flex items-center rounded-full p-1 transition ${
+                flags[feature] ? "bg-yellow-400" : "bg-gray-300"
               }`}
-              aria-pressed={flags[key]}
             >
               <div
-                className={`h-6 w-6 rounded-full bg-white transition ${
-                  flags[key] ? "translate-x-6" : "translate-x-0"
+                className={`bg-white w-4 h-4 rounded-full shadow-md transform transition ${
+                  flags[feature] ? "translate-x-6" : "translate-x-0"
                 }`}
               />
             </button>
+
+            <p className="text-xs text-gray-500 mt-2">
+              {flags[feature] ? "Actief" : "Uit"}
+            </p>
           </div>
         ))}
       </div>

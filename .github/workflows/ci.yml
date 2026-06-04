@@ -61,6 +61,28 @@ jobs:
           path: ./frontend/junit.xml
           reporter: java-junit
 
+      - name: Setup Python for TestRail CLI
+        if: always()
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Upload Frontend Results to TestRail
+        if: always()
+        continue-on-error: true
+        working-directory: ./frontend
+        run: |
+          pip install trcli
+          trcli -y \
+            -h "${{ secrets.TESTRAIL_BASE_URL }}" \
+            --project "BrightSwagShop" \
+            -u "${{ secrets.TESTRAIL_USERNAME }}" \
+            -p "${{ secrets.TESTRAIL_API_KEY }}" \
+            parse_junit \
+            --title "Playwright Frontend Tests - Build #${{ github.run_number }}" \
+            --run-description "Triggered by: ${{ github.actor }} | Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -f "./junit.xml"
+
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -90,9 +112,6 @@ jobs:
       - name: Run Playwright Tests
         working-directory: ./frontend
         env:
-          QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
-          QASE_TESTOPS_PROJECT: ${{ secrets.QASE_TESTOPS_PROJECT }}
-          QASE_TESTOPS_RUN_COMPLETE: true
           ENTRA_ID_TENANT_ID: ${{ secrets.ENTRA_ID_TENANT_ID }}
           ENTRA_ID_CLIENT_ID: ${{ secrets.ENTRA_ID_CLIENT_ID }}
         run: npm run webtests
@@ -107,7 +126,13 @@ jobs:
 
       - name: Send Playwright Report via Email (SendGrid API)
         if: always()
+        continue-on-error: true
         run: |
+          if [ -z "${{ secrets.SENDGRID_API_KEY }}" ]; then
+            echo "SENDGRID_API_KEY not configured, skipping email"
+            exit 0
+          fi
+
           # Check if report exists
           if [ ! -f ./frontend/playwright-report/index.html ]; then
             echo "Playwright report not found, skipping email"
@@ -153,7 +178,6 @@ jobs:
             echo "Response body: $RESPONSE_BODY"
             exit 1
           fi
-        continue-on-error: false
 
       - name: Build for production
         working-directory: ./frontend

@@ -1,25 +1,30 @@
-import type { BugKey } from "./BugFlags";
+import {
+  bugLabels,
+  createDefaultBugFlags,
+  type BugFlagKey,
+  type BugFlags,
+} from "./BugFlags";
 
-const STORAGE_KEY = "bug-flags";
+const STORAGE_KEY = "brightswagshop.debug-bug-flags";
 
-export type BugFlags = Record<BugKey, boolean>;
-
-const defaultFlags: BugFlags = {
-  BROKEN_CATEGORY_SLUG: false,
-  EMPTY_CATEGORY_ITEMS: false,
-  BROKEN_IMAGES: false,
-  RANDOM_API_ERROR: false,
-  SLOW_LOADING: false,
-};
+const bugKeys = Object.keys(bugLabels) as BugFlagKey[];
 
 export function loadBugFlags(): BugFlags {
+  const rawValue = localStorage.getItem(STORAGE_KEY);
+
+  if (!rawValue) {
+    return createDefaultBugFlags();
+  }
+
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultFlags;
-    const parsed = JSON.parse(raw) as Partial<BugFlags>;
-    return { ...defaultFlags, ...parsed };
+    const parsed = JSON.parse(rawValue) as Partial<BugFlags>;
+
+    return bugKeys.reduce<BugFlags>((flags, key) => {
+      flags[key] = Boolean(parsed[key]);
+      return flags;
+    }, createDefaultBugFlags());
   } catch {
-    return defaultFlags;
+    return createDefaultBugFlags();
   }
 }
 
@@ -27,12 +32,12 @@ export function saveBugFlags(flags: BugFlags) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(flags));
 }
 
-export function isBugOn(key: BugKey): boolean {
-  return loadBugFlags()[key] ?? false;
+export function isBugOn(flag: BugFlagKey) {
+  return loadBugFlags()[flag];
 }
 
-export function setBugOn(key: BugKey, value: boolean) {
+export function setBugOn(flag: BugFlagKey, enabled: boolean) {
   const flags = loadBugFlags();
-  flags[key] = value;
+  flags[flag] = enabled;
   saveBugFlags(flags);
 }

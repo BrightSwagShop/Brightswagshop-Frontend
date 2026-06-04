@@ -2,19 +2,20 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ShoppingCart from "../components/WinkelwagenComponents/ShoppingCart";
 import { AuthContext } from "../contexts/AuthContext";
-import { createOrderFromCart } from "../api/OrderAPI";
-import { createCheckoutSession } from "../api/PaymentAPI";
+import { createOrderFromCart } from "../API/OrderAPI";
+import { createCheckoutSession } from "../API/PaymentAPI";
 import {
   getCartByUserId,
   removeCartItem,
   updateCartItemQuantity,
   type ShoppingCartResponse,
-} from "../api/CartAPI";
+} from "../API/CartAPI";
 
 const WinkelwagenPage = () => {
   const { user, isLoading: isAuthLoading } = useContext(AuthContext);
   const userId = user?.id;
-
+  const userName =user?.username || "Unknown";
+  console.log(user?.username);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [cart, setCart] = useState<ShoppingCartResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +65,7 @@ const WinkelwagenPage = () => {
       setIsCheckingOut(true);
       setError(null);
 
-      const createdOrder = await createOrderFromCart(userId);
+      const createdOrder = await createOrderFromCart(userId, userName);
       const checkoutSession = await createCheckoutSession(createdOrder.id);
 
       window.location.href = checkoutSession.sessionUrl;
