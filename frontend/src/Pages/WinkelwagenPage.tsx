@@ -14,7 +14,8 @@ import {
 const WinkelwagenPage = () => {
   const { user, isLoading: isAuthLoading } = useContext(AuthContext);
   const userId = user?.id;
-
+  const userName =user?.username || "Unknown";
+  console.log(user?.username);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [cart, setCart] = useState<ShoppingCartResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +65,7 @@ const WinkelwagenPage = () => {
       setIsCheckingOut(true);
       setError(null);
 
-      const createdOrder = await createOrderFromCart(userId);
+      const createdOrder = await createOrderFromCart(userId, userName);
       const checkoutSession = await createCheckoutSession(createdOrder.id);
 
       window.location.href = checkoutSession.sessionUrl;

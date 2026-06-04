@@ -11,6 +11,7 @@ export type OrderItemResponse = {
 export type OrderResponse = {
   id: string;
   userId: string;
+   userName: string;
   totalPrice: number;
   createdAt: string;
   status: string;
@@ -41,7 +42,11 @@ export const getOrdersByUserId = async (
 
 export const createOrderFromCart = async (
   userId: string,
+   userName: string,
 ): Promise<OrderResponse> => {
-  const response = await orderApi.post<OrderResponse>(`/from-cart/${userId}`);
+  const response = await orderApi.post<OrderResponse>(`/from-cart/${userId}`,
+    {
+      userName,
+    });
   return response.data;
 };

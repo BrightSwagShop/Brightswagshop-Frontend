@@ -149,7 +149,7 @@ const Bestellingen = () => {
 
       <div className="grid grid-cols-4 gap-6">
         <div className="col-span-3 bg-white rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-6 px-6 py-3 bg-gray-100 text-sm text-gray-600 font-medium">
+          <div className="grid grid-cols-[3fr_2fr_1fr_1fr_1fr_1fr] px-6 py-3 bg-gray-100 text-sm text-gray-600 font-medium">
             <span>BestellingID</span>
             <span>Gebruiker</span>
             <span>Aantal items</span>
@@ -172,7 +172,7 @@ const Bestellingen = () => {
             paginatedOrders.map((order) => (
               <div
                 key={order.id}
-                className="grid grid-cols-6 items-center px-6 py-4 border-t border-gray-100 text-sm"
+                className="grid grid-cols-[3fr_2fr_1fr_1fr_1fr_1fr] items-center px-6 py-4 border-t border-gray-100 text-sm"
               >
                 <div>
                   <div className="font-medium text-[#3C3C3B]">{order.id}</div>
@@ -181,7 +181,7 @@ const Bestellingen = () => {
                   </div>
                 </div>
 
-                <span className="text-gray-700">{order.userId}</span>
+                <span className="text-gray-700">{order.userName}</span>
 
                 <span className="text-gray-700">{order.items.length}</span>
 
