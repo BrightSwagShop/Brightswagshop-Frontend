@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaFlask, FaSpinner, FaExternalLinkAlt } from "react-icons/fa";
 
 import { getApiBaseUrl } from "../../Config/apiBaseUrl";
 import {
+  getLatestTestRuns,
   getTestRun,
   startTestRun,
   type TestAutomationRun,
@@ -76,6 +77,48 @@ export default function TestAutomationReport() {
     return () => window.clearTimeout(timeoutId);
   }, [selectedRun?.id, selectedRun?.status, selectedRun?.completedAt]);
 
+  const pollRun = useCallback(async (runId: string) => {
+    try {
+      const latestRun = await getTestRun(runId);
+      setRuns((currentRuns) => ({ ...currentRuns, [latestRun.suite]: latestRun }));
+      if (latestRun.status === "Running" || latestRun.status === "Queued") {
+        window.setTimeout(() => void pollRun(runId), 2000);
+      }
+    } catch {
+      // Run was evicted (new run started while this one was still polling) — stop
+    }
+  }, []); // setRuns is stable; no deps needed
+
+  // Restore the latest runs when navigating back to this page
+  useEffect(() => {
+    let cancelled = false;
+    getLatestTestRuns()
+      .then((latestRuns) => {
+        if (cancelled || latestRuns.length === 0) return;
+        const restored: Record<TestAutomationSuite, TestAutomationRun | null> = {
+          Api: null,
+          Frontend: null,
+        };
+        for (const run of latestRuns) restored[run.suite] = run;
+        setRuns(restored);
+
+        // Auto-select the most recently started run
+        const mostRecent = [...latestRuns].sort(
+          (a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime(),
+        )[0];
+        if (mostRecent) setSelectedRunId(mostRecent.id);
+
+        // Resume polling for any run still in progress
+        for (const run of latestRuns) {
+          if (run.status === "Running" || run.status === "Queued") {
+            void pollRun(run.id);
+          }
+        }
+      })
+      .catch(() => { /* no runs yet or not authenticated — start fresh */ });
+    return () => { cancelled = true; };
+  }, [pollRun]);
+
   const handleStart = async (suite: TestAutomationSuite) => {
     setError(null);
     setLoadingSuite(suite);
@@ -89,18 +132,6 @@ export default function TestAutomationReport() {
       const run = await startTestRun(suite);
       setSelectedRunId(run.id);
       setRuns((currentRuns) => ({ ...currentRuns, [suite]: run }));
-
-      const pollRun = async (runId: string) => {
-        const latestRun = await getTestRun(runId);
-        setRuns((currentRuns) => ({ ...currentRuns, [latestRun.suite]: latestRun }));
-
-        if (latestRun.status === "Running" || latestRun.status === "Queued") {
-          window.setTimeout(() => {
-            void pollRun(runId);
-          }, 2000);
-        }
-      };
-
       void pollRun(run.id);
     } catch (startError) {
       console.error(startError);
