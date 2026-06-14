@@ -37,15 +37,19 @@ const AuthCallbackPage = () => {
       void 0; // ignore errors when clearing sessionStorage
     }
 
-    if (preLogin.startsWith("/admin")) {
+    // Never bounce back to /login — that causes an infinite redirect loop
+    const destination = preLogin === "/login" || !preLogin
+      ? (isAdmin ? "/admin/dashboard" : "/")
+      : preLogin;
+
+    if (destination.startsWith("/admin")) {
       if (isAdmin) {
-        navigate(preLogin, { replace: true });
+        navigate(destination, { replace: true });
       } else {
         navigate("/unauthorized", { replace: true });
       }
     } else {
-      // For non-admin or general logins, go back to the originating page (or home).
-      navigate(preLogin || "/", { replace: true });
+      navigate(destination, { replace: true });
     }
   }, [isAuthenticated, accounts, navigate]);
 
