@@ -1,18 +1,17 @@
 import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/Brightest-logo's/logo.png";
 import { useState, useEffect, type CSSProperties } from "react";
 import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import { useAuth } from "../hooks/useAuth";
+import { loginRequest } from "../Config/AuthConfig";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { instance } = useMsal();
   const isMsalAuthenticated = useIsAuthenticated();
   const { user, isAuthenticated, logout } = useAuth();
-
-  const navigate = useNavigate();
 
   const isLoggedIn = isMsalAuthenticated || isAuthenticated;
 
@@ -110,7 +109,7 @@ const Header = () => {
                     } catch {
                       // ignore
                     }
-                    navigate("/login");
+                    instance.loginRedirect(loginRequest);
                   }}
                   className="hover:text-yellow-500 transition font-ttnorms font-bold"
                 >
