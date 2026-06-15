@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../Pages/LoginPage';
 
 test.describe('LoginPage - Smoke Tests', () => {
+  test.skip(!!process.env.SKIP_LOGIN_TESTS, 'Skipped when running via admin automation — login page may redirect authenticated sessions');
+
   let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {

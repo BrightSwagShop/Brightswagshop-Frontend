@@ -18,6 +18,8 @@ test.describe('EntraID Login - Smoke Tests', () => {
   let loginPage: LoginPage;
 
   test.describe('Login Page UI Tests', () => {
+    test.skip(!!process.env.SKIP_LOGIN_TESTS, 'Skipped when running via admin automation — login page may redirect authenticated sessions');
+
     test.beforeEach(async ({ page }) => {
       loginPage = new LoginPage(page);
       await loginPage.navigateToLogin();
@@ -129,6 +131,8 @@ test.describe('EntraID Login - Smoke Tests', () => {
   });
 
   test.describe('Protected Admin Routes', () => {
+    test.skip(!!process.env.SKIP_LOGIN_TESTS, 'Skipped when running via admin automation — tests require unauthenticated state');
+
     test('[EntraID] Admin page redirects to login when not authenticated', async ({ page }) => {
       await page.goto('/admin', { waitUntil: 'networkidle' });
       expect(page.url()).toMatch(/login/i);

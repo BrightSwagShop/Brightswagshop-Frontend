@@ -16,7 +16,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "webtests": "playwright test",
+    "webtests": "node scripts/run-webtests.cjs",
     "webtests:ui": "playwright test --ui",
     "webtests:debug": "playwright test --debug"
   },
